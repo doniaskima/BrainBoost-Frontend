@@ -1,4 +1,5 @@
-
+import './styles/globals.css'
+import styled, { keyframes, ThemeProvider } from 'styled-components'
 
 function App() {
 
