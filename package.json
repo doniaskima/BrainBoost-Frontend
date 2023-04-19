@@ -2,13 +2,14 @@
   "name": "e-learing",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "eslint": "^8.38.0",
     "plyr-react": "^5.2.0",
     "prop-types": "^15.8.1",
@@ -24,8 +25,9 @@
     "@types/react-dom": "^18.0.11",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^3.1.0",
-    "autoprefixer": "^10.4.14",
-    "tailwindcss": "^3.3.1",
+    "autoprefixer": "^9.8.8",
+    "postcss": "^7.0.39",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
     "typescript": "^4.9.3",
     "vite": "^4.2.0"
   }
