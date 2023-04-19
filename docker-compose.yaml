@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  myblog:
+    build: ./
+    container_name: myblog_c
+    ports:
+      - '5173:5173'
+    stdin_open: true
