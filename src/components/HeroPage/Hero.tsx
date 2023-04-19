@@ -20,7 +20,7 @@ const Hero = () => {
                             Mastering computer science fundamentals
                         </h1>
                         <p className="text-gray-300 max-w-xl sm:mx-auto xl:mx-0">
-                            The IO Academy is an online learning platform that provides interactive courses and projects in Computer Science to high schoolers and adults of all backgrounds.
+                          BrainBoost is an online learning platform that provides interactive courses and projects in Computer Science to high schoolers and adults of all backgrounds.
                         </p>
                         <div className="items-center gap-x-3 font-medium text-sm sm:flex sm:justify-center xl:justify-start">
                             <NavLink
@@ -41,7 +41,7 @@ const Hero = () => {
                     </div>
                     <div className="flex-1 w-full sm:max-w-2xl xl:max-w-xl">
                         <div className="relative">
-                            <img src={heroThumbnail} className="rounded-lg w-full" alt="IO Academy" />
+                            <img src={heroThumbnail} className="rounded-lg w-full" alt="BrainBoost" />
                             <button aria-label="Video player button" className="absolute w-14 h-10 rounded-lg inset-0 m-auto duration-150 bg-gray-800 hover:bg-gray-700 ring-offset-2 focus:ring text-white"
                                 onClick={() => setVideoPopUp(true)}
                             >

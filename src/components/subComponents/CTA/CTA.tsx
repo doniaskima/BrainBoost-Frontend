@@ -18,7 +18,7 @@ const CTA = () => {
                         This college-course-structured Career Path covers all the basics any CS professional needs to thrive in the tech world.
                     </h2>
                     <p>
-                        The IO Academy is a hands-on, immersive program in computer science that equips high school students with the skills necessary to change the world, so beginners, intermediates, and experts all welcome to this course.
+                        The BrainBoost is a hands-on, immersive program in computer science that equips high school students with the skills necessary to change the world, so beginners, intermediates, and experts all welcome to this course.
                     </p>
                     <div>
                         <ul className="space-y-4">

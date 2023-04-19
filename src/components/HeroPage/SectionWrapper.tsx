@@ -1,7 +1,7 @@
-import React from "react";
+const SectionWrapper = ({ children, ...props }) => (
+  <section {...props} className={`py-16 sm:py-28 ${props.className || ""}`}>
+      {children}
+  </section>
+)
 
-const SectionWrapper = () => {
-  return <div>SectionWrapper</div>;
-};
-
-export default SectionWrapper;
+export default SectionWrapper

@@ -60,7 +60,7 @@ const Features = () => {
             <div className="custom-screen text-gray-600 dark:text-gray-300">
                 <div className="max-w-xl space-y-3">
                     <h2 className="text-gray-800 dark:text-gray-50 text-3xl font-semibold sm:text-4xl">
-                        Join IO Academy and get access to all features
+                        Join BrainBoost and get access to all features
                     </h2>
                     <p>
                         We provide lectures, lab sessions, and instructor support to prepare students for industry-recognized Computer Science degrees.

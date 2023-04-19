@@ -12,7 +12,7 @@ const Course = () => {
                         Get started with our computer science course
                     </h2>
                     <p>
-                        IO academy is a leading provider of high-quality, affordable Computer Science education.{" "}
+                       BrainBoost is a leading provider of high-quality, affordable Computer Science education.{" "}
                         <Link href="/tutorials/cs50" className="text-blue-600 hover:text-blue-400 dark:text-sky-500 dark:hover:text-sky-600 inline-flex items-center gap-x-1 duration-150">
                             Browse lessons
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
