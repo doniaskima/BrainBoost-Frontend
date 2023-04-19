@@ -3,24 +3,50 @@ import Button from "../subComponents/Button/Button";
 import Input from "../subComponents/Input/Input";
 import BrainBoost from "../../assets/BrainBoost.png"
 import { useNavigate } from "react-router-dom";
- 
+import styled, { keyframes, ThemeProvider } from 'styled-components'
+import { DarkTheme } from '../Themes/Theme'
+import ParticlesComponent from "../ParticlesComponent";
 
+const float = keyframes`
+0% { transform: translateY(-10px) }
+50% { transform: translateY(15px) translateX(15px) }
+100% { transform: translateY(-10px) }
+`
+
+
+const Box = styled.div`
+background-color: ${props => props.theme.body};
+width: 100vw;
+height:100vh;
+position: relative;
+overflow: hidden;
+`
+
+const Main = styled.div`
+  color: ${(props) => props.theme.text};
+  backdrop-filter: blur(1px);
+  
+`
 export default function Login() {
   const naviagte = useNavigate();
   
   return (
     <>
-      <header>
+    <ThemeProvider theme={DarkTheme}>
+       <Box>
+       <ParticlesComponent theme='dark' />
+       <Main>
+       <header>
         <title>Login - BrainBoost</title>
       </header>
-      <main className='bg-gray-50 dark:bg-gray-900 w-full h-screen flex flex-col items-center justify-center px-4'>
+      <main className=' dark:bg-gray-900 w-full h-screen flex flex-col items-center justify-center px-4'>
         <div className='max-w-sm w-full text-gray-600 dark:text-gray-300'>
           <div className='text-center'>
           <div className="w-[2rem] flex justify-center align-items">
           <img src={BrainBoost} alt="brain-boost logo" className="w-[12px] h-[22px] rounded-full " />
          </div>
             <div className='mt-5 space-y-2'>
-              <h3 className='text-gray-800 dark:text-white text-2xl font-bold sm:text-3xl '>
+              <h3 className='text-white dark:text-white text-2xl font-bold sm:text-3xl '>
                 Log in to your account
               </h3>
               <p className=''>
@@ -56,13 +82,18 @@ export default function Login() {
             <div className='text-center'>
               <a
                 href='/reset-password'
-                className='hover:text-blue-600 dark:hover:text-sky-500 duration-150'>
+                className='hover:text-blue-600 dark:hover:text-sky-500 duration-150 text-white'>
                 Forgot password?
               </a>
             </div>
           </form>
         </div>
       </main>
+       </Main>
+ 
+       </Box>
+    </ThemeProvider>
+ 
     </>
   );
 }
