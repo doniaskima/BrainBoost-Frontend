@@ -12,6 +12,8 @@ const HeroPage = () => {
         <Layout>
            <Hero />
            <CTA />
+           <Features />
+           <Course />
         </Layout>
         
        

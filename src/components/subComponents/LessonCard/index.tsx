@@ -1,7 +1,5 @@
-import React from "react";
-
-const index = () => {
-  return <div>index</div>;
-};
-
-export default index;
+export * from "./LessonCardGrid";
+export * from "./LessonCardList";
+export * from "./Duration";
+export * from "./Title";
+export * from "./SubTitle";

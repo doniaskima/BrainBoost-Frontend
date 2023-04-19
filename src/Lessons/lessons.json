@@ -1,0 +1,50 @@
+[
+    {
+        "thumbnail": "https://blinder-nine.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcta-image.63997661.jpg&w=3840&q=75",
+        "lesson": "https://res.cloudinary.com/floatui/video/upload/v1673211729/cs50_h7vvpl.3gp",
+        "title": "Introduction to computer science",
+        "description": "We will be discussing the  important subjects  within  the scope  of  computer  science.",
+        "duration": "25:45",
+        "slug": "introduction-to-computer-science"
+    },
+    {
+        "thumbnail": "https://appsbd.com/wp-content/uploads/2021/09/data-structures-and-algorithms-1200x800.jpg",
+        "lesson": "https://res.cloudinary.com/floatui/video/upload/v1669411003/Binary_Search_Algorithm_in_100_Seconds_hyg6n5.mp4",
+        "title": "Data Structures and Algorithms",
+        "description": "We will cover fundamental concepts pertaining to memory, complexity analysis, and more.",
+        "duration": "5:00:45",
+        "slug": "data-structures-and-algorithms"
+    },
+    {
+        "thumbnail": "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20191104165821/SQL-Vs-NoSQL1.png",
+        "lesson": "https://res.cloudinary.com/floatui/video/upload/v1673211729/cs50_h7vvpl.3gp",
+        "title": "Sql and NoSql Databases",
+        "description": "In this video we will learn the difference between SQL, and NoSQL, and how to deal with both of them.",
+        "duration": "3:20:45",
+        "slug": "sql-and-nosql-databases"
+    },
+    {
+        "thumbnail": "https://cdn.educba.com/academy/wp-content/uploads/2020/01/Types-of-Computer-Architecture.jpg",
+        "lesson": "https://res.cloudinary.com/floatui/video/upload/v1673211729/cs50_h7vvpl.3gp",
+        "title": "Computer Architecture",
+        "description": "You will how learn to design the computer architecture of complex modern microprocessors.",
+        "duration": "1:12:29",
+        "slug": "computer-architecture"
+    },
+    {
+        "thumbnail": "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20220504172515/Discrete-Mathematics-Tutorial.jpg",
+        "lesson": "https://res.cloudinary.com/floatui/video/upload/v1673211729/cs50_h7vvpl.3gp",
+        "title": "Discrete Math",
+        "description": "What is discrete mathematics, and what are the main concepts of discrete mathematics ..etc.",
+        "duration": "1:45:30",
+        "slug": "discrete-math"
+    },
+    {
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfw7YyEgOGjHgt1a9sEeOornXhMpMdB_-uOE0awS6SNtEnkk7DmzVyKcAys2XpUpKw3Y4&usqp=CAU",
+        "lesson": "https://res.cloudinary.com/floatui/video/upload/v1673211729/cs50_h7vvpl.3gp",
+        "title": "JavaScript programming language",
+        "description": "We wil cover the basic of JavaScript, and how it’s works, and you will learn OOP.",
+        "duration": "4:30:00",
+        "slug": "javascript-programming-language"
+    }
+]

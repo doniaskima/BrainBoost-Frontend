@@ -1,7 +1,7 @@
 import Link from "react-router-dom"
-import { LessonCardGrid } from "../LessonCard"
 import lessonsExamples from "../../../lessonExamples/lessons.json";
 import SectionWrapper from "../../HeroPage/SectionWrapper";
+import { LessonCardGrid } from "../LessonCard/LessonCardGrid";
 
 const Course = () => {
     return (
