@@ -4,15 +4,16 @@ import CTA from "../components/HeroPage/CTA";
 import Features from "../components/HeroPage/Features";
 import Course from "../components/HeroPage/Course";
 import Pricing from "../components/HeroPage/Pricing";
+import Layout from "../components/HeroPage/layout";
 
 const HeroPage = () => {
     return (
         <>
-          <Hero />
-          <CTA />
-          <Features />
-          <Course />
-          <Pricing />
+        <Layout>
+           <Hero />
+        </Layout>
+        
+       
         </>
       );
 };
