@@ -2,32 +2,24 @@ import Brand from "../subComponents/Brand";
 import Button from "../subComponents/Button/Button";
 import Input from "../subComponents/Input/Input";
 import BrainBoost from "../../assets/BrainBoost.png"
-import { useNavigate } from "react-router-dom";
 import styled, { keyframes, ThemeProvider } from 'styled-components'
 import { DarkTheme } from '../Themes/Theme'
 import ParticlesComponent from "../ParticlesComponent";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { attemptLogin } from "../../store/thunks/auth";
 import { Error } from "../Error";
-import {
-  attemptRegister,
-  attemptResendConfirmation,
-  attemptResetRegister,
-} from "../../store/thunks/auth";
-import { User } from "../../store/actions/user";
+import { Credentials } from "../../store/actions/user";
 import { useAppDispatch } from "../../store/hooks";
 import { useServerError } from "../../hooks/useServerError";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+ 
 
-type RegisterFormValues = User;
+type LoginFormValues = Credentials;
 
-enum RegisterFormStep {
-  Register,
-  Resend,
-  Reset,
-}
-
+ 
 
 const float = keyframes`
 0% { transform: translateY(-10px) }
@@ -54,17 +46,14 @@ export default function Login() {
   const navigate = useNavigate();
 
   const { serverError, handleServerError } = useServerError();
-  const [email, setEmail] = useState<string | null>(null);
-  const [registerStep, setRegisterStep] = useState<RegisterFormStep>(RegisterFormStep.Register);
+ 
 
-  const initialValues: RegisterFormValues = {
-    email: "",
+  const initialValues: LoginFormValues = {
     username: "",
     password: "",
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().min(5).max(255).email().required("Required"),
     username: Yup.string().min(3).max(50).required("Required"),
     password: Yup.string().min(5).max(255).required("Required"),
   });
@@ -73,40 +62,14 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormValues>({
+  } = useForm<LoginFormValues>({
     defaultValues: initialValues,
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (values: RegisterFormValues) => {
-    dispatch(attemptRegister(values))
-      .then(() => {
-        setEmail(values.email);
-        setRegisterStep(RegisterFormStep.Resend);
-      })
-      .catch(handleServerError);
+  const onSubmit = (values: LoginFormValues) => {
+    dispatch(attemptLogin(values, navigate)).catch(handleServerError);
   };
-
-  const handleResendEmail = () => {
-    if (!email) return;
-
-    dispatch(attemptResendConfirmation(email, navigate))
-      .then(() => {
-        setRegisterStep(RegisterFormStep.Reset);
-      })
-      .catch(handleServerError);
-  };
-
-  const handleResetRegister = () => {
-    if (!email) return;
-
-    dispatch(attemptResetRegister(email, navigate))
-      .then(() => {
-        setRegisterStep(RegisterFormStep.Register);
-      })
-      .catch(handleServerError);
-  };
-
   
   return (
     <>
@@ -137,26 +100,27 @@ export default function Login() {
               </p>
             </div>
           </div>
-          <form onSubmit={(e) => e.preventDefault()} className='mt-8 space-y-5'>
+          <form onSubmit={handleSubmit(onSubmit)} className='mt-8 space-y-5'>
             <div>
-              <label className='font-medium'>Email</label>
+              <label className='font-medium'>Username</label>
               <Input
-                type='email'
                 required
+                {...register("username")} id='username' type='text' placeholder='Username'
                 className='w-full mt-2 bg-white dark:bg-gray-800 dark:focus:bg-gray-700 dark:text-gray-300 focus:border-gray-800'
               />
             </div>
             <div>
               <label className='font-medium'>Password</label>
               <Input
-                type='password'
                 required
+                {...register("password")} id='password' type='password' placeholder='Password'
                 className='w-full mt-2 bg-white dark:bg-gray-800 dark:focus:bg-gray-700 dark:text-gray-300 focus:border-gray-800'
               />
             </div>
-            <Button className='w-full text-white bg-gray-800 dark:bg-sky-500 hover:bg-gray-700 dark:hover:bg-sky-600 ring-offset-2 ring-gray-800 dark:ring-sky-500 focus:ring shadow rounded-lg'>
+            <Button  type='submit' className='w-full text-white bg-gray-800 dark:bg-sky-500 hover:bg-gray-700 dark:hover:bg-sky-600 ring-offset-2 ring-gray-800 dark:ring-sky-500 focus:ring shadow rounded-lg'>
               Sign in
             </Button>
+            {serverError && <Error>{serverError}</Error>}
             <div className='text-center'>
               <a
                 href='/reset-password'
