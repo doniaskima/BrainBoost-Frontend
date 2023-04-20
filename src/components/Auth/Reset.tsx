@@ -2,8 +2,51 @@ import React from "react";
 import Button from "../subComponents/Button/Button";
 import Input from "../subComponents/Input/Input";
 import Brand from "../subComponents/Brand";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import * as Yup from "yup";
+import { Error } from "../Error";
+import { attemptResetPassword } from "../../store/thunks/auth";
+import { useServerError } from "../../hooks/useServerError";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+type ResetPasswordFormValues = {
+  password: string;
+};
+
 
 export default function index() {
+  const navigate = useNavigate();
+
+  const { token } = useParams<{ token: string }>();
+  const { serverError, handleServerError } = useServerError();
+
+  const initialValues: ResetPasswordFormValues = {
+    password: "",
+  };
+
+  const validationSchema = Yup.object({
+    password: Yup.string().min(5).max(255).required("Required"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPasswordFormValues>({
+    defaultValues: initialValues,
+    resolver: yupResolver(validationSchema),
+  });
+
+  if (!token) {
+    return <Navigate to='/login' replace />;
+  }
+
+  const onSubmit = (values: ResetPasswordFormValues) => {
+    const password = values.password;
+    attemptResetPassword(password, token, navigate).catch(handleServerError);
+  };
+
     return (
       <>
         <header>
@@ -24,7 +67,7 @@ export default function index() {
                 </p>
               </div>
             </div>
-            <form onSubmit={(e) => e.preventDefault()} className='mt-8 space-y-5'>
+            <form  onSubmit={handleSubmit(onSubmit)} className='mt-8 space-y-5'>
               <div>
                 <label className='font-medium'>Email</label>
                 <Input
