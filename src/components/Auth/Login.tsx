@@ -6,6 +6,28 @@ import { useNavigate } from "react-router-dom";
 import styled, { keyframes, ThemeProvider } from 'styled-components'
 import { DarkTheme } from '../Themes/Theme'
 import ParticlesComponent from "../ParticlesComponent";
+import { useState } from "react";
+import * as Yup from "yup";
+import { Error } from "../Error";
+import {
+  attemptRegister,
+  attemptResendConfirmation,
+  attemptResetRegister,
+} from "../../store/thunks/auth";
+import { User } from "../../store/actions/user";
+import { useAppDispatch } from "../../store/hooks";
+import { useServerError } from "../../hooks/useServerError";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+type RegisterFormValues = User;
+
+enum RegisterFormStep {
+  Register,
+  Resend,
+  Reset,
+}
+
 
 const float = keyframes`
 0% { transform: translateY(-10px) }
@@ -28,7 +50,63 @@ const Main = styled.div`
   
 `
 export default function Login() {
-  const naviagte = useNavigate();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const { serverError, handleServerError } = useServerError();
+  const [email, setEmail] = useState<string | null>(null);
+  const [registerStep, setRegisterStep] = useState<RegisterFormStep>(RegisterFormStep.Register);
+
+  const initialValues: RegisterFormValues = {
+    email: "",
+    username: "",
+    password: "",
+  };
+
+  const validationSchema = Yup.object({
+    email: Yup.string().min(5).max(255).email().required("Required"),
+    username: Yup.string().min(3).max(50).required("Required"),
+    password: Yup.string().min(5).max(255).required("Required"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    defaultValues: initialValues,
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit = (values: RegisterFormValues) => {
+    dispatch(attemptRegister(values))
+      .then(() => {
+        setEmail(values.email);
+        setRegisterStep(RegisterFormStep.Resend);
+      })
+      .catch(handleServerError);
+  };
+
+  const handleResendEmail = () => {
+    if (!email) return;
+
+    dispatch(attemptResendConfirmation(email, navigate))
+      .then(() => {
+        setRegisterStep(RegisterFormStep.Reset);
+      })
+      .catch(handleServerError);
+  };
+
+  const handleResetRegister = () => {
+    if (!email) return;
+
+    dispatch(attemptResetRegister(email, navigate))
+      .then(() => {
+        setRegisterStep(RegisterFormStep.Register);
+      })
+      .catch(handleServerError);
+  };
+
   
   return (
     <>
