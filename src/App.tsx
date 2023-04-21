@@ -11,6 +11,7 @@ import { useAppDispatch } from './store/hooks';
 import { useEffect, useState } from 'react';
 import { attemptGetUser } from './store/thunks/user';
 import { ConfirmPage } from './components/Auth';
+import Home from './pages/Home';
 
 function App() {
 
@@ -60,11 +61,12 @@ function App() {
     <div className="App">
     <Routes>
       <Route path="/" element={<HeroPage />} />
-      <Route path="/login"    element={user ? <Navigate to="/" /> : <Login />} />
+      <Route path="/login"    element={user ? <Navigate to="/home" /> : <Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/reset-password" element={<Reset />} />
       <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
       <Route path="/account/confirm/:token" element={ <ConfirmPage  />} />
+      <Route path="/home" element={ <Home  />} />
     </Routes>
     </div>
   )
