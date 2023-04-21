@@ -2,7 +2,7 @@ import './styles/globals.css'
 import styled, { keyframes, ThemeProvider } from 'styled-components';
 import HeroPage from './pages/HeroPage';
 import Login from './components/Auth/Login';
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Signup from './components/Auth/Signup';
 import "./App.css"
 import Reset from './components/Auth/Reset';
@@ -27,12 +27,40 @@ function App() {
       });
   }, [dispatch]);
 
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUser = () => {
+      fetch("http://localhost:3900/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "string",
+          "Content-Type": "string",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          throw new Error("authentication has been failed!");
+        })
+        .then((resObject) => {
+          setUser(resObject.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getUser();
+  }, []);
+
+
 
   return (
     <div className="App">
     <Routes>
       <Route path="/" element={<HeroPage />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login"    element={user ? <Navigate to="/" /> : <Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/reset-password" element={<Reset />} />
       <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
