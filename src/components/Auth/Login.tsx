@@ -44,10 +44,8 @@ const Main = styled.div`
 export default function Login() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const { serverError, handleServerError } = useServerError();
  
-
   const initialValues: LoginFormValues = {
     username: "",
     password: "",
@@ -70,7 +68,6 @@ export default function Login() {
   const onSubmit = (values: LoginFormValues) => {
     dispatch(attemptLogin(values, navigate)).catch(handleServerError);
   };
-
  
   
   return (
@@ -125,7 +122,7 @@ export default function Login() {
             {serverError && <Error>{serverError}</Error>}
             <div className='text-center'>
               <a
-                href='/reset-password'
+                href='/login/forgot'
                 className='hover:text-blue-600 dark:hover:text-sky-500 duration-150 text-white'>
                 Forgot password?
               </a>

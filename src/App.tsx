@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react';
 import { attemptGetUser } from './store/thunks/user';
 import { ConfirmPage } from './components/Auth';
 import Home from './pages/Home';
+import { AuthRoute } from './components/AuthRoute';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
 
@@ -62,11 +64,33 @@ function App() {
     <Routes>
       <Route path="/" element={<HeroPage />} />
       <Route path="/login"    element={user ? <Navigate to="/home" /> : <Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/reset-password" element={<Reset />} />
       <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
       <Route path="/account/confirm/:token" element={ <ConfirmPage  />} />
       <Route path="/home" element={ <Home  />} />
+      <Route
+          path='/login/reset/:token'
+          element={
+            <AuthRoute>
+              <ResetPasswordPage />
+            </AuthRoute>
+          }
+        />
+      <Route
+          path='/signup'
+          element={
+            <AuthRoute>
+              <Signup />
+            </AuthRoute>
+          }
+        />
+    <Route
+          path='/account/confirm/:token'
+          element={
+            <AuthRoute>
+              <ConfirmPage />
+            </AuthRoute>
+          }
+        />
     </Routes>
     </div>
   )

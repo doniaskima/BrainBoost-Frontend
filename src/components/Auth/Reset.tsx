@@ -70,17 +70,15 @@ export default function index() {
             <form  onSubmit={handleSubmit(onSubmit)} className='mt-8 space-y-5'>
               <div>
                 <label className='font-medium'>Email</label>
-                <Input
-                  type='email'
-                  required
-                  className='w-full mt-3 focus:border-blue-600'
-                />
+                <input  {...register("password")}   className='w-full mt-3 focus:border-blue-600' id='password' type='password' placeholder='Password' />
+                {errors.password && <Error>{errors.password.message}</Error>}
               </div>
               <Button
                 type='submit'
                 className='w-full text-white bg-blue-600 hover:bg-blue-500 ring-offset-2 ring-blue-600 focus:ring shadow rounded-lg'>
                 Reset your password
               </Button>
+              {serverError && <Error>{serverError}</Error>}
             </form>
           </div>
         </div>

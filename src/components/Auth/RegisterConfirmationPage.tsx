@@ -20,11 +20,15 @@ export default function RegisterConfirmationPage() {
   };
 
   return (
-    <div className='container'>
-      <p>Click here to confirm your email</p>
-
+    <>
+    <header>
+      <title>Click here to confirm your email</title>
+    </header>
+    <div className='w-full h-screen flex flex-col items-center justify-center px-4'>
       <button onClick={handleSubmit}>Confirmation</button>
       {serverError && <Error>{serverError}</Error>}
     </div>
+    </>
+ 
   );
 }

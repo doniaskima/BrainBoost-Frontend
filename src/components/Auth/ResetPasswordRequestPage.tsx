@@ -43,25 +43,37 @@ export default function ResetPasswordRequestPage() {
   };
 
   return isSubmited ? (
-    <div className='container'>
-      <p>
-        A reset link has been sent to your email. <b>You have 12 hours to reset your password.</b>
+    <div className='w-full h-screen flex flex-col items-center justify-center px-4'>
+        <div className='max-w-sm w-full text-gray-600'>
+        <div className='mt-5 space-y-2'>
+               <h1 className='text-gray-800 text-2xl font-bold sm:text-3xl'>
+               A reset link has been sent to your email. <b>You have 12 hours to reset your password.</b>
         It can take up to 15 min to receive our email.
-      </p>
+               </h1>
+             </div>
+      
+        </div>
+   
     </div>
   ) : (
-    <div className='container'>
-      <p>We will send you a reset link on the following email :</p>
-      <form className='form' onSubmit={handleSubmit(onSubmit)}>
-        <div className='field'>
-          <label htmlFor='email'>Email</label>
-          <input {...register("email")} id='email' type='email' placeholder='Email' />
+    <div className='w-full h-screen flex flex-col items-center justify-center px-4'>
+      <div className='max-w-sm w-full text-gray-600'>
+      <div className='mt-5 space-y-2'>
+               <p className='text-gray-800 text-2xl font-bold sm:text-3xl'>
+               We will send you a reset link on the following email:
+               </p>
+             </div>
+      <form  className='mt-8 space-y-5' onSubmit={handleSubmit(onSubmit)}>
+        <div className=''>
+          <label  className='font-medium' htmlFor='email'>Email</label>
+          <input className='w-full px-3 py-2 bg-white text-gray-500 outline-none border dark:border-gray-800 shadow-sm rounded-lg duration-150 w-full mt-3 focus:border-blue-600' {...register("email")} id='email' type='email' placeholder='Email' />
           {errors.email && <Error>{errors.email.message}</Error>}
         </div>
 
-        <button type='submit'>Send reset link</button>
+        <button className='px-4 py-2.5 font-medium text-sm text-center duration-150 rounded-lg w-full text-white bg-blue-600 hover:bg-blue-500 ring-offset-2 ring-blue-600 focus:ring shadow rounded-lg' type='submit'>Send reset link</button>
         {serverError && <Error>{serverError}</Error>}
       </form>
+      </div>
     </div>
   );
 }
