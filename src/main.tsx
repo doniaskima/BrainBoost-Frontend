@@ -4,16 +4,21 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import App from './App'
 import { BrowserRouter } from "react-router-dom";
+import { MaterialTailwindControllerProvider } from "./context/index";
+import "../public/css/tailwind.css";
 import './index.css'
-import { VisionUIControllerProvider } from "./context/index.js";
+import { ThemeProvider } from "@material-tailwind/react";
+
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
        <BrowserRouter>
        <Provider store={store}>
-       <VisionUIControllerProvider>
-      <App />
-    </VisionUIControllerProvider>
+       <ThemeProvider>
+        <MaterialTailwindControllerProvider>
+          <App />
+        </MaterialTailwindControllerProvider>
+      </ThemeProvider>
        </Provider>
        </BrowserRouter>
   </React.StrictMode>,
