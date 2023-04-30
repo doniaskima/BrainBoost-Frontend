@@ -19,7 +19,7 @@ export function Dashboard() {
       <Sidenav
         routes={routes}
         brandImg={
-          sidenavType === "dark" ? "../assets/BrainBoost.png" : "../assets/BrainBoost.png"
+          sidenavType === "dark" ? "/img/BrainBoost.png" : "/img/BrainBoost.png"
         }
       />
       <div className="p-4 xl:ml-80">

@@ -40,11 +40,25 @@ function formatNumber(number, decPlaces) {
   return number;
 }
 
+type SidenavColors = {
+  [key: string]: string;
+}
+
+const sidenavColors: SidenavColors = {
+  "blue": "#4F46E5",
+  "blue-gray": "#6B7280",
+  "green": "#10B981",
+  "orange": "#F97316",
+  "red": "#EF4444",
+  "pink": "#EC4899",
+};
+
 export function Configurator() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { openConfigurator, sidenavColor, sidenavType, fixedNavbar } =
     controller;
-  const [stars, setStars] = React.useState(0);
+    const color: keyof typeof sidenavColors = "blue";
+
 
   const sidenavColors = {
     blue: "from-blue-400 to-blue-600",

@@ -77,7 +77,7 @@ export function useMaterialTailwindController(): [ControllerState, ControllerDis
   return context;
 }
 
-MaterialTailwindControllerProvider.displayName = "/src/context/index.jsx";
+MaterialTailwindControllerProvider.displayName = "/src/context/index.tsx";
 
 MaterialTailwindControllerProvider.propTypes = {
   children: PropTypes.node.isRequired,
@@ -94,4 +94,4 @@ export const setTransparentNavbar = (dispatch: ControllerDispatch, value: boolea
 export const setFixedNavbar = (dispatch: ControllerDispatch, value: boolean) =>
   dispatch({ type: "FIXED_NAVBAR", value });
 export const setOpenConfigurator= (dispatch: ControllerDispatch, value: boolean) =>
-dispatch({ type: "OPEN_CONFIGURATOR", value });
+  dispatch({ type: "OPEN_CONFIGURATOR", value });
