@@ -5,12 +5,15 @@ import { store } from "./store/store";
 import App from './App'
 import { BrowserRouter } from "react-router-dom";
 import './index.css'
+import { VisionUIControllerProvider } from "./context/index.js";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
        <BrowserRouter>
        <Provider store={store}>
-          <App />
+       <VisionUIControllerProvider>
+      <App />
+    </VisionUIControllerProvider>
        </Provider>
        </BrowserRouter>
   </React.StrictMode>,
