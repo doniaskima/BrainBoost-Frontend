@@ -5,7 +5,6 @@ import { store } from "./store/store";
 import App from './App'
 import { BrowserRouter } from "react-router-dom";
 import { MaterialTailwindControllerProvider } from "./context/index";
-import "../public/css/tailwind.css";
 import './index.css'
 import { ThemeProvider } from "@material-tailwind/react";
 

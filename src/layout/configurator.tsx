@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   Button,
@@ -66,6 +66,14 @@ export function Configurator() {
   
   const [controller, dispatch] = useMaterialTailwindController();
   const { openConfigurator,sidenavColor, sidenavType, fixedNavbar } = controller;
+  useEffect(() => {
+    // Force a re-render of the component when the state changes
+    // This will update the design to reflect the new state
+  }, [controller.openConfigurator]);
+
+  const setOpenConfigurator = () => {
+    dispatch({ type: "OPEN_CONFIGURATOR", value: !controller.openConfigurator });
+  };
   console.log(openConfigurator)
     const color: keyof typeof sidenavColors = "blue";
 
@@ -79,11 +87,10 @@ export function Configurator() {
     pink: "from-pink-400 to-pink-600",
   };
   return (
-    <aside
-    className={`fixed top-0 right-0 z-50 h-screen w-96 bg-white px-2.5 shadow-lg transition-transform duration-300 ${
-      openConfigurator ? "translate-x-0" : "translate-x-96"
-    }`}
-  >
+<aside
+  className="fixed top-0 right-0 z-50 h-screen w-96 bg-white px-2.5 shadow-lg"
+  style={{ transform: openConfigurator ? "translateX(0)" : "translateX(100%)" }}
+>
     <div className="flex items-start justify-between px-6 pt-8 pb-6">
       <div>
         <Typography variant="h5" color="blue-gray">
@@ -94,12 +101,13 @@ export function Configurator() {
         </Typography>
       </div>
       <IconButton
-        variant="text"
-        color="blue-gray"
-        onClick={() => setOpenConfigurator(dispatch, false)}
-      >
-        <XMarkIcon strokeWidth={2.5} className="h-5 w-5" />
-      </IconButton>
+  variant="text"
+  color="blue-gray"
+  onClick={setOpenConfigurator}
+>
+  <XMarkIcon strokeWidth={2.5} className="h-5 w-5" />
+</IconButton>
+
     </div>
     <div className="py-4 px-6">
       <div className="mb-12">
