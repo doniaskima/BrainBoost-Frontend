@@ -8,11 +8,14 @@ import {
  
 } from "../layout/index";
 import routes from "../routes";
-import { useMaterialTailwindController, setOpenConfigurator } from "../context/index";
+import { useMaterialTailwindController } from "../context/index";
+import { useState } from "react";
+ 
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
+  const [openConfigurator,setOpenConfigurator]=useState(false)
 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
@@ -30,7 +33,7 @@ export function Dashboard() {
           color="white"
           className="fixed bottom-8 right-8 z-40 rounded-full shadow-blue-gray-900/10"
           ripple={false}
-          onClick={() => setOpenConfigurator(dispatch, true)}
+          onClick={() => setOpenConfigurator(!openConfigurator)}
         >
           <Cog6ToothIcon className="h-5 w-5" />
         </IconButton>
