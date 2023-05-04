@@ -19,7 +19,7 @@ const Navbar = () => {
     isLightNeeded ? lightColor : darkColor;
 
   // Navbar background color config
-  const bgColor = addColor('bg-white', 'bg-gray-900');
+  const bgColor = addColor('bg-white', 'bg-white');
   // Brand Color config
   const brandColor = addColor('text-gray-900', 'text-white');
   // Navigation links color config
@@ -64,7 +64,7 @@ const Navbar = () => {
   return (
     <header>
       <nav
-        className={`${bgColor} dark:bg-gray-900 w-full md:static md:text-sm ${
+        className={`${bgColor} dark:bg-white w-full md:static md:text-sm ${
           state ? 'relative z-20' : ''
         }`}
       >
@@ -92,7 +92,7 @@ const Navbar = () => {
                             </button>
                         </div>
                     </div>
-                    <div className={`${bgColor} dark:bg-gray-900 flex-1 md:py-0 md:block md:static md:z-0 ${state ? "absolute z-20 inset-x-0 px-4 py-6 w-full" : "hidden"}`}>
+                    <div className={`${bgColor} dark:bg-white flex-1 md:py-0 md:block md:static md:z-0 ${state ? "absolute z-20 inset-x-0 px-4 py-6 w-full" : "hidden"}`}>
                         <ul className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0 md:font-medium">
                             {
                                 navigation.map((item, idx) => {
@@ -118,7 +118,7 @@ const Navbar = () => {
                             <li>
                                 <NavLink
                                     href="/login"
-                                    className="flex items-center justify-center gap-x-1 font-medium text-sm text-white bg-gray-800 hover:bg-gray-700 active:bg-gray-900 rounded-full"
+                                    className="flex items-center justify-center gap-x-1 font-medium text-sm text-white bg-gray-800 hover:bg-gray-700 active:bg-white rounded-full"
                                 >
                                     Sign in
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
