@@ -14,6 +14,13 @@ import { ConfirmPage } from './components/Auth';
 import Home from './pages/Home';
 import { AuthRoute } from './components/AuthRoute';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import Chat from "./pages/Chat";
+import Courses from './pages/Courses';
+import Drive from './pages/Drive';
+import Notification from './pages/Notification';
+import PomodroTimer from './pages/PomodroTimer';
+import StudyWithme from './pages/StudyWithme';
+import Tasks from './pages/Tasks';
 
 function App() {
 
@@ -84,14 +91,63 @@ function App() {
           }
         />
     <Route
-          path='/account/confirm/:token'
+          path='/chat'
           element={
             <AuthRoute>
-              <ConfirmPage />
+              <Chat />
+            </AuthRoute>
+          }
+        />
+           <Route
+          path='/courses'
+          element={
+            <AuthRoute>
+              <Courses />
+            </AuthRoute>
+          }
+        />
+           <Route
+          path='/drive'
+          element={
+            <AuthRoute>
+              <Drive />
+            </AuthRoute>
+          }
+        />
+          <Route
+          path='/notification'
+          element={
+            <AuthRoute>
+              <Notification />
+            </AuthRoute>
+          }
+        />
+         <Route
+          path='/pomodroTimer'
+          element={
+            <AuthRoute>
+              <PomodroTimer />
+            </AuthRoute>
+          }
+        />
+         <Route
+          path='/studyWithme'
+          element={
+            <AuthRoute>
+              <StudyWithme />
+            </AuthRoute>
+          }
+        />
+            <Route
+          path='/tasks'
+          element={
+            <AuthRoute>
+              <Tasks />
             </AuthRoute>
           }
         />
     </Routes>
+    
     </div>
   )
 }

@@ -56,7 +56,7 @@ export function MaterialTailwindControllerProvider({ children }: { children: Rea
     sidenavType: "dark",
     transparentNavbar: true,
     fixedNavbar: false,
-    openConfigurator: true,
+    openConfigurator: false,
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);

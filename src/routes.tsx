@@ -6,17 +6,28 @@ import {
   ArrowRightOnRectangleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
+import {BsFillChatDotsFill} from "react-icons/bs"
+import {BiTask} from "react-icons/bi"
+import {SiCoursera} from "react-icons/si";
+import {AiOutlineVideoCameraAdd} from "react-icons/ai";
+import {BiTimer} from "react-icons/bi";
+import {DiGoogleDrive} from "react-icons/di";
 import Login from "./components/Auth/Login"
 import Signup from "./components/Auth/Signup"
-
+import Chat from "./pages/Chat";
+import Courses from './pages/Courses';
+import Drive from './pages/Drive';
+import Notification from './pages/Notification';
+import PomodroTimer from './pages/PomodroTimer';
+import StudyWithme from './pages/StudyWithme';
+import Tasks from './pages/Tasks';
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
 
 export const routes = [
   {
-    title: "auth pages",
-    layout: "auth",
+    
     pages: [
       {
         icon: <ArrowRightOnRectangleIcon {...icon} />,
@@ -29,6 +40,47 @@ export const routes = [
         name: "sign up",
         path: "/signup",
         element: <Signup />,
+      },
+    ],
+  },
+  {
+   
+    pages: [
+      {
+        icon: <BsFillChatDotsFill {...icon} />,
+        name: "Chat",
+        path: "/chat",
+        element: <Chat />,
+      },
+      {
+        icon: <SiCoursera {...icon} />,
+        name: "Courses",
+        path: "courses",
+        element: <Courses />,
+      },
+      {
+        icon: <DiGoogleDrive {...icon} />,
+        name: "Drive",
+        path: "drive",
+        element: <Drive />,
+      },
+      {
+        icon: <BiTimer {...icon} />,
+        name: "PomodroTimer",
+        path: "pomodroTimer",
+        element: <PomodroTimer />,
+      },
+      {
+        icon: <AiOutlineVideoCameraAdd {...icon} />,
+        name: "StudyWithme",
+        path: "studyWithme",
+        element: <StudyWithme />,
+      },
+      {
+        icon: <BiTask {...icon} />,
+        name: "Tasks",
+        path: "tasks",
+        element: <Tasks />,
       },
     ],
   },
