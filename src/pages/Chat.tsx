@@ -14,7 +14,7 @@ import LeftSection from "../components/Chat/LeftSection";
             <LeftSection setLeftSide={setLeftSide}/>
           )
         }
-        {
+        {/* {
              props.location.pathname === "/chat" ? (
               <div className="hidden md:flex bg-cyanShade h-full justify-center rounded-r-md items-center w-full">
               <p className="text-2xl text-white font-bold animate-bounce">
@@ -26,7 +26,7 @@ import LeftSection from "../components/Chat/LeftSection";
               {props.children}
             </div>
              )
-        }
+        } */}
       </div>
     </div>
   )
