@@ -1,8 +1,9 @@
 import './styles/globals.css'
+import React, { Suspense } from "react";
 import styled, { keyframes, ThemeProvider } from 'styled-components';
 import HeroPage from './pages/HeroPage';
 import Login from './components/Auth/Login';
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes  } from "react-router-dom";
 import Signup from './components/Auth/Signup';
 import "./App.css"
 import Reset from './components/Auth/Reset';
