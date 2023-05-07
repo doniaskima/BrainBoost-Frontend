@@ -10,7 +10,7 @@ import LeftSection from "../components/Chat/LeftSection";
           leftSide ?(
             <Settings setLeftSide={setLeftSide} />
           ) : (
-            <LeftSection/>
+            <LeftSection setLeftSide={setLeftSide}/>
           )
         }
       </div>
