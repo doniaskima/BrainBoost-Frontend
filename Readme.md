@@ -1,4 +1,4 @@
-The e-learning platform : BrainBoost you are building is designed to provide users with a comprehensive and seamless learning experience. The platform offers a range of features that are designed to cater to different learning styles and preferences, with the ultimate goal of enabling users to achieve their learning objectives.
+The e-learning platform : BrainBoost  is designed to provide users with a comprehensive and seamless learning experience. The platform offers a range of features that are designed to cater to different learning styles and preferences, with the ultimate goal of enabling users to achieve their learning objectives.
 
 The platform is built around user accounts, which allow users to log in and access a range of features and resources. Once logged in, users can navigate through the platform's various pages, including a chat function, where they can communicate with other users and instructors; a courses page, where they can browse and enroll in various courses; a drive page, where they can access and store learning materials; and a notifications page, where they can receive updates and reminders about upcoming courses and deadlines.
 
