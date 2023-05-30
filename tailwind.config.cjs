@@ -22,6 +22,10 @@ module.exports = withMT({
         cyanShade: "#6ED9A0",
         whiteShade: "#f6f8f7",
         primaryOffset: "#c7c5c5",
+        default: "#172b4d",
+        moreDefault:"#5e72e4",
+        Indigo:"#5603ad",
+        purple: '#8965e0',
       },
       boxShadow: {
         card: "0px 35px 120px -15px #211e35",

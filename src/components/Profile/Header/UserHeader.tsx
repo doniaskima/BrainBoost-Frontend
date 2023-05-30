@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container, Row, Col } from "reactstrap";
-import profileCoverImage from "../../../assets/profile/profile-cover.jpg";
+import profileCoverImage from "../../../assets/profile/backgroun.jpg";
 
 const UserHeader = (): JSX.Element => {
   const backgroundImageStyle = {

@@ -23,7 +23,7 @@ import PomodroTimer from './pages/PomodroTimer';
 import StudyWithme from './pages/StudyWithme';
 import Tasks from './pages/Tasks';
 import Profile from './pages/Profile';
-
+import "./assets/css/style.css"
 function App() {
 
   const [loading, setLoading] = useState(true);
