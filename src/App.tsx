@@ -22,6 +22,7 @@ import Notification from './pages/Notification';
 import PomodroTimer from './pages/PomodroTimer';
 import StudyWithme from './pages/StudyWithme';
 import Tasks from './pages/Tasks';
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -92,7 +93,7 @@ function App() {
           }
         />
     <Route
-          path='/chat'
+         path="/dashboard/*"
           element={
             <AuthRoute>
               <Chat />
@@ -100,7 +101,7 @@ function App() {
           }
         />
            <Route
-          path='/courses'
+         path="/dashboard/*"
           element={
             <AuthRoute>
               <Courses />
@@ -108,7 +109,7 @@ function App() {
           }
         />
            <Route
-          path='/drive'
+       path="/drive"
           element={
             <AuthRoute>
               <Drive />
@@ -145,6 +146,14 @@ function App() {
             <AuthRoute>
               <Tasks />
             </AuthRoute>
+          }
+        />
+        <Route
+         path="/profile"
+          element={
+           
+              <Profile />
+         
           }
         />
     </Routes>

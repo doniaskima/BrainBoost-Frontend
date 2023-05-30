@@ -39,8 +39,7 @@ export function Dashboard() {
         </IconButton>
         <Routes>
           {routes.map(
-            ({ layout, pages }) =>
-              layout === "dashboard" &&
+            ({  pages }) =>
               pages.map(({ path, element }) => (
                 <Route  path={path} element={element} />
               ))

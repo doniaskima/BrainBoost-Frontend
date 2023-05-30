@@ -9,7 +9,7 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
   return (
     <div className="w-full md:w-2/3 lg:w-1/3 flex flex-col pb-2">
       <div className="shadow-md h-12 flex items-center px-3">
-        <AiFillSetting  onClick={() => setLeftSide(false)}/>
+        <AiFillSetting className="cursor-pointer" onClick={() => setLeftSide(false)}/>
         <span className="font-meduim">
           Settings
         </span>
@@ -17,7 +17,7 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
         <div>
           <span className="font-medium"> Name </span>
           <i
-            className="fa fa-pencil float-right"
+            className="fa fa-pencil float-right cursor-pointer"
             onClick={() => setShowEditName(true)}
           ></i>
         </div>
@@ -47,7 +47,7 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
                 setName(name);
                 setShowEditName(false);
               }}
-              className="fa fa-close ml-2"
+              className="fa fa-close ml-2 cursor-pointer"
             ></i>
           </div>
         ) : (
@@ -60,7 +60,7 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
         </div>
         <div className="border-2 border-gray-200 items-center  text-red-600 cursor-pointer">
         <span>Delete Account</span>
-        <BsFillTrashFill/>
+        <BsFillTrashFill className="cursor-pointer"/>
         </div>
       </div>
     </div>

@@ -15,13 +15,19 @@ module.exports = withMT({
         "white-100": "#f3f3f3",
         "bg-yellow":"#eda225",
         "yellow-gradient":"#f6ac32",
+        cyan: "#2bffc6",
         back: "#F7F7F7",
+        info: "#11cdef",
         background: "#2A363F",
         cyanShade: "#6ED9A0",
         whiteShade: "#f6f8f7",
+        primaryOffset: "#c7c5c5",
       },
       boxShadow: {
         card: "0px 35px 120px -15px #211e35",
+      },
+      backgroundImage: {
+        marker: "url('./src/assets/marker.svg')",
       },
       height: {
         400: "400px",

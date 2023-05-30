@@ -44,7 +44,12 @@ const Hero = () => {
       <section>
           <div className="custom-screen items-center gap-12 text-gray-600 flex flex-col sm:justify-center sm:text-center xl:flex-row xl:text-left">
               <div className='flex-none space-y-5 max-w-4xl xl:max-w-2xl'>
-                  <h1 className="text-4xl text-gray-600 font-extrabold sm:text-6xl">
+                  <h1
+                    className="
+                    sm:text-3xl text-4xl font-bold title-font mb-4 text-primaryOffset
+                    bg-marker bg-no-repeat bg-center bg-contain
+                    "
+                 >
                       Mastering computer science fundamentals
                   </h1>
                   <p className="text-gray-800 max-w-xl sm:mx-auto xl:mx-0">
