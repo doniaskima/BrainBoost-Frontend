@@ -43,7 +43,7 @@ const Hero = () => {
        
       <section>
           <div className="custom-screen items-center gap-12 text-gray-600 flex flex-col sm:justify-center sm:text-center xl:flex-row xl:text-left">
-              <div className='flex-none space-y-5 max-w-4xl xl:max-w-2xl'>
+              <div className='flex-none space-y-5 max-w-4xl xl:max-w-2xl mt-8'>
                   <h1
                     className="
                     sm:text-3xl text-6xl font-bold title-font mb-4 text-black
