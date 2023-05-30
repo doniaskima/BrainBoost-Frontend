@@ -230,12 +230,11 @@ export function Sidenav({ brandImg, brandName, routes }) {
                   </Typography>
                 </Button>
             
-          
           </li>
           <li >
                 <Button
                 onClick={()=>{
-                  setIsActive(true)
+                  setIsActive(!isActive)
                   navigate('/profile')
                 }}
                   variant={isActive ? "gradient" : "text"}
@@ -255,6 +254,34 @@ export function Sidenav({ brandImg, brandName, routes }) {
                     className="font-medium capitalize"
                   >
                    Profile
+                  </Typography>
+                </Button>
+            
+          
+          </li>
+          <li >
+                <Button
+                onClick={()=>{
+                  setIsActive(!isActive)
+                  navigate("/")
+                }}
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                      ? "white"
+                      : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+               <ArrowRightOnRectangleIcon {...icon} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                   Logout
                   </Typography>
                 </Button>
             
