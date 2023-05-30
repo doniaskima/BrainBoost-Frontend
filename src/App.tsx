@@ -72,7 +72,7 @@ function App() {
     <div className="App">
     <Routes>
       <Route path="/" element={<HeroPage />} />
-      <Route path="/login"    element={user ? <Navigate to="/home" /> : <Login />} />
+      <Route path="/login"  element={user ? <Navigate to="/home" /> : <Login />} />
       <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
       <Route path="/account/confirm/:token" element={ <ConfirmPage  />} />
       <Route path="/home" element={ <Home  />} />
@@ -93,67 +93,67 @@ function App() {
           }
         />
     <Route
-         path="/dashboard/*"
+         path="/chat"
           element={
-            <AuthRoute>
+           
               <Chat />
-            </AuthRoute>
+           
           }
         />
            <Route
-         path="/dashboard/*"
+         path="/courses"
           element={
-            <AuthRoute>
+           
               <Courses />
-            </AuthRoute>
+            
           }
         />
            <Route
        path="/drive"
           element={
-            <AuthRoute>
+           
               <Drive />
-            </AuthRoute>
+           
           }
         />
           <Route
           path='/notification'
           element={
-            <AuthRoute>
+           
               <Notification />
-            </AuthRoute>
+          
           }
         />
          <Route
           path='/pomodroTimer'
           element={
-            <AuthRoute>
+           
               <PomodroTimer />
-            </AuthRoute>
+           
           }
         />
          <Route
           path='/studyWithme'
           element={
-            <AuthRoute>
+        
               <StudyWithme />
-            </AuthRoute>
+          
           }
         />
             <Route
           path='/tasks'
           element={
-            <AuthRoute>
+        
               <Tasks />
-            </AuthRoute>
+           
           }
         />
         <Route
          path="/profile"
           element={
-           
-              <Profile />
          
+              <Profile />
+           
           }
         />
     </Routes>

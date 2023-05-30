@@ -88,7 +88,7 @@ export function Configurator() {
   };
   return (
 <aside
-  className="fixed top-0 right-0 z-50 h-screen w-96 bg-white px-2.5 shadow-lg"
+  className="fixed top-0 right-0 z-50 h-screen w-94 bg-white px-2.5 shadow-lg"
   style={{ transform: openConfigurator ? "translateX(0)" : "translateX(100%)" }}
 >
     <div className="flex items-start justify-between px-6 pt-8 pb-6">
@@ -163,8 +163,9 @@ export function Configurator() {
             Navbar Fixed
           </Typography>
           <Switch
+           className="flex align-items"
             id="navbar-fixed"
-            value={fixedNavbar}
+            value={!fixedNavbar}
             onChange={() => setFixedNavbar(dispatch, !fixedNavbar)}
           />
         </div>

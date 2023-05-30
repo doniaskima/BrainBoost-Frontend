@@ -84,7 +84,12 @@ export const routes = [
         path: "/tasks",
         element: <Tasks />,
       },
-  
+      {
+        icon: <CgProfile {...icon} />,
+        name: "Profile",
+        path: "/profile",
+        element: <Profile />,
+      },
     ],
   },
 ];
