@@ -73,8 +73,8 @@ export function DashboardNavbar() {
           </Typography>
         </div>
         <div className="flex items-center">
-          <div className="mr-auto md:mr-4 md:w-56">
-            <Input label="Type here" />
+          <div className="md:mr-4 md:w-56">
+             <input type="text" className="pt-2 pb-2 text-black mr-2 rounded-xl border-2 focus:border-none  " placeholder="Type Here" />
           </div>
           <IconButton
             variant="text"

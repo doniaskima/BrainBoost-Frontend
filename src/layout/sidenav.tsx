@@ -7,7 +7,7 @@ import {
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import { useMaterialTailwindController, setOpenSidenav } from "../context/index";
+import { useMaterialTailwindController } from "../context/index";
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { BsFillChatDotsFill } from "react-icons/bs";
@@ -276,7 +276,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                   className="flex items-center gap-4 px-4 capitalize"
                   fullWidth
                 >
-               <ArrowRightOnRectangleIcon {...icon} />
+               <CgProfile {...icon} />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
