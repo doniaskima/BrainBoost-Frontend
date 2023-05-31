@@ -21,14 +21,37 @@ const resetRegister = (email: string) => http.post<void>("/user/register/cancel"
 
 const getUser = () => http.get<{ user: User }>("/user");
 
+const getUserById = (userId: string) => http.get<{ user: User }>(`/users/get_by_Id/${userId}`);
+
+const getSavedMessages = (userId: string) => http.get(`/users/savedMessages/${userId}`);
+
+const deleteSavedMessage = (userId: string, messageId: string) =>
+  http.delete(`/users/delete_saved_message`, { data: { userId, messageId } });
+
+const getRecipients = (userId: string) => http.get(`/users/recipients/${userId}`);
+
+const getGroupsByUser = (userId: string) => http.get(`/users/groups/${userId}`);
+
+const updateUserDetails = (userId: string, userDetails: Partial<User>) =>
+  http.put(`/users/update/${userId}`, userDetails);
+
+const deleteUser = (userId: string) => http.delete(`/users/${userId}`);
+
 export {
   postLogin,
+  getUser,
   sendResetPasswordLink,
   resetPassword,
   postLogout,
   postUser,
   getConfirmation,
   resendConfirmation,
-  getUser,
   resetRegister,
+  getUserById,
+  getSavedMessages,
+  deleteSavedMessage,
+  getRecipients,
+  getGroupsByUser,
+  updateUserDetails,
+  deleteUser,
 };
