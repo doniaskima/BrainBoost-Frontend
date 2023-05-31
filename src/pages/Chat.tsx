@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import Settings from "../components/Chat/Settings";
 import LeftSection from "../components/Chat/LeftSection";
+interface Props {
+  children: ReactNode[];
+}
 
-const Chat = () => {
+const Chat = (props:any) => {
   const [leftSide,setLeftSide] =useState(false);
   return (
     <div className="min-h-screen bg-background lg:px-36 lg:pt-14">
@@ -25,7 +28,7 @@ const Chat = () => {
               </div>
             ) : (
               <div className="absolute md:static w-full lg:w-full h-full ">
-                {/* {children} */}
+                {props.children}
               </div>
             )
            }

@@ -24,6 +24,7 @@ import StudyWithme from './pages/StudyWithme';
 import Tasks from './pages/Tasks';
 import Profile from './pages/Profile';
 import "./assets/css/style.css"
+import RightSection from './components/Chat/RightSection';
 function App() {
 
   const [loading, setLoading] = useState(true);
@@ -95,9 +96,9 @@ function App() {
     <Route
          path="/chat"
           element={
-           
-              <Chat />
-           
+            <Chat>
+               <RightSection path=":recipientId" />
+             </Chat>
           }
         />
            <Route

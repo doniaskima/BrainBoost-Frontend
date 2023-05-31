@@ -16,7 +16,7 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
       <div>
         <span className="font-medium"> Name </span>
         <i
-          className="fa fa-pencil float-right"
+          className="fa fa-pencil float-right cursor-pointer"
           onClick={() => setShowEditName(true)}
         ></i>
       </div>
@@ -53,17 +53,16 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
         <p>{name} </p>
       )}
     </div>
-    <div className="border-2 border-gray-200 bg-white mt-4 px-3 py-2">
+    <div className="border-2 border-gray-200 bg-white mt-4 px-3 py-2 ">
       <p className="font-medium">Email</p>
       <p>Donia</p>
     </div>
     <div className="border-2 border-gray-200 mt-auto px-3 py-2">
       <div
         className="flex justify-between items-center text-red-600 cursor-pointer"
-   
       >
         <span>Delete Account</span>
-        <i className="fa fa-trash"></i>
+        <i className="fa fa-trash cursor-pointer"></i>
       </div>
     </div>
   </div>
