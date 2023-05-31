@@ -1,8 +1,6 @@
 import { Dispatch } from "redux";
 import { getUser } from "../../api/index";
 import { setUser, resetUser } from "../actions/user";
-import { fetchSavedMessages, deleteSavedMessage } from "../actions/user";
-
 
 export const attemptGetUser = () => (dispatch: Dispatch) =>
   getUser()
@@ -15,5 +13,4 @@ export const attemptGetUser = () => (dispatch: Dispatch) =>
     })
     .catch(() => {
       dispatch(resetUser());
-});
-
+    });
