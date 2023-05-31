@@ -1,8 +1,9 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import Settings from "../components/Chat/Settings";
 import LeftSection from "../components/Chat/LeftSection";
 import { useSelector } from 'react-redux';
 import { AppState } from '../store/store';
+import { useSocket } from "../socket";
 
 interface Props {
   children: ReactNode[];
@@ -11,7 +12,13 @@ interface Props {
 const Chat = (props:any) => {
   const [leftSide,setLeftSide] =useState(false);
   const user = useSelector((state: AppState) => state.user.user);
-  console.log(user); // Or any other logic you want to perform with the user object
+  console.log(user); 
+  const socket = useSocket((state)=>state.socket);
+  
+  useEffect(()=>{
+    socket.emit("connectUser",{name:user?.username});
+  },[]);
+
   return (
     <div className="min-h-screen bg-background lg:px-36 lg:pt-14">
         <div className="ml-auto mr-auto flex h-screen lg:h-600 w-full bg-back rounded-md">
