@@ -38,6 +38,7 @@
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
     "sass": "^1.62.1",
+    "socket.io-client": "^4.6.2",
     "styled-components": "^5.3.9",
     "tsparticles": "^2.9.3",
     "yup": "^1.1.1"
