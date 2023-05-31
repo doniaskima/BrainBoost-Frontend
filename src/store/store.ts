@@ -4,6 +4,7 @@ import { MessageActionTypes } from './actions/message';
 import { GroupActionTypes } from './actions/group';
 import configureStore from './configureStore';
 
+
 const store = configureStore();
 
 export type AppState = ReturnType<typeof store.getState>;

@@ -1,12 +1,17 @@
 import React, { ReactNode, useState } from "react";
 import Settings from "../components/Chat/Settings";
 import LeftSection from "../components/Chat/LeftSection";
+import { useSelector } from 'react-redux';
+import { AppState } from '../store/store';
+
 interface Props {
   children: ReactNode[];
 }
 
 const Chat = (props:any) => {
   const [leftSide,setLeftSide] =useState(false);
+  const user = useSelector((state: AppState) => state.user.user);
+  console.log(user); // Or any other logic you want to perform with the user object
   return (
     <div className="min-h-screen bg-background lg:px-36 lg:pt-14">
         <div className="ml-auto mr-auto flex h-screen lg:h-600 w-full bg-back rounded-md">
