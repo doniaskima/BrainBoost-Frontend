@@ -18,7 +18,7 @@ module.exports = withMT({
         cyan: "#2bffc6",
         back: "#F7F7F7",
         info: "#11cdef",
-        background: "#2A363F",
+        background: "#A7BFE8",
         cyanShade: "#6ED9A0",
         whiteShade: "#f6f8f7",
         primaryOffset: "#c7c5c5",
