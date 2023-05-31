@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import {AiFillSetting} from "react-icons/ai"
 import {BsFillTrashFill} from "react-icons/bs"
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../store/store";
 
 const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
-  const [name,setName]=useState("Donia");
+  const dispatch = useDispatch();
+  const user = useSelector((state: AppState) => state.user.user);
+  const [name,setName]=useState(user?.username);
   const [showEditName, setShowEditName] = useState(false);
   return (
   <div className="w-full md:w-2/3 lg:w-1/3 flex flex-col pb-2">
@@ -30,7 +34,7 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
             />
             <button
               type="submit"
-              disabled={name === "" || name === "Donia"}
+              disabled={name === "" || name === user?.username}
               className={`rounded-full px-3 py-1 shadow-md ${
                 name === "" || name === "Donia"
                   ? "cursor-not-allowed"
@@ -42,7 +46,7 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
           </form>
           <i
             onClick={() => {
-              setName("Donia");
+              setName(user?.username);
               setShowEditName(false);
             }}
             className="fa fa-close ml-2"
@@ -54,7 +58,7 @@ const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
     </div>
     <div className="border-2 border-gray-200 bg-white mt-4 px-3 py-2 ">
       <p className="font-medium">Email</p>
-      <p>Donia</p>
+      <p>{user?.username}</p>
     </div>
     <div className="border-2 border-gray-200 mt-auto px-3 py-2">
       <div

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store/store";
 
 const LeftUpperHeader = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
   const [showMenu,setShowMenu]=useState(false);
-  const [name,setName]=useState("Donia");
+  const user = useSelector((state: AppState) => state.user.user);
+  const [name,setName]=useState(user?.username);
   return (
     <div className="w-full shadow-md relative h-12 flex px-3 py-1 border-gray-400 items-center">
       <div className="font-semibold">Hi {name}</div>

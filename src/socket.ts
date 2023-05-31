@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { create } from 'zustand';
 
-const BASE_URL = 'http://localhost:3000/';  
+const BASE_URL = 'http://localhost:3000';  
 
 export const socket: Socket = io(BASE_URL);
 
