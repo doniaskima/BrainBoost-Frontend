@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import {AiFillSetting} from "react-icons/ai"
 import {BsFillTrashFill} from "react-icons/bs"
- 
+import { User } from "../../store/actions/user";
 
+
+type RegisterFormValues = User;
+ 
 const Settings = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
   const [name,setName]=useState("Donia");
   const [showEditName, setShowEditName] = useState(false);
