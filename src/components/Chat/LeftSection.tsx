@@ -1,84 +1,79 @@
-// import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import {
-//   ChatCardWrapper,
-//   CreateMenu,
-//   LeftUpperHeader,
-//   SavedMessagesTile,
-//   StartConversation,
-// } from "../index";
-// import { useSocket } from "../../socket";
-// import { CreateGroupForm } from "./CreateGroupForm";
-// import { Spinner } from "reactstrap";
+import { ThunkDispatch } from 'redux-thunk';
+import { Dispatch } from 'redux';
+import { fetchMessages, fetchGroupMessages, deleteMessage as deleteMessageApi } from '../../api/messageApi';
+import { getMessages, getGroupMessages, deleteMessage, Message, MessageActionTypes } from '../../store/actions/message';
+import { AppState } from '../../store/store';
+import { setUser, resetUser, User, Recipient, Group, login, logout , updateUserSuccess, deleteUserSuccess, getUserSuccess, getSavedMessagesSuccess, deleteSavedMessageSuccess, getRecipientsSuccess, getGroupsSuccess } from '../../store/actions/user'; // Update import statements
+import { Link } from 'react-router-dom';
+import { ChatCardWrapper } from './ChatCardWrapper';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSocket } from '../../socket';
+import { useEffect, useState } from 'react';
+import { getGroupMessagesThunk, getMessagesThunk } from '../../store/thunks/message';
+import LeftUpperHeader from './LeftUpperHeader';
+import { CreateMenu } from './CreateMenu';
+import { StartConversation } from './StartConversation';
 
+interface LeftSectionProps {
+  setLeftSide: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-// interface LeftSectionProps {
-//   setLeftSide: (side: boolean) => void;
-// }
+export const LeftSection: React.FC<LeftSectionProps> = ({ setLeftSide }) => {
+  const socket = useSocket((state) => state.socket);
+  const dispatch: ThunkDispatch<AppState, undefined, MessageActionTypes> = useDispatch();
+  const recipients = useSelector((state: AppState) => state.user.recipients);
+  const groups = useSelector((state: AppState) => state.user.groups);
+  const [showStartMessage, setShowStartMessage] = useState(false);
+  const [showCreateGroupForm, setShowCreateGroupForm] = useState(false);
 
-// export const LeftSection: React.FC<LeftSectionProps> = ({ setLeftSide }) => {
-//   const socket = useSocket((state) => state.socket);
-//   const [showStartMessage, setShowStartMessage] = useState(false);
-//   const [showCreateGroupForm, setShowCreateGroupForm] = useState(false);
+  // useEffect(() => {
+  //   dispatch(setUser());
+  //   dispatch(getRecipientsSuccess([]));
+  //   dispatch(getGroupsSuccess([]));
+  // }, [dispatch]);
 
+  const handleRecipientClick = (recipient: Recipient) => {
+    const senderId = "";
+    dispatch(getMessagesThunk(senderId, recipient.id));
+  };
 
-//   useEffect(() => {
-//     socket.on("newRecipient", (info) => {
-//       addRecipient(info.sender);
-//     });
+  const handleGroupClick = (group: Group) => {
+    const userId = "";
+    dispatch(getGroupMessagesThunk(userId, group.id));
+  };
 
-//     return () => {
-//       socket.off("newRecipient", (info) => {
-//         addRecipient(info.sender);
-//       });
-//     };
-//   }, []);
+  return (
+    <div className="flex-col flex w-full md:w-2/3 lg:w-1/3" id="leftSection">
+      <LeftUpperHeader setLeftSide={setLeftSide} />
+      <div className="overflow-y-auto h-full">
+        <CreateMenu
+          setShowStartMessage={setShowStartMessage}
+          setShowCreateGroupForm={setShowCreateGroupForm}
+        />
+        {showStartMessage && <StartConversation setShowStartMessage={setShowStartMessage} />}
 
-//   return (
-//     <div className="flex-col flex w-full md:w-2/3 lg:w-1/3" id="leftSection">
-//       <LeftUpperHeader setLeftSide={setLeftSide} />
-//       <div className="overflow-y-auto h-full">
-//         <CreateMenu
-//           setShowStartMessage={setShowStartMessage}
-//           setShowCreateGroupForm={setShowCreateGroupForm}
-//         />
-//         {showStartMessage && (
-//           <StartConversation setShowStartMessage={setShowStartMessage} />
-//         )}
-//         {showCreateGroupForm && (
-//           <CreateGroupForm setShowCreateGroupForm={setShowCreateGroupForm} />
-//         )}
-//         <SavedMessagesTile />
-//         {loading ? (
-//           <div className="flex justify-center mt-2">
-//             <Spinner />
-//           </div>
-//         ) : (
-//           recipients?.map((recipient) => {
-//             return (
-//               <Link to={recipient._id} key={recipient._id} state={recipient}>
-//                 <ChatCardWrapper>{recipient.name}</ChatCardWrapper>
-//               </Link>
-//             );
-//           })
-//         )}
-//         {groups?.map((group) => {
-//           return (
-//             <Link to={group._id} key={group._id} state={group}>
-//               <ChatCardWrapper>{group?.name}</ChatCardWrapper>
-//             </Link>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   );
-// };
+        {recipients.map((recipient) => (
+          <Link
+            to={recipient.id}
+            key={recipient.id}
+            state={recipient}
+            onClick={() => handleRecipientClick(recipient)}
+          >
+            <ChatCardWrapper>{recipient.name}</ChatCardWrapper>
+          </Link>
+        ))}
 
-import React from "react";
-
-const LeftSection = () => {
-  return <div>LeftSection</div>;
+        {groups.map((group) => (
+          <Link
+            to={group.id}
+            key={group.id}
+            state={group}
+            onClick={() => handleGroupClick(group)}
+          >
+            <ChatCardWrapper>{group.name}</ChatCardWrapper>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 };
-
-export default LeftSection;
-

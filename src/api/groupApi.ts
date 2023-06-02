@@ -1,58 +1,37 @@
-import http from '../services/httpService';
-import { Group, GroupMember } from '../store/actions/group';
+import { Dispatch } from "redux";
+import { getUser, getRecipients, getGroupsByUser } from "../api/index";
+import { setUser, resetUser, getRecipientsSuccess, getGroupsSuccess, User, Recipient, Group } from "../store/actions/user";
 
-const groupAPI = {
-  getGroupMembers: async (groupId: string): Promise<GroupMember[]> => {
-    try {
-      const response = await http.get<GroupMember[]>(`/groups/members/${groupId}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+export const attemptGetUser = () => (dispatch: Dispatch) =>
+  getUser()
+    .then((response) => {
+      const user: User = response.data.user;
+      if (user) {
+        dispatch(setUser(user));
+      } else {
+        dispatch(resetUser());
+      }
+    })
+    .catch(() => {
+      dispatch(resetUser());
+    });
 
-  createGroup: async (adminId: string, groupName: string, isPublic: boolean, description: string): Promise<Group> => {
-    try {
-      const response = await http.post<Group>('/groups/create', { adminId, groupName, isPublic, description });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+export const fetchRecipients = (userId: string) => (dispatch: Dispatch) =>
+  getRecipients(userId)
+    .then((response) => {
+      const recipients: Recipient[] = response.data.recipients;
+      dispatch(getRecipientsSuccess(recipients));
+    })
+    .catch((error: Error) => {
+     console.log(error);
+    });
 
-  addMember: async (email: string, groupId: string): Promise<GroupMember> => {
-    try {
-      const response = await http.post<GroupMember>('/groups/add_member', { email, groupId });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  updateGroup: async (groupId: string, name: string, description: string, isPublic: boolean): Promise<Group> => {
-    try {
-      const response = await http.put<Group>('/groups/update_group', { groupId, name, description, isPublic });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  removeMemberFromGroup: async (memberId: string, groupId: string): Promise<void> => {
-    try {
-      await http.post<void>('/groups/remove_member', { memberId, groupId });
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  deleteGroup: async (groupId: string): Promise<void> => {
-    try {
-      await http.delete<void>(`/groups/${groupId}`);
-    } catch (error) {
-      throw error;
-    }
-  },
-};
-
-export default groupAPI;
+export const fetchGroups = (userId: string) => (dispatch: Dispatch) =>
+  getGroupsByUser(userId)
+    .then((response) => {
+      const groups: Group[] = response.data.groups;
+      dispatch(getGroupsSuccess(groups));
+    })
+    .catch((error: Error) => {
+     console.log(error);
+    });

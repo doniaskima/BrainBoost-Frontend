@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
-import { useData } from "../../context/dataProvider";
-import { BASE_URL } from "../../utils/utils";
+import { updateGroup } from "../../store/actions/group";
+const BASE_URL = "http://localhost:3000"
 
 interface UpdateGroupInfoFormProps {
   group: any;
@@ -18,17 +19,15 @@ export const UpdateGroupInfoForm: React.FC<UpdateGroupInfoFormProps> = ({
   const [showEditDescription, setShowEditDescription] = useState(false);
   const [name, setName] = useState(group.name);
   const [description, setDescription] = useState(group.description);
-  const { updateGroup } = useData();
+  const dispatch = useDispatch();
 
   const updateHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     setShowEditDescription(false);
     setShowEditName(false);
-    updateGroup(group._id, name, description, false);
+    dispatch(updateGroup(group._id, name, description, false));
     try {
-      const {
-        data: { status },
-      } = await axios.put(`${BASE_URL}/groups/update_group`, {
+      await axios.put(`${BASE_URL}/groups/update_group`, {
         groupId: group._id,
         name: name,
         description: description,

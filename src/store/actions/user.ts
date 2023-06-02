@@ -9,8 +9,8 @@ export const GET_SAVED_MESSAGES_SUCCESS = "GET_SAVED_MESSAGES_SUCCESS";
 export const DELETE_SAVED_MESSAGE_SUCCESS = "DELETE_SAVED_MESSAGE_SUCCESS";
 export const GET_RECIPIENTS_SUCCESS = "GET_RECIPIENTS_SUCCESS";
 export const GET_GROUPS_SUCCESS = "GET_GROUPS_SUCCESS";
-
-
+export const REMOVE_RECIPIENT = "REMOVE_RECIPIENT";
+export const REMOVE_GROUP = "REMOVE_GROUP";
 
 export type User = {
   username: string;
@@ -24,7 +24,6 @@ export type Message = {
   sender: User;
   timestamp: number;
 };
-
 
 export type Group = {
   id: string;
@@ -72,7 +71,6 @@ export function resetUser(): UserAction<never> {
   return { type: RESET_USER };
 }
 
-
 export type UpdateUserSuccessAction = {
   type: typeof UPDATE_USER_SUCCESS;
 };
@@ -107,6 +105,16 @@ export type GetRecipientsSuccessAction = {
 export type GetGroupsSuccessAction = {
   type: typeof GET_GROUPS_SUCCESS;
   payload: Group[];
+};
+
+export type RemoveRecipientAction = {
+  type: typeof REMOVE_RECIPIENT;
+  recipientId: string;
+};
+
+export type RemoveGroupAction = {
+  type: typeof REMOVE_GROUP;
+  groupId: string;
 };
 
 export function updateUserSuccess(): UpdateUserSuccessAction {
@@ -156,5 +164,19 @@ export function getGroupsSuccess(groups: Group[]): GetGroupsSuccessAction {
   return {
     type: GET_GROUPS_SUCCESS,
     payload: groups,
+  };
+}
+
+export function removeRecipient(recipientId: string): RemoveRecipientAction {
+  return {
+    type: REMOVE_RECIPIENT,
+    recipientId,
+  };
+}
+
+export function removeGroup(groupId: string): RemoveGroupAction {
+  return {
+    type: REMOVE_GROUP,
+    groupId,
   };
 }

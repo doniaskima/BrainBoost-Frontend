@@ -4,6 +4,8 @@ export const ADD_MEMBER = "ADD_MEMBER";
 export const UPDATE_GROUP = "UPDATE_GROUP";
 export const REMOVE_MEMBER = "REMOVE_MEMBER";
 export const DELETE_GROUP = "DELETE_GROUP";
+export const ADD_GROUP = "ADD_GROUP";
+export const REMOVE_GROUP = "REMOVE_GROUP";
 
 export interface GroupMember {
   id: string;
@@ -54,13 +56,25 @@ export interface DeleteGroupAction {
   groupId: string;
 }
 
+export interface AddGroupAction {
+  type: typeof ADD_GROUP;
+  group: Group;
+}
+
+export interface RemoveGroupAction {
+  type: typeof REMOVE_GROUP;
+  groupId: string;
+}
+
 export type GroupActionTypes =
   | GetGroupMembersAction
   | CreateGroupAction
   | AddMemberAction
   | UpdateGroupAction
   | RemoveMemberAction
-  | DeleteGroupAction;
+  | DeleteGroupAction
+  | AddGroupAction
+  | RemoveGroupAction;
 
 export function getGroupMembers(members: GroupMember[]): GetGroupMembersAction {
   return {
@@ -100,6 +114,20 @@ export function removeMember(memberId: string): RemoveMemberAction {
 export function deleteGroup(groupId: string): DeleteGroupAction {
   return {
     type: DELETE_GROUP,
+    groupId,
+  };
+}
+
+export function addGroup(group: Group): AddGroupAction {
+  return {
+    type: ADD_GROUP,
+    group,
+  };
+}
+
+export function removeGroup(groupId: string): RemoveGroupAction {
+  return {
+    type: REMOVE_GROUP,
     groupId,
   };
 }

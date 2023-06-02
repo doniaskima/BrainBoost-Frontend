@@ -1,12 +1,14 @@
-import { useNavigate, RouteComponentProps } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { AppState } from "../../store/store";
+import { RouteProps, useNavigate } from "react-router-dom";
+import { removeRecipient } from "../../store/actions/user";
+import { removeGroup } from "../../store/actions/group";
 
-// import { BASE_URL } from "../../utils/utils";
+const BASE_URL = "http://localhost:3000"
 
-interface ChatMenuProps extends RouteComponentProps {
+interface ChatMenuProps extends RouteProps {
   recipient: any;
   setShowRecipientDetails: (show: boolean) => void;
   setShowMenu: (show: boolean) => void;
@@ -18,7 +20,7 @@ export const ChatMenu: React.FC<ChatMenuProps> = ({
   setShowMenu,
 }) => {
   const user = useSelector((state: AppState) => state.user.user);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const isGroup = recipient?.groupCode ? true : false;
   const closeMenu = () => setShowMenu(false);
 

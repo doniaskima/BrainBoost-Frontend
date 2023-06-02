@@ -22,7 +22,7 @@
     "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
     "daisyui": "^2.52.0",
-    "dayjs": "^1.11.7",
+    "dayjs": "^1.11.8",
     "esbuild": "^0.17.18",
     "eslint": "^8.38.0",
     "plyr-react": "^5.2.0",

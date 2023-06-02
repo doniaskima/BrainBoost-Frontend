@@ -5,10 +5,10 @@ import {
   deleteMessage as deleteMessageApi,
 } from '../../api/messageApi';
 
-import { getMessages, getGroupMessages, deleteMessage, Message } from '../actions/message';
+import { getMessages, getGroupMessages, deleteMessage, Message, MessageAction } from '../actions/message';
 
 export const getMessagesThunk = (senderId: string, receiverId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<MessageAction>) => {
     try {
       const messages = await fetchMessages(senderId, receiverId);
       dispatch(getMessages(messages));
@@ -19,23 +19,23 @@ export const getMessagesThunk = (senderId: string, receiverId: string) => {
 };
 
 export const getGroupMessagesThunk = (userId: string, groupId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<MessageAction>) => {
     try {
       const messages = await fetchGroupMessages(userId, groupId);
       dispatch(getGroupMessages(messages));
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   };
 };
 
 export const deleteMessageThunk = (messageId: string) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<MessageAction>) => {
     try {
       await deleteMessageApi(messageId);
       dispatch(deleteMessage(messageId));
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   };
 };

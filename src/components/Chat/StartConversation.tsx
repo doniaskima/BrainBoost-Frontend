@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useAuth } from "../../context/authProvider";
-import { useData } from "../../context/dataProvider";
-import { useSocket } from "../../context/socket";
+import { useDispatch } from "react-redux";
+import { startMessage } from "../../store/actions/message";
 import { BASE_URL } from "../../utils/utils";
+import { useSocket } from "../../socket";
 
 interface StartConversationProps {
   setShowStartMessage: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,25 +13,24 @@ export const StartConversation: React.FC<StartConversationProps> = ({
   setShowStartMessage,
 }) => {
   const socket = useSocket((state) => state.socket);
-  const { user, emailValidate } = useAuth();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const { addRecipient } = useData();
+  const dispatch = useDispatch();
 
-  const startMessage = async (event: React.FormEvent) => {
+  const startMessageHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (emailValidate(email)) {
+    if (email.trim() !== "") {
       try {
         const {
           data: { status, user: recipient },
         } = await axios.get(`${BASE_URL}/users/get_by_email/${email}`);
         if (status) {
           socket.emit("startMessage", {
-            senderId: user._id,
+            senderId: "currentUserId",
             receiverEmail: email,
-            senderEmail: user.email,
+            senderEmail: "currentEmail",
           });
-          addRecipient(recipient);
+          dispatch(startMessage(recipient));
           setShowStartMessage(false);
           return;
         }
@@ -47,7 +46,7 @@ export const StartConversation: React.FC<StartConversationProps> = ({
   return (
     <div className="w-full px-2 mb-2">
       {error !== "" && <p className="text-red-500 text-center">{error}</p>}
-      <form onSubmit={(e) => startMessage(e)}>
+      <form onSubmit={(e) => startMessageHandler(e)}>
         <input
           type="text"
           className="rounded-full w-full my-2 px-3 py-1 shadow-md"

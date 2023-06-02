@@ -12,7 +12,7 @@ interface Props {
 const Chat = (props:any) => {
   const [leftSide,setLeftSide] =useState(false);
   const user = useSelector((state: AppState) => state.user.user);
-  console.log(user); 
+  console.log(user.username); 
   const socket = useSocket((state)=>state.socket);
   
   useEffect(()=>{

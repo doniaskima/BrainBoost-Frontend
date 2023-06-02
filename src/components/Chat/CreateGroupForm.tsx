@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "../../store/store";
-import { useSelector } from "react-redux";
-
+import { addGroup } from "../../store/actions/group";
+const BASE_URL = "http://localhost:3000/"
 
 interface CreateGroupFormProps {
   setShowCreateGroupForm: (show: boolean) => void;
@@ -11,11 +12,11 @@ interface CreateGroupFormProps {
 export const CreateGroupForm: React.FC<CreateGroupFormProps> = ({
   setShowCreateGroupForm,
 }) => {
+  const dispatch = useDispatch();
   const user = useSelector((state: AppState) => state.user.user);
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
 
   const createGroupHandle = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ export const CreateGroupForm: React.FC<CreateGroupFormProps> = ({
       });
 
       const { group } = response.data;
-      addGroup(group);
+      dispatch(addGroup(group));
       setShowCreateGroupForm(false);
     } catch (error) {
       setError("Error creating group. Please try again.");
