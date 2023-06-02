@@ -1,5 +1,9 @@
 import PropTypes from "prop-types";
-import { Link, NavLink } from "react-router-dom";
+import { logout } from "../store/actions/user";
+import { postLogout } from "../api/index";
+import { Dispatch } from "react";
+import { NavigateFunction } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
   Avatar,
@@ -7,9 +11,26 @@ import {
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import { useMaterialTailwindController, setOpenSidenav } from "../context/index";
+import { useMaterialTailwindController } from "../context/index";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
+import { BsFillChatDotsFill } from "react-icons/bs";
+import { SiCoursera } from "react-icons/si";
+import { DiGoogleDrive } from "react-icons/di";
+import { BiTask, BiTimer } from "react-icons/bi";
+import { AiOutlineVideoCameraAdd } from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
+import { attemptLogout } from "../store/thunks/auth";
 
 export function Sidenav({ brandImg, brandName, routes }) {
+
+  const handleLogout = () => {
+    dispatch(attemptLogout());
+    navigate("/");
+  };
+
+  const navigate=useNavigate();
+  const [isActive,setIsActive]=useState(false)
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
   const sidenavTypes = {
@@ -17,7 +38,10 @@ export function Sidenav({ brandImg, brandName, routes }) {
     white: "bg-white shadow-lg",
     transparent: "bg-transparent",
   };
-
+  const icon = {
+    className: "w-5 h-5 text-inherit",
+  };
+  
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${
@@ -29,13 +53,13 @@ export function Sidenav({ brandImg, brandName, routes }) {
           sidenavType === "dark" ? "border-white/20" : "border-blue-gray-50"
         }`}
       >
-        <Link to="/" className="flex items-center gap-4 py-6 px-8">
+        <Link to="/" className="flex items-center gap-4 py-4 px-4">
           <Avatar src={brandImg} size="sm" />
           <Typography
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
           >
-            {brandName}
+             Brainboost
           </Typography>
         </Link>
         <IconButton
@@ -50,24 +74,13 @@ export function Sidenav({ brandImg, brandName, routes }) {
         </IconButton>
       </div>
       <div className="m-4">
-        {routes.map(({ layout, title, pages }, key) => (
-          <ul key={key} className="mb-4 flex flex-col gap-1">
-            {title && (
-              <li className="mx-3.5 mt-4 mb-2">
-                <Typography
-                  variant="small"
-                  color={sidenavType === "dark" ? "white" : "blue-gray"}
-                  className="font-black uppercase opacity-75"
-                >
-                  {title}
-                </Typography>
-              </li>
-            )}
-            {pages.map(({ icon, name, path }) => (
-              <li key={name}>
-                <NavLink to={`/${layout}${path}`}>
-                  {({ isActive }) => (
+        <ul>
+        <li >
                     <Button
+                    onClick={()=>{
+                      setIsActive(true)
+                      navigate('/chat')
+                    }}
                       variant={isActive ? "gradient" : "text"}
                       color={
                         isActive
@@ -79,20 +92,215 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       className="flex items-center gap-4 px-4 capitalize"
                       fullWidth
                     >
-                      {icon}
+                   <BsFillChatDotsFill {...icon} />
                       <Typography
                         color="inherit"
                         className="font-medium capitalize"
                       >
-                        {name}
+                       Chat
                       </Typography>
                     </Button>
-                  )}
-                </NavLink>
+                
+              
               </li>
-            ))}
-          </ul>
-        ))}
+              <li >
+                <Button
+                onClick={()=>{
+                  setIsActive(true)
+                  navigate('/courses')
+                }}
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                      ? "white"
+                      : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+               <SiCoursera {...icon} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                  Courses
+                  </Typography>
+                </Button>
+            
+          
+          </li>
+          <li>
+                <Button
+                onClick={()=>{
+                  setIsActive(true)
+                  navigate('/drive')
+                }}
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                      ? "white"
+                      : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+               <DiGoogleDrive {...icon} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Drive
+                  </Typography>
+                </Button>
+            
+          
+          </li>
+                <li >
+                <Button
+                onClick={()=>{
+                  setIsActive(true)
+                  navigate('/pomodroTimer')
+                }}
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                      ? "white"
+                      : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+               <BiTimer {...icon} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    PomodroTimer
+                  </Typography>
+                </Button>
+            
+          
+          </li>
+          <li >
+                <Button
+                onClick={()=>{
+                  setIsActive(true)
+                  navigate('/studyWithme')
+                }}
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                      ? "white"
+                      : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+               <AiOutlineVideoCameraAdd {...icon} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    StudyWithme
+                  </Typography>
+                </Button>
+            
+          
+          </li>
+          <li >
+                <Button
+                onClick={()=>{
+                  setIsActive(true)
+                  navigate('/tasks')
+                }}
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                      ? "white"
+                      : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+               <BiTask {...icon} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                   Tasks
+                  </Typography>
+                </Button>
+            
+          </li>
+          <li >
+                <Button
+                onClick={()=>{
+                  setIsActive(!isActive)
+                  navigate('/profile')
+                }}
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                      ? "white"
+                      : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+               <CgProfile {...icon} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                   Profile
+                  </Typography>
+                </Button>
+            
+          
+          </li>
+          <li >
+                <Button
+                onClick={()=>{
+                handleLogout();
+                setIsActive(!isActive);
+                navigate("/");
+                }}
+               
+                  variant={isActive ? "gradient" : "text"}
+                  color={
+                    isActive
+                      ? sidenavColor
+                      : sidenavType === "dark"
+                      ? "white"
+                      : "blue-gray"
+                  }
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+               <CgProfile {...icon} />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                   Logout
+                  </Typography>
+                </Button>
+            
+          
+          </li>
+        </ul>
       </div>
     </aside>
   );

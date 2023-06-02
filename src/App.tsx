@@ -22,7 +22,9 @@ import Notification from './pages/Notification';
 import PomodroTimer from './pages/PomodroTimer';
 import StudyWithme from './pages/StudyWithme';
 import Tasks from './pages/Tasks';
-
+import Profile from './pages/Profile';
+import "./assets/css/style.css"
+import RightSection from './components/Chat/RightSection';
 function App() {
 
   const [loading, setLoading] = useState(true);
@@ -71,7 +73,7 @@ function App() {
     <div className="App">
     <Routes>
       <Route path="/" element={<HeroPage />} />
-      <Route path="/login"    element={user ? <Navigate to="/home" /> : <Login />} />
+      <Route path="/login"  element={user ? <Navigate to="/home" /> : <Login />} />
       <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
       <Route path="/account/confirm/:token" element={ <ConfirmPage  />} />
       <Route path="/home" element={ <Home  />} />
@@ -92,59 +94,67 @@ function App() {
           }
         />
     <Route
-          path='/chat'
+         path="/chat"
           element={
-            <AuthRoute>
-              <Chat />
-            </AuthRoute>
+            <Chat>
+               <RightSection path=":recipientId" />
+             </Chat>
           }
         />
            <Route
-          path='/courses'
+         path="/courses"
           element={
-            <AuthRoute>
+           
               <Courses />
-            </AuthRoute>
+            
           }
         />
            <Route
-          path='/drive'
+       path="/drive"
           element={
-            <AuthRoute>
+           
               <Drive />
-            </AuthRoute>
+           
           }
         />
           <Route
           path='/notification'
           element={
-            <AuthRoute>
+           
               <Notification />
-            </AuthRoute>
+          
           }
         />
          <Route
           path='/pomodroTimer'
           element={
-            <AuthRoute>
+           
               <PomodroTimer />
-            </AuthRoute>
+           
           }
         />
          <Route
           path='/studyWithme'
           element={
-            <AuthRoute>
+        
               <StudyWithme />
-            </AuthRoute>
+          
           }
         />
             <Route
           path='/tasks'
           element={
-            <AuthRoute>
+        
               <Tasks />
-            </AuthRoute>
+           
+          }
+        />
+        <Route
+         path="/profile"
+          element={
+         
+              <Profile />
+           
           }
         />
     </Routes>

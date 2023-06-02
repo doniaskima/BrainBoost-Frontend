@@ -1,38 +1,36 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store/store";
 
 const LeftUpperHeader = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
   const [showMenu,setShowMenu]=useState(false);
-  const [name,setName]=useState("Donia");
+  const user = useSelector((state: AppState) => state.user.user);
+  const [name,setName]=useState(user?.username);
   return (
     <div className="w-full shadow-md relative h-12 flex px-3 py-1 border-gray-400 items-center">
-      <div className="bg-black rounded-full w-6 h-6 text-center">
-      <div className="text-gray-200 font-bold">{name}</div>
-      </div>
-      <div className="font-semibold ml-3">Hi ,{name}</div>
-      <div className="ml-auto">
-      <i
+      <div className="font-semibold">Hi {name}</div>
+      <div className="ml-auto w-full">
+        <i
           onClick={() => setShowMenu((prevState) => !prevState)}
-          className="fa fa-ellipsis-v mr-2"
+          className="fa fa-ellipsis-v ml-4 cursor-pointer "
         ></i>
-        {
-          showMenu && (
-            <div className="bg-black select-one absolute right-5 top-3/4 shadow-md rounded-md text-gray-200">
-              <ul>
+      </div>
+      {showMenu && (
+        <div className="bg-black select-none absolute right-2 mt-2 top-3/4 shadow-md rounded-md text-gray-200">
+          <ul>
             <li>
               <button className="px-3 py-2" onClick={() => setLeftSide(true)}>
                 settings
               </button>
             </li>
             <li>
-              <button   className="px-3 py-2">
+              <button  className="px-3 py-2">
                 Logout
               </button>
             </li>
           </ul>
-            </div>
-          )
-        }
-      </div>
+        </div>
+      )}
     </div>
   )
 };

@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import {BsFillChatDotsFill} from "react-icons/bs"
 import {BiTask} from "react-icons/bi"
+import {CgProfile} from "react-icons/cg"
 import {SiCoursera} from "react-icons/si";
 import {AiOutlineVideoCameraAdd} from "react-icons/ai";
 import {BiTimer} from "react-icons/bi";
@@ -21,35 +22,36 @@ import Notification from './pages/Notification';
 import PomodroTimer from './pages/PomodroTimer';
 import StudyWithme from './pages/StudyWithme';
 import Tasks from './pages/Tasks';
+import Profile from "./pages/Profile";
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
 
 export const routes = [
   {
-    
+    layout: "",
     pages: [
       {
         icon: <ArrowRightOnRectangleIcon {...icon} />,
         name: "sign in",
-        path: "/login",
+        path: "login",
         element: <Login />,
       },
       {
         icon: <UserPlusIcon {...icon} />,
         name: "sign up",
-        path: "/signup",
+        path: "signup",
         element: <Signup />,
       },
     ],
   },
   {
-   
+    layout: "",
     pages: [
       {
         icon: <BsFillChatDotsFill {...icon} />,
         name: "Chat",
-        path: "/chat",
+        path: "chat",
         element: <Chat />,
       },
       {
@@ -79,8 +81,14 @@ export const routes = [
       {
         icon: <BiTask {...icon} />,
         name: "Tasks",
-        path: "tasks",
+        path: "/tasks",
         element: <Tasks />,
+      },
+      {
+        icon: <CgProfile {...icon} />,
+        name: "Profile",
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },

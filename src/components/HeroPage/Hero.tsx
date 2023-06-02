@@ -34,21 +34,29 @@ const Hero = () => {
     }, [isAnimated1, isAnimated2, isAnimated3]);
 
     const commonClasses = 'inline-block subpixel-antialiased';
-    const commonBigTextClasses = 'text-5xl md:text-7xl lg:text-8xl';
-    const tailwindClassName = `text-1xl md:text-2xl lg:text-3xl font-bold ${commonClasses} ${isAnimated1 && 'name-gradient'}`;
-    const tailwindClassWeb = `${commonBigTextClasses} ${commonClasses} ${isAnimated2 && 'first-word-gradient'}`;
-    const tailwindClassDeveloper = `pb-4 ${commonBigTextClasses} ${commonClasses} ${isAnimated3 && 'second-word-gradient'}`;
+    const commonBigTextClasses = 'text-xl md:text-xl lg:text-xl';
+    const tailwindClassName = `text-1xl md:text-2xl lg:text-xl font-bold ${commonClasses} ${isAnimated1 && 'name-gradient'}`;
+    const tailwindClassWeb = `font-bold font-mono${commonBigTextClasses} ${commonClasses} ${isAnimated2 && 'first-word-gradient'}`;
+    const tailwindClassDeveloper = `pb-4 font-sans hover:font-serif  font-bold ${commonBigTextClasses} ${commonClasses} ${isAnimated3 && 'second-word-gradient font-sans hover:font-serif'}`;
 
     return (
        
       <section>
           <div className="custom-screen items-center gap-12 text-gray-600 flex flex-col sm:justify-center sm:text-center xl:flex-row xl:text-left">
-              <div className='flex-none space-y-5 max-w-4xl xl:max-w-2xl'>
-                  <h1 className="text-4xl text-gray-600 font-extrabold sm:text-6xl">
+              <div className='flex-none space-y-5 max-w-4xl xl:max-w-2xl mt-8'>
+                  <h1
+                    className="
+                    sm:text-3xl text-6xl font-bold title-font mb-4 text-black
+                    bg-marker bg-no-repeat bg-center bg-contain font-mono
+                    "
+                 >
                       Mastering computer science fundamentals
                   </h1>
                   <p className="text-gray-800 max-w-xl sm:mx-auto xl:mx-0">
-                      Brainboost is an online learning platform that provides interactive courses and projects in Computer Science to high schoolers and adults of all backgrounds.
+                  <span className={tailwindClassName}>Brainboost  
+                   </span><br /><span className={tailwindClassWeb}>
+                   is an online learning platform  
+                    </span><br /><span className={tailwindClassDeveloper}> that provides interactive courses and projects in Computer Science to high schoolers and adults of all backgrounds..</span>
                   </p>
                   <div className="items-center gap-x-3 font-medium text-sm sm:flex sm:justify-center xl:justify-start">
                       <NavLink

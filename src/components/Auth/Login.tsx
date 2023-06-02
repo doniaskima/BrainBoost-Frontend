@@ -99,7 +99,7 @@ export default function Login() {
               </p>
             </div>
           </div>
-          <form onSubmit={handleSubmit(onSubmit)} className='mt-8 space-y-5'>
+          <form onSubmit={handleSubmit(onSubmit)} className='mt-4 space-y-5'>
             <div>
               <label className='font-medium'>Username</label>
               <Input
