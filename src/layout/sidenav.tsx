@@ -1,8 +1,4 @@
 import PropTypes from "prop-types";
-import { logout } from "../store/actions/user";
-import { postLogout } from "../api/index";
-import { Dispatch } from "react";
-import { NavigateFunction } from "react-router";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
