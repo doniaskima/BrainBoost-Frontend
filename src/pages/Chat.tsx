@@ -27,7 +27,7 @@ const Chat = (props:any) => {
               <Settings setLeftSide={setLeftSide} />
             ) : (
              <div>
-               <LeftSection setLeftSide={setLeftSide}/>
+               {/* <LeftSection setLeftSide={setLeftSide}/> */}
              </div>
             )
            }

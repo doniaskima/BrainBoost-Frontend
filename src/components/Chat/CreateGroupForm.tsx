@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { AppState } from "../../store/store";
-import { addGroup } from "../../store/actions/group";
-const BASE_URL = "http://localhost:3000/"
+import { RootState } from "../../store/store";
+import {addMemberToGroup} from "../../store/reducers/groupSlice"
+
+
+const BASE_URL = "http://localhost:3000/";
 
 interface CreateGroupFormProps {
   setShowCreateGroupForm: (show: boolean) => void;
@@ -13,7 +15,7 @@ export const CreateGroupForm: React.FC<CreateGroupFormProps> = ({
   setShowCreateGroupForm,
 }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state: AppState) => state.user.user);
+  const user = useSelector((state: RootState) => state.user.user); // Use RootState here
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -25,14 +27,14 @@ export const CreateGroupForm: React.FC<CreateGroupFormProps> = ({
 
     try {
       const response = await axios.post(`${BASE_URL}/groups/create`, {
-        adminId: user?._id,
+        adminId: user?.id,
         isPublic: false,
         description: description,
         groupName: name,
       });
 
       const { group } = response.data;
-      dispatch(addGroup(group));
+      // dispatch(addMemberToGroup(group));
       setShowCreateGroupForm(false);
     } catch (error) {
       setError("Error creating group. Please try again.");
