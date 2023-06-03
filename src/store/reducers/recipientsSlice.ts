@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Recipient {
   _id: string;
+  name:string;
+  email:string;
 }
 
 const recipientsSlice = createSlice({
