@@ -11,13 +11,8 @@ interface Props {
 
 const Chat = (props:any) => {
   const [leftSide,setLeftSide] =useState(false);
-  const user = useSelector((state: AppState) => state.user.user);
-  console.log(user.username); 
   const socket = useSocket((state)=>state.socket);
-  
-  useEffect(()=>{
-    socket.emit("connectUser",{name:user?.username});
-  },[]);
+ 
 
   return (
     <div className="min-h-screen bg-background lg:px-36 lg:pt-14">
@@ -27,7 +22,7 @@ const Chat = (props:any) => {
               <Settings setLeftSide={setLeftSide} />
             ) : (
              <div>
-               {/* <LeftSection setLeftSide={setLeftSide}/> */}
+               <LeftSection setLeftSide={setLeftSide}/>
              </div>
             )
            }

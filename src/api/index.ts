@@ -4,19 +4,16 @@ import http from "../services/httpService";
 interface Recipient {
   id: string;
   name: string;
-  // Add more properties as needed
 }
 
 interface Group {
   id: string;
   name: string;
-  // Add more properties as needed
 }
 
 interface Message {
   id: string;
   content: string;
-  // Add more properties as needed
 }
 
 const postLogin = (credentials: Credentials) =>
@@ -71,8 +68,6 @@ const updateUserDetails = (userId: string, data: Partial<User>) =>
 const deleteUserById = (userId: string) =>
   http.delete<void>(`/users/${userId}`);
 
-
-
 const getMessages = (senderId: string, receiverId: string) =>
   http.get<{ messages: Message[] }>(`/users/messages/${senderId}/${receiverId}`);
 
@@ -81,7 +76,6 @@ const getGroupMessages = (userId: string, groupId: string) =>
 
 const deleteMessage = (messageId: string) =>
   http.delete<void>(`/messages/${messageId}`);
-
   
 const fetchGroupMembers = (groupId: string) =>
 http.get<{ members: User[] }>(`/groups/members/${groupId}`);

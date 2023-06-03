@@ -12,3 +12,10 @@ export const decryptMessage = (
   const result = decrypted.toString(CryptoJS.enc.Utf8);
   return result;
 };
+
+
+export function emailValidate(email: string): boolean {
+  return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+    email
+  );
+}

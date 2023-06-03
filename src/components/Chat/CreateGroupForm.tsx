@@ -1,10 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store/store";
+import { AppState } from "../../store/store";
 import {addMemberToGroup} from "../../store/reducers/groupSlice"
-
-
 const BASE_URL = "http://localhost:3000/";
 
 interface CreateGroupFormProps {
@@ -15,7 +13,7 @@ export const CreateGroupForm: React.FC<CreateGroupFormProps> = ({
   setShowCreateGroupForm,
 }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user.user); // Use RootState here
+  const user = useSelector((state: AppState) => state.user.user); 
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");

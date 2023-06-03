@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import dayjs from "dayjs";
-import { UpdateGroupInfoForm } from "./UpdateGroupInfo";
+
 
 import groupSlice, { deleteGroup } from "../../store/reducers/groupSlice";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +26,7 @@ export const Info: React.FC<InfoProps> = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
+
   const isAdmin = recipient?.admin === user?._id;
   const time = dayjs(recipient.createdAt).format("h.mm a");
   const date = dayjs(recipient.createdAt).format("DD/MM/YYYY");

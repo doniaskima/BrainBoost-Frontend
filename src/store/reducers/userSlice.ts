@@ -9,13 +9,20 @@ type WritableDraft<T> = {
 interface Recipient {
   id: string;
   name: string;
-  // Add more properties as needed
+  email:string;
 }
+interface User {
+  id: string;
+  name: string;
+  email:string;
+  recipients: Recipient[];
+  groups: Group[];  
+}
+
 
 interface Group {
   id: string;
   name: string;
-  // Add more properties as needed
 }
 
 interface Message {
@@ -25,12 +32,12 @@ interface Message {
   // Add more properties as needed
 }
 
-export type User = {
-  id: string;
-  username: string;
-  email: string;
-  password: string;
-};
+interface UserState {
+  user: WritableDraft<User> | null;
+  loading: 'idle' | 'pending';
+  error: string | null;
+  recipients: Recipient[];
+}
 
 export type Credentials = {
   username: string;
@@ -107,18 +114,13 @@ export const deleteUserProfile = createAsyncThunk('user/deleteUserProfile', asyn
 
 // Slice
 
-interface UserState {
-  user: WritableDraft<User> | null; // Update User type to WritableDraft<User>
-  loading: 'idle' | 'pending';
-  error: string | null;
-  recipients: Recipient[];
-}
-
+ 
 const initialState: UserState = {
   user: null,
   loading: 'idle',
   error: null,
   recipients: [],
+
 };
 
 const userSlice = createSlice({
