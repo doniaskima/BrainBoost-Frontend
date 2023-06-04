@@ -1,39 +1,34 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, Draft } from '@reduxjs/toolkit';
 import { deleteUser, getUserById, getSavedMessages, deleteSavedMessage, getRecipients, getGroups, updateUser } from '../../api/index';
-import { Draft } from 'immer';
 
-type WritableDraft<T> = {
-  -readonly [K in keyof T]: Draft<T[K]>;
+interface Group {
+  id: string;
+  adminId: string;
+  groupName: string;
+  isPublic: boolean;
+  description: string;
 }
 
 interface Recipient {
   id: string;
   name: string;
-  email:string;
+  email: string;
 }
+
 interface User {
   id: string;
   name: string;
-  email:string;
+  email: string;
   recipients: Recipient[];
-  groups: Group[];  
+  groups: Group[];
 }
 
-
-interface Group {
-  id: string;
-  name: string;
-}
-
-interface Message {
-  id: string;
-  content: string;
-  message: string;
-  // Add more properties as needed
-}
+// type WritableDraft<T> = {
+//   -readonly [K in keyof T]: Draft<T[K]>;
+// };
 
 interface UserState {
-  user: WritableDraft<User> | null;
+  user: User | null;
   loading: 'idle' | 'pending';
   error: string | null;
   recipients: Recipient[];
@@ -42,6 +37,7 @@ interface UserState {
 export type Credentials = {
   username: string;
   password: string;
+  email: string;
 };
 
 // Async Thunks
@@ -114,13 +110,11 @@ export const deleteUserProfile = createAsyncThunk('user/deleteUserProfile', asyn
 
 // Slice
 
- 
 const initialState: UserState = {
   user: null,
   loading: 'idle',
   error: null,
   recipients: [],
-
 };
 
 const userSlice = createSlice({
@@ -140,6 +134,7 @@ const userSlice = createSlice({
       }
       state.loading = 'idle';
     });
+
     builder.addCase(updateUserDetails.rejected, (state, action) => {
       state.loading = 'idle';
       state.error = action.error.message ?? 'An error occurred';
@@ -150,6 +145,7 @@ const userSlice = createSlice({
       state.loading = 'pending';
       state.error = null;
     });
+
     builder.addCase(deleteUserById.fulfilled, (state, action) => {
       const deletedUserId = action.payload;
       if (state.user && state.user.id === deletedUserId) {
@@ -157,6 +153,7 @@ const userSlice = createSlice({
       }
       state.loading = 'idle';
     });
+
     builder.addCase(deleteUserById.rejected, (state, action) => {
       state.loading = 'idle';
       state.error = action.error.message ?? 'An error occurred';
@@ -167,10 +164,12 @@ const userSlice = createSlice({
       state.loading = 'pending';
       state.error = null;
     });
-    // builder.addCase(fetchUserById.fulfilled, (state, action) => {
-    //   state.user = action.payload;
-    //   state.loading = 'idle';
-    // });
+
+    builder.addCase(fetchUserById.fulfilled, (state, action) => {
+      // state.user = action.payload;
+      state.loading = 'idle';
+    });
+
     builder.addCase(fetchUserById.rejected, (state, action) => {
       state.loading = 'idle';
       state.error = action.error.message ?? 'An error occurred';
