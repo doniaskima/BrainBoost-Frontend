@@ -75,7 +75,7 @@ export const CreateGroupForm: React.FC<CreateGroupFormProps> = ({
         </button>
         <i
           onClick={() => setShowCreateGroupForm(false)}
-          className="fa fa-close ml-2"
+          className="fa fa-close ml-2 cursor-pointer"
         ></i>
       </form>
     </div>

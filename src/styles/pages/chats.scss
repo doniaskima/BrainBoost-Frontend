@@ -63,3 +63,36 @@
     overflow-y: auto;
 
 }
+
+.sidebar__chat--container::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
+}
+
+.sidebar__chat--container > h2 {
+    padding-top: 15px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    font-weight: 700;
+    color: black;
+    transition: opacity 400ms;
+}
+
+.sidebar__chat {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 1px solid #f6f6f6;
+    width: 100%;
+    max-height: 87px;
+    transition: opacity 400ms;
+}
+
+@media (min-width: 760px) {
+    .sidebar__chat:hover {
+        background-color: #ebebeb;
+        transition: background-color 200ms;
+    } 
+}

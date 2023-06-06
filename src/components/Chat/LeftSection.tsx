@@ -6,9 +6,9 @@ import { useSocket } from "../../socket";
 import LeftUpperHeader from "./LeftUpperHeader";
 import { CreateMenu } from "./CreateMenu";
 import { StartConversation } from "./StartConversation";
-import SavedMessagesTile from "./SavedMessagesTile";
 import Spinner from "../Spinner"
 import { ChatCardWrapper } from "./ChatCardWrapper";
+import { SavedMessagesTile } from "./SavedMessageTile";
 
 interface LeftSectionProps {
   setLeftSide: React.Dispatch<React.SetStateAction<boolean>>;

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/authProvider";
 import { BASE_URL } from "../../utils/utils";
-import { Spinner } from "reactstrap";
+import   Spinner   from "../Spinner";
 
 interface GroupMembersProps {
   group: { _id: string };
@@ -76,12 +76,12 @@ export const GroupMembers: React.FC<GroupMembersProps> = ({ group, isAdmin }) =>
                 setError("");
                 setEmail(e.target.value);
               }}
-              className="rounded-full w-full mb-2 px-4 py-1 shadow-md"
+              className="rounded-full w-full mb-2 px-4 py-1 shadow-md text-white"
             />
             <button
               type="submit"
               disabled={email === ""}
-              className={`bg-white rounded-full px-3 py-1 shadow-md ${
+              className={`bg-white rounded-full px-3 py-1 shadow-md  ${
                 email !== "" ? "cursor-pointer" : "cursor-not-allowed"
               }`}
             >

@@ -33,6 +33,7 @@ export const SendMessageComponent: React.FC<SendMessageComponentProps> = ({
         user: user,
         message: message,
       });
+      console.log("send");
       return;
     }
     if (isGroup) {
@@ -41,6 +42,7 @@ export const SendMessageComponent: React.FC<SendMessageComponentProps> = ({
         group: recipient,
         message: message,
       });
+      console.log("send");
       return;
     } else {
       socket.emit("sendMessage", {
@@ -48,6 +50,7 @@ export const SendMessageComponent: React.FC<SendMessageComponentProps> = ({
         receiver: recipient,
         message: message,
       });
+      console.log("send");
     }
   };
 

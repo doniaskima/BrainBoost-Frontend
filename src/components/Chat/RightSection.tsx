@@ -40,7 +40,7 @@ const RightSection: React.FC = () => {
 
     if (isGroup) {
       socket.emit("joinGroup", {
-        userInfo: { name: user.name, _id: user._id, email: user.email },
+        userInfo: { name: user?.name, _id: user?._id, email: user?.email },
         group: recipient,
       });
     }
