@@ -39,13 +39,13 @@ const Chat = (props:any) => {
                 </p>
               </div>
             ) : (
-              <div className="absolute md:static w-full lg:w-full h-full ">
+              <div className="absolute  w-full lg:w-full h-full ">
                 {props.children}
               </div>
             )
            }
             {recipientId && (
-            <div className="absolute md:static w-full lg:w-full h-full">
+            <div className="   w-full lg:w-full h-full">
               <RightSection recipientId={recipientId} />
             </div>
           )}

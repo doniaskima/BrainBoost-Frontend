@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSocket } from "../../socket";
 import { useAuth } from "../../context/authProvider";
+import emojiList from "emojis-list";
+
+const emojis: string[] = emojiList.slice(301);
+
+interface FileRef {
+  current: HTMLInputElement | null;
+}
 
 interface SendMessageComponentProps {
   recipient: any;
@@ -11,11 +18,12 @@ export const SendMessageComponent: React.FC<SendMessageComponentProps> = ({
   recipient,
   isGroup,
 }) => {
+  const file = useRef<HTMLInputElement | null>(null);
   const { user } = useAuth();
   const [showEmojis, setShowEmojis] = useState(false);
+  const [emoji, setEmoji] = useState<string>('');
   const [message, setMessage] = useState("");
   const socket = useSocket((state) => state.socket);
- 
 
   const sendHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,18 +51,42 @@ export const SendMessageComponent: React.FC<SendMessageComponentProps> = ({
     }
   };
 
+  const handleClick = () => {
+    setShowEmojis(!showEmojis);
+  };
+
+  const addEmoji = (emoji: string) => {
+    setEmoji(emoji);
+  };
+
+  const handleClickFile = () => {
+    file?.current?.click();
+  };
+
   return (
     <div className="relative flex bg-white w-full rounded-br-md justify-end px-5">
-      <button onClick={() => setShowEmojis(!showEmojis)}>
+      <button onClick={handleClick}>
         <i className="far fa-smile text-xl"></i>
       </button>
       {showEmojis && (
         <div
-          className="absolute bg-back flex flex-wrap left-0 -top-52 overflow-y-auto w-96 h-52"
+          className="absolute
+         bg-back flex flex-wrap left-0 -top-52 overflow-y-auto w-96 h-52"
         >
-         
+          {emojis.map((emoji, index) => {
+            return (
+              <div
+                className="p-1 cursor-pointer"
+                key={index}
+                onClick={() => setMessage(message + " " + emoji)}
+              >
+                {emoji}
+              </div>
+            );
+          })}
         </div>
       )}
+
       <form
         className="flex items-center py-2 w-full"
         onSubmit={(e) => sendHandler(e)}

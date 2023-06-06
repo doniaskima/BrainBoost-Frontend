@@ -69,7 +69,7 @@ const RightSection: React.FC = () => {
  
 
   return (
-    <div className="flex w-full h-screen lg:h-600">
+    <div className="flex w-full h-screen w-full ">
       <div className="shadow-lg h-full flex w-full flex-col">
         <div className="relative w-full px-3 py-2 shadow-md h-12 rounded-tr-md bg-white font-medium">
           <i
