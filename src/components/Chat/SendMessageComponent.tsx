@@ -63,11 +63,38 @@ export const SendMessageComponent: React.FC<SendMessageComponentProps> = ({
     file?.current?.click();
   };
 
+
+  const handleFileChange = (e) => {
+    if (!e.target.files[0]) return;
+
+    const [FileList] = e.target.files;
+
+    // const shareID = sha1.sync(FileList.name + FileList.size);
+ 
+    // const url = URL.createObjectURL(FileList);
+
+    // sendFile(FileList, url, shareID, id);
+  };
   return (
     <div className="relative flex bg-white w-full rounded-br-md justify-end px-5">
       <button onClick={handleClick}>
         <i className="far fa-smile text-xl"></i>
       </button>
+      <button type="button" title="Pick a file" onClick={handleClickFile} className="gap-4 ml-4">
+            <input type="file" ref={file} onChange={handleFileChange} hidden />
+            <svg
+              title="Send files"
+              className="hover:text-accent cursor-pointer"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"
+              />
+            </svg>
+          </button>
       {showEmojis && (
         <div
           className="absolute
@@ -107,6 +134,7 @@ export const SendMessageComponent: React.FC<SendMessageComponentProps> = ({
         >
           <i className="fa fa-send text-lg mr-2"></i>Send
         </button>
+ 
       </form>
     </div>
   );
