@@ -10,6 +10,20 @@ body {
  
 }
 
+::-webkit-scrollbar {
+    width: 6px!important;
+    height: 6px!important;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #869abd;
+}
+
+::-webkit-scrollbar-track {
+    background: #869abd;
+}
+
+
 .nav {
   display: flex;
   flex-direction: row;

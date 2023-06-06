@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/authProvider";
+import BrainBoost from "../../assets/BrainBoost.png"
 
 
 const LeftUpperHeader = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
@@ -8,6 +9,7 @@ const LeftUpperHeader = ({setLeftSide}: {setLeftSide: (value: boolean) => void})
   
   return (
     <div className="w-full shadow-md relative h-12 flex px-3 py-1 border-gray-400 items-center">
+     
       <div className="font-semibold">Hi {user?.name}</div>
       <div className="ml-auto w-full">
         <i
@@ -16,7 +18,7 @@ const LeftUpperHeader = ({setLeftSide}: {setLeftSide: (value: boolean) => void})
         ></i>
       </div>
       {showMenu && (
-        <div className="bg-black select-none absolute right-2 mt-2 top-3/4 shadow-md rounded-md text-gray-200">
+        <div className="bg-black select-none absolute right-36 mt-2 top-3/4 shadow-md rounded-md text-gray-200">
           <ul>
             <li>
               <button className="px-3 py-2" onClick={() => setLeftSide(true)}>

@@ -23,7 +23,7 @@
 }
 
 .chat-sidebar-header {
-    background-color: $bgColor;
+    background-color: #A7BFE8 ;
 }
 
 .chat-sidebar--active {
@@ -48,4 +48,18 @@
 
 .chat-sidebar__content {
     flex: 1;
+}
+
+.sidebar{
+    background-color: #A7BFE8 ;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+    display:flex;
+    justify-content:flex-start;
+    flex-direction: column;
+    width:360px;
+    height:100vh;
+    flex:40%;
+    border-right: 2px solid #869abd;
+    overflow-y: auto;
+
 }
