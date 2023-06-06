@@ -81,7 +81,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                           ? "white"
                           : "blue-gray"
                       }
-                      className="flex items-center gap-4 px-4 capitalize"
+                      className="flex items-center gap-4 px-4 capitalize mt-2 mb-2"
                       fullWidth
                     >
                    <BsFillChatDotsFill {...icon} />
@@ -109,7 +109,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       ? "white"
                       : "blue-gray"
                   }
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 capitalize mt-2 mb-2"
                   fullWidth
                 >
                <SiCoursera {...icon} />
@@ -137,7 +137,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       ? "white"
                       : "blue-gray"
                   }
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 capitalize mt-2 mb-2"
                   fullWidth
                 >
                <DiGoogleDrive {...icon} />
@@ -165,7 +165,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       ? "white"
                       : "blue-gray"
                   }
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 capitalize mt-2 mb-2"
                   fullWidth
                 >
                <BiTimer {...icon} />
@@ -193,7 +193,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       ? "white"
                       : "blue-gray"
                   }
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 capitalize mt-2 mb-2"
                   fullWidth
                 >
                <AiOutlineVideoCameraAdd {...icon} />
@@ -221,7 +221,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       ? "white"
                       : "blue-gray"
                   }
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 capitalize mt-2 mb-2"
                   fullWidth
                 >
                <BiTask {...icon} />
@@ -248,7 +248,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       ? "white"
                       : "blue-gray"
                   }
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 capitalize mt-2 mb-2"
                   fullWidth
                 >
                <CgProfile {...icon} />
@@ -277,7 +277,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       ? "white"
                       : "blue-gray"
                   }
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 capitalize mt-2 mb-2"
                   fullWidth
                 >
                <CgProfile {...icon} />
