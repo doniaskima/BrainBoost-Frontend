@@ -1,27 +1,15 @@
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { deleteUserProfile } from "../../store/reducers/userSlice";
-
-const BASE_URL = "http://localhost:3000";
-
-interface Recipient {
-  id: string;
-  userId: string;
-  name: string;
-  // Add more properties as needed
-}
-
-interface Group {
-  id: string;
-  userId: string;
-  name: string;
-  // Add more properties as needed
-}
-
+import { useData } from "../../context/dataProvider";
+import { BASE_URL } from "../../utils/utils";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/authProvider";
+ 
 interface ChatMenuProps {
-  recipient: Recipient | Group;
+  recipient: {
+    _id: string;
+    groupCode?: string;
+  };
   setShowRecipientDetails: (show: boolean) => void;
   setShowMenu: (show: boolean) => void;
 }
@@ -31,14 +19,15 @@ export const ChatMenu: React.FC<ChatMenuProps> = ({
   setShowRecipientDetails,
   setShowMenu,
 }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { removeRecipient, removeGroup } = useData();
   const isGroup = recipient?.groupCode ? true : false;
-
   const closeMenu = () => setShowMenu(false);
 
   useEffect(() => {
     window.addEventListener("click", closeMenu);
+
     // cleanup
     return () => {
       window.removeEventListener("click", closeMenu);
@@ -46,33 +35,26 @@ export const ChatMenu: React.FC<ChatMenuProps> = ({
   }, []);
 
   const deleteChatHandler = async () => {
-    try {
+    if (user) {
       await axios.delete(`${BASE_URL}/users/deleteRecipient`, {
         data: {
-          senderId: recipient.userId,
-          recipientId: recipient.id,
+          senderId: user?._id,
+          recipientId: recipient._id,
         },
       });
-      // Dispatch an action to remove the recipient from Redux store
-      dispatch(deleteUserProfile(recipient.id));
+      removeRecipient(recipient._id);
       navigate(-1);
-    } catch (error) {
-      // Handle error
     }
   };
+  
 
   const leaveGroupHandler = async () => {
-    try {
-      await axios.post(`${BASE_URL}/groups/remove_member`, {
-        groupId: recipient.id,
-        memberId: recipient.userId,
-      });
-      // Dispatch an action to remove the group from Redux store
-      dispatch(deleteUserProfile(recipient.id));
-      navigate(-1);
-    } catch (error) {
-      // Handle error
-    }
+    await axios.post(`${BASE_URL}/groups/remove_member`, {
+      groupId: recipient._id,
+      memberId: user?._id,
+    });
+    removeGroup(recipient._id);
+    navigate(-1);
   };
 
   return (
@@ -87,11 +69,11 @@ export const ChatMenu: React.FC<ChatMenuProps> = ({
         Show Info
       </div>
       {isGroup ? (
-        <div className="py-1 px-2" onClick={() => leaveGroupHandler()}>
+        <div className="py-1 px-2" onClick={leaveGroupHandler}>
           Leave group
         </div>
       ) : (
-        <div className="py-1 px-2" onClick={() => deleteChatHandler()}>
+        <div className="py-1 px-2" onClick={deleteChatHandler}>
           Delete Chat
         </div>
       )}

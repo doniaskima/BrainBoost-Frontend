@@ -1,22 +1,27 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import Settings from "../components/Chat/Settings";
-import LeftSection from "../components/Chat/LeftSection";
-import { useSelector } from 'react-redux';
-import { AppState } from '../store/store';
 import { useSocket } from "../socket";
+import { DataProvider } from "../context/dataProvider";
+import { Settings } from "../components/Chat/Settings";
+import { LeftSection } from "../components/Chat/LeftSection";
+import { useAuth } from "../context/authProvider";
+import RightSection from "../components/Chat/RightSection";
+import { useParams } from "react-router-dom";
 
-interface Props {
-  children: ReactNode[];
-}
 
 const Chat = (props:any) => {
+
+  const { recipientId } = useParams();
+  const user = useAuth();
   const [leftSide,setLeftSide] =useState(false);
   const socket = useSocket((state)=>state.socket);
- 
-
+  useEffect(() => {
+    socket.emit("connectUser", { name: user.name });
+  }, []);
+  
   return (
-    <div className="min-h-screen bg-background lg:px-36 lg:pt-14">
-        <div className="ml-auto mr-auto flex h-screen lg:h-600 w-full bg-back rounded-md">
+    <DataProvider> 
+    <div className="min-h-screen bg-background  ">
+        <div className="ml-auto mr-auto flex h-screen lg:h-900 w-full bg-back rounded-md">
            {
             leftSide ? (
               <Settings setLeftSide={setLeftSide} />
@@ -39,8 +44,14 @@ const Chat = (props:any) => {
               </div>
             )
            }
+            {recipientId && (
+            <div className="absolute md:static w-full lg:w-full h-full">
+              <RightSection recipientId={recipientId} />
+            </div>
+          )}
         </div>
     </div>
+    </DataProvider>
   )
 };
 

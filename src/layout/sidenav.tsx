@@ -16,18 +16,11 @@ import { DiGoogleDrive } from "react-icons/di";
 import { BiTask, BiTimer } from "react-icons/bi";
 import { AiOutlineVideoCameraAdd } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
-import { logout } from "../store/actions/user";
-
+ 
 
 export function Sidenav({ brandImg, brandName, routes }) {
 
-  const handleLogout = () => {
-    console.log("logout clicked !!!")
-    dispatch(logout());
-    setIsActive(false); // Reset isActive state
-    navigate('/login'); // Redirect to login page or any other desired route
-  };
-  
+ 
   const navigate=useNavigate();
   const [isActive,setIsActive]=useState(false)
   const [controller, dispatch] = useMaterialTailwindController();
@@ -272,7 +265,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
           <li >
                 <Button
                 onClick={()=>{
-                handleLogout();
+                 
                
                 }}
                

@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;700&display=swap");
+@import "base/normalize";
+@import "base/reset";
+@import "base/fonts";
+@import "base/typography";
+@import "base/icon";
+@import "base/common";
+@import "pages/chats.scss";
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: "Public Sans", sans-serif;
+}
+
+#root {
+    overflow: hidden;
+}

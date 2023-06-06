@@ -1,9 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AppState } from "../../store/store";
-import {addMemberToGroup} from "../../store/reducers/groupSlice"
-const BASE_URL = "http://localhost:3000/";
+import { useAuth } from "../../context/authProvider";
+import { useData } from "../../context/dataProvider";
+import { BASE_URL } from "../../utils/utils";
 
 interface CreateGroupFormProps {
   setShowCreateGroupForm: (show: boolean) => void;
@@ -12,30 +11,29 @@ interface CreateGroupFormProps {
 export const CreateGroupForm: React.FC<CreateGroupFormProps> = ({
   setShowCreateGroupForm,
 }) => {
-  const dispatch = useDispatch();
-  const user = useSelector((state: AppState) => state.user.user); 
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const { user } = useAuth();
+  const { addGroup } = useData();
 
   const createGroupHandle = async (e: React.FormEvent) => {
     e.preventDefault();
     setName("");
     setDescription("");
-
     try {
-      const response = await axios.post(`${BASE_URL}/groups/create`, {
-        adminId: user?.id,
+      const {
+        data: { group },
+      } = await axios.post(`${BASE_URL}/groups/create`, {
+        adminId: user?._id,
         isPublic: false,
         description: description,
         groupName: name,
       });
-
-      const { group } = response.data;
-      // dispatch(addMemberToGroup(group));
+      addGroup(group);
       setShowCreateGroupForm(false);
     } catch (error) {
-      setError("Error creating group. Please try again.");
+      setError("Error creating group");
     }
   };
 
@@ -58,7 +56,7 @@ export const CreateGroupForm: React.FC<CreateGroupFormProps> = ({
         <div>
           <input
             type="text"
-            className="rounded-full w-full my-2 px-3 py-1 shadow-md"
+            className="rounded-full w-full my-2 px-8 py-1 shadow-md"
             placeholder="Description"
             value={description}
             onChange={(e) => {

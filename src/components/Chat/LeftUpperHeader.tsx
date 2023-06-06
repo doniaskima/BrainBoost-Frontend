@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { AppState } from "../../store/store";
+import { useAuth } from "../../context/authProvider";
+
 
 const LeftUpperHeader = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
+  const { user, logout } = useAuth();
   const [showMenu,setShowMenu]=useState(false);
-  const user = useSelector((state: AppState) => state.user.user);
-  const [name,setName]=useState(user?.username);
+  
   return (
     <div className="w-full shadow-md relative h-12 flex px-3 py-1 border-gray-400 items-center">
-      <div className="font-semibold">Hi {name}</div>
+      <div className="font-semibold">Hi {user?.name}</div>
       <div className="ml-auto w-full">
         <i
           onClick={() => setShowMenu((prevState) => !prevState)}

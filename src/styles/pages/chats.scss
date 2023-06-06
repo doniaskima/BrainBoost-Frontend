@@ -1,0 +1,13 @@
+.chats{
+    display:flex;
+    .chats-body{
+        flex:40%;
+        min-width: 300px;
+        border-right-color: #3c4247;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 1;
+        height: 100vh;
+    }
+}

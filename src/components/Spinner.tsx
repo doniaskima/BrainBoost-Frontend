@@ -1,12 +1,12 @@
 import React from "react";
+import { SyncLoader } from "react-spinners";
 
-const Spinner = () => {
-    return (
-        <div className="w-20 h-20">
-          <i className="animate-spin  text-4xl fa fa-sync-alt"></i>
-        </div>
-      );
-
-}
+const Spinner: React.FC = () => {
+  return (
+    <div className="w-20 h-20 flex justify-center align-items-center">
+      <SyncLoader color="#36d7b7" />
+    </div>
+  );
+};
 
 export default Spinner;

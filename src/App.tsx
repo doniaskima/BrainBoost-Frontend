@@ -8,9 +8,8 @@ import Signup from './components/Auth/Signup';
 import "./App.css"
 import Reset from './components/Auth/Reset';
 import ResetPasswordRequestPage from "./components/Auth/ResetPasswordRequestPage"
-import { useAppDispatch } from './store/hooks';
+import "./styles/main.scss"
 import { useEffect, useState } from 'react';
-import { attemptGetUser } from './store/thunks/user';
 import { ConfirmPage } from './components/Auth';
 import Home from './pages/Home';
 import { AuthRoute } from './components/AuthRoute';
@@ -28,79 +27,34 @@ import RightSection from './components/Chat/RightSection';
 function App() {
 
   const [loading, setLoading] = useState(true);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(attemptGetUser())
-      .then(() => {
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, [dispatch]);
-
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const getUser = () => {
-      fetch("http://localhost:3900/auth/login/success", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "string",
-          "Content-Type": "string",
-          "Access-Control-Allow-Credentials": "true",
-        },
-      })
-        .then((response) => {
-          if (response.status === 200) return response.json();
-          throw new Error("authentication has been failed!");
-        })
-        .then((resObject) => {
-          setUser(resObject.user);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    getUser();
-  }, []);
-
-
 
   return (
     <div className="App">
     <Routes>
       <Route path="/" element={<HeroPage />} />
-      <Route path="/login"  element={user ? <Navigate to="/home" /> : <Login />} />
-      <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
-      <Route path="/account/confirm/:token" element={ <ConfirmPage  />} />
+      <Route path="/login"  element={<Login />} />
+      {/* <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
+      <Route path="/account/confirm/:token" element={ <ConfirmPage  />} /> */}
       <Route path="/home" element={ <Home  />} />
-      <Route
+      {/* <Route
           path='/login/reset/:token'
           element={
             <AuthRoute>
               <ResetPasswordPage />
             </AuthRoute>
           }
-        />
+        /> */}
       <Route
           path='/signup'
           element={
-            <AuthRoute>
+            
               <Signup />
-            </AuthRoute>
+         
           }
         />
-    <Route
-         path="/chat"
-          element={
-            <Chat>
-               <RightSection path=":recipientId" />
-             </Chat>
-          }
-        />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat/:recipientId" element={<Chat />} />
+
            <Route
          path="/courses"
           element={

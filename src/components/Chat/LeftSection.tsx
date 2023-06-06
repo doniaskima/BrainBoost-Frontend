@@ -1,84 +1,73 @@
 import React, { useEffect, useState } from "react";
+import { useData } from "../../context/dataProvider";
+import { CreateGroupForm } from "./CreateGroupForm";
 import { Link } from "react-router-dom";
-import LeftUpperHeader from "./LeftUpperHeader";
 import { useSocket } from "../../socket";
-import { useSelector } from "react-redux";
-import { AppState } from "../../store/store";
-import { addRecipient } from "../../store/reducers/recipientsSlice";
+import LeftUpperHeader from "./LeftUpperHeader";
 import { CreateMenu } from "./CreateMenu";
 import { StartConversation } from "./StartConversation";
-import { CreateGroupForm } from "./CreateGroupForm";
 import SavedMessagesTile from "./SavedMessagesTile";
-import { Spinner } from "reactstrap";
+import Spinner from "../Spinner"
 import { ChatCardWrapper } from "./ChatCardWrapper";
 
- 
+interface LeftSectionProps {
+  setLeftSide: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-
-
-const LeftSection = ({setLeftSide}: {setLeftSide: (value: boolean) => void}) => {
-  const socket = useSocket((state)=>state.socket);
+export const LeftSection: React.FC<LeftSectionProps> = ({ setLeftSide }) => {
+  const socket = useSocket((state) => state.socket);
   const [showStartMessage, setShowStartMessage] = useState(false);
   const [showCreateGroupForm, setShowCreateGroupForm] = useState(false);
-  const user = useSelector((state: AppState) => state.user);
-  const recipients = useSelector((state: AppState) => state.recipients);
-  const loading = useSelector((state:AppState)=>state.user);
-  const groups = useSelector((state:AppState)=>state.group);
-   console.log(loading);
-   console.log(recipients);
+  const { groups, recipients, addRecipient, loading } = useData();
 
-   useEffect(() => {
-    socket.on("newRecipient", (info) => {
+  useEffect(() => {
+    socket.on("newRecipient", (info: any) => {
       addRecipient(info.sender);
     });
 
     return () => {
-      socket.off("newRecipient", (info) => {
+      socket.off("newRecipient", (info: any) => {
         addRecipient(info.sender);
       });
     };
   }, []);
-  
- 
-   return (
-    <div className="flex-col flex w-full md:w-2/3 lg:<-1/3">
-       <LeftUpperHeader setLeftSide={setLeftSide} />
-       <div className="overflow h-full">
-        <CreateMenu
-           setShowStartMessage={setShowStartMessage}
-           setShowCreateGroupForm={setShowCreateGroupForm}
-        />
-           {showStartMessage && (
-            <StartConversation setShowStartMessage={setShowStartMessage} />
-          )}
 
-        {showCreateGroupForm && (
-           <CreateGroupForm setShowCreateGroupForm={setShowCreateGroupForm} />
+  return (
+    <div className="flex-col flex w-full md:w-2/3 lg:w-1/3" id="leftSection">
+      <LeftUpperHeader setLeftSide={setLeftSide} />
+      <div className=" h-full">
+        <CreateMenu
+          setShowStartMessage={setShowStartMessage}
+          setShowCreateGroupForm={setShowCreateGroupForm}
+        />
+        {showStartMessage && (
+          <StartConversation setShowStartMessage={setShowStartMessage} />
         )}
-         <SavedMessagesTile />
+        {showCreateGroupForm && (
+          <CreateGroupForm setShowCreateGroupForm={setShowCreateGroupForm} />
+        )}
+        <SavedMessagesTile />
         {loading ? (
           <div className="flex justify-center mt-2">
             <Spinner />
           </div>
         ) : (
-          recipients?.map((recipient) => {
+          recipients?.map((recipient: any) => {
             return (
-              <Link to={recipient?._id} key={recipient?._id} state={recipient}>
-                <ChatCardWrapper>{recipient?.name}</ChatCardWrapper>
+              <Link to={recipient._id} key={recipient._id} state={recipient}>
+                <ChatCardWrapper>{recipient.name}</ChatCardWrapper>
               </Link>
             );
           })
         )}
-         {groups?.map((group) => {
+        {groups?.map((group: any) => {
           return (
-            <Link to={group?._id} key={group?._id} state={group}>
+            <Link to={group._id} key={group._id} state={group}>
               <ChatCardWrapper>{group?.name}</ChatCardWrapper>
             </Link>
           );
         })}
-       </div>
+      </div>
     </div>
-  )
+  );
 };
-
-export default LeftSection;

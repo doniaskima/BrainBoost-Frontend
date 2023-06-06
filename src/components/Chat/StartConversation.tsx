@@ -1,54 +1,48 @@
-import React from "react";
 import axios from "axios";
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+import { useAuth } from "../../context/authProvider";
+import { useData } from "../../context/dataProvider";
+import { BASE_URL } from "../../utils/utils";
 import { useSocket } from "../../socket";
-import { useSelector } from "react-redux";
-import { AppState } from "../../store/store";
-import { addRecipient } from "../../store/reducers/recipientsSlice"; 
-import { emailValidate } from "../../utils/utils";
-const BASE_URL = "http://localhost:3000";
-
 
 interface StartConversationProps {
-  setShowStartMessage : (show : boolean) => void
+  setShowStartMessage: (show: boolean) => void;
 }
 
-export const StartConversation : React.FC<StartConversationProps> = ({ setShowStartMessage }) => {
+export const StartConversation: React.FC<StartConversationProps> = ({
+  setShowStartMessage,
+}) => {
   const socket = useSocket((state) => state.socket);
-  const user = useSelector((state: AppState) => state.user);
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+  const { user, emailValidate } = useAuth();
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const { addRecipient } = useData();
 
-  const startMessage = async (event: FormEvent<HTMLFormElement>) => {
+  const startMessage = async (event: React.FormEvent) => {
     event.preventDefault();
     if (emailValidate(email)) {
       try {
         const {
           data: { status, user: recipient },
-        } = await axios.get<{ status: boolean; user: any }>(
-          `${BASE_URL}/users/get_by_email/${email}`
-        );
+        } = await axios.get(`${BASE_URL}/users/get_by_email/${email}`);
         if (status) {
           socket.emit("startMessage", {
-            // senderId: user.id,
-            // receiverEmail: email,
-            // senderEmail: user.email,
+            senderId: user?._id,
+            receiverEmail: email,
+            senderEmail: user?.email,
           });
           addRecipient(recipient);
           setShowStartMessage(false);
           return;
         }
         setError("Recipient not found");
-        return;
       } catch (error) {
-        setError("An error occurred");
-        console.log(error);
-        return;
+        setError("Error retrieving recipient");
       }
+    } else {
+      setError("Enter a valid email");
     }
-    setError("Enter a valid email");
   };
-
 
   return (
     <div className="w-full px-2 mb-2">
@@ -81,5 +75,3 @@ export const StartConversation : React.FC<StartConversationProps> = ({ setShowSt
     </div>
   );
 };
-
- 

@@ -1,26 +1,13 @@
+import React, { useState } from "react";
 import dayjs from "dayjs";
-import { useState } from "react";
 import { decryptMessage } from "../../utils/utils";
-import { useSelector } from "react-redux";
-import { AppState } from "../../store/store";
+import { useAuth } from "../../context/authProvider";
 
 interface MessageProps {
-  msg: Message;
+  msg: any;
   isAdmin: boolean;
   isGroup: boolean;
-  messageDeleteHandler: (msg: Message) => void;
-}
-
-interface Message {
-  createdAt: string;
-  key: string;
-  message: string;
-  iv: string;
-  sender: Sender | null;
-}
-
-interface Sender {
-  name: string;
+  messageDeleteHandler: (msg: any) => void;
 }
 
 const Message: React.FC<MessageProps> = ({
@@ -29,11 +16,12 @@ const Message: React.FC<MessageProps> = ({
   isGroup,
   messageDeleteHandler,
 }) => {
-  const user = useSelector((state: AppState) => state.user.user);
-  const time = dayjs(msg.createdAt).format("h.mm a");
-  const decryptedMessage = decryptMessage(msg.key, msg.message, msg.iv);
-  const [showMessageOptions, setShowMessageOptions] = useState(false);
-  const isMessageSentByClient = msg?.sender?.name === user?.username;
+   const { user } = useAuth();
+   const time = dayjs(msg.createdAt).format("h.mm a");
+   const decryptedMessage = decryptMessage(msg.key, msg.message, msg.iv);
+   const [showMessageOptions, setShowMessageOptions] = useState(false);
+   const isMessageSentByClient = msg?.sender?.name === (user ? user.name : null);
+
 
   return (
     <div
