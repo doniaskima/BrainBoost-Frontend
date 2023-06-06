@@ -11,3 +11,41 @@
         height: 100vh;
     }
 }
+
+.chat-sidebar {
+    width: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.1s ease;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.chat-sidebar-header {
+    background-color: $bgColor;
+}
+
+.chat-sidebar--active {
+    flex: 30%;
+}
+
+.chat-sidebar__header-icon {
+    margin-right: 20px;
+    color: rgb(145, 145, 145);
+}
+
+.chat-sidebar-heading {
+    flex: 1;
+    color: #000000;
+    font-size: 1rem;
+    margin-bottom: 2px;
+}
+
+.flex {
+    display: flex;
+}
+
+.chat-sidebar__content {
+    flex: 1;
+}

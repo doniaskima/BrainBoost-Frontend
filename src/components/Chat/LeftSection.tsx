@@ -35,7 +35,7 @@ export const LeftSection: React.FC<LeftSectionProps> = ({ setLeftSide }) => {
   return (
     <div className="flex-col flex w-full md:w-2/3 lg:w-1/3" id="leftSection">
       <LeftUpperHeader setLeftSide={setLeftSide} />
-      <div className=" h-full">
+      <div className="h-full">
         <CreateMenu
           setShowStartMessage={setShowStartMessage}
           setShowCreateGroupForm={setShowCreateGroupForm}
