@@ -6,6 +6,10 @@
 @import "base/icon";
 @import "base/common";
 @import "pages/chats.scss";
+@import "components/Controls.scss";
+@import "components/Shortcuts.scss";
+@import "components/Tasks.scss";
+@import "components/TimeDisplay.scss";
 
 * {
     padding: 0px;

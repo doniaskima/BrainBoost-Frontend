@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
+
 import {
   Sidenav,
   DashboardNavbar,
@@ -10,6 +11,7 @@ import {
 import routes from "../routes";
 import { useMaterialTailwindController } from "../context/index";
 import { useState } from "react";
+import Pomodro from "../components/TimerComponent/Pomodro";
  
 
 export function PomodroTimer() {
@@ -28,6 +30,7 @@ export function PomodroTimer() {
       <div className="p-4 xl:ml-80">
         <DashboardNavbar />
         <Configurator />
+        <Pomodro/>
         <IconButton
           size="lg"
           color="white"
