@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TypeSelect from './TypeSelect';
+import TimeDisplay from './TimeDisplay';
 
 interface PomodoroProps {
     types: { name: string; time: number }[];
@@ -132,6 +133,11 @@ const Pomodoro: React.FC<PomodoroProps> = ({ types }: PomodoroProps) => {
           types={types}
           selected={selectedType}
           changeType={changeType}
+        />
+         <TimeDisplay
+          time={time}
+          status={getStatus()}
+          progress={getProgress()}
         />
         </div>
     </div>

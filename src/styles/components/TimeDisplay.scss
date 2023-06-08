@@ -1,0 +1,33 @@
+.TimeDisplay{
+    position:relative;
+
+    svg{
+        max-width:300px;
+    }
+    circle{
+      transition: stroke-dashoffset 1s;
+       transform: rotate(-90deg);
+       transform-origin: 50% 50%;
+    }
+    > div {
+        position:absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -32px);
+        text-align: center;
+    }
+    h1{
+        font-size:52px;
+        font-weight: 300;
+        color: #D9534F;
+        letter-spacing: 2px;
+        margin: 0;
+    }
+    p {
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #bbb;
+        letter-spacing: 3px;
+        margin: 10px 0 0;
+      }
+}

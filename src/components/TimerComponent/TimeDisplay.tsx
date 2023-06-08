@@ -1,9 +1,47 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { formatTime } from '../../helpers';
 
-export default function TimeDisplay() {
-  return (
-    <div>
-      
-    </div>
-  )
+interface TimeDisplayProps {
+    time:number;
+    status:string | undefined ;
+    progress:number;
 }
+
+const TimeDisplay : React.FC<TimeDisplayProps>=({time, status, progress})=>{
+    const radius = 150 ;
+    const stroke = 5 ;
+    const normalizedRadius = radius - stroke * 2;
+    const circumference = normalizedRadius * 2 * Math.PI;
+    const strokeDashoffset = circumference - (progress / 100) * circumference;
+  
+    return (
+        <div className="TimeDisplay">
+        <svg width="100%" viewBox={`0 0 ${radius * 2} ${radius * 2}`}>
+          <circle
+            stroke="#ddd"
+            fill="#fff"
+            strokeWidth={stroke}
+            r={normalizedRadius}
+            cx={radius}
+            cy={radius}
+          />
+          <circle
+            stroke="#D9534F"
+            fill="transparent"
+            strokeWidth={stroke}
+            strokeDasharray={`${circumference} ${circumference}`}
+            style={{ strokeDashoffset }}
+            r={normalizedRadius}
+            cx={radius}
+            cy={radius}
+          />
+        </svg>
+        <div>
+          <h1>{formatTime(time)}</h1>
+          <p>{status}</p>
+        </div>
+      </div>
+    );
+  };
+  
+  export default TimeDisplay;
