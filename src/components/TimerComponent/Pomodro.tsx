@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import TypeSelect from './TypeSelect';
 import TimeDisplay from './TimeDisplay';
+import Controls from './Controls';
 
 interface PomodoroProps {
     types: { name: string; time: number }[];
@@ -139,10 +140,23 @@ const Pomodoro: React.FC<PomodoroProps> = ({ types }: PomodoroProps) => {
           status={getStatus()}
           progress={getProgress()}
         />
+        <Controls
+          start={startTimer}
+          reset={resetTimer}
+          pause={pauseTimer}
+          status={getStatus()}
+        />
         </div>
     </div>
   )
 }
 
-
+Pomodoro.defaultProps = {
+    types: [
+      { name: 'Pomodoro', time: 1500 },
+      { name: 'Short Break', time: 300 },
+      { name: 'Long Break', time: 900 },
+    ],
+  };
+  
 export default Pomodoro;

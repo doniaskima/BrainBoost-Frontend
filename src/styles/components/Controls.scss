@@ -1,0 +1,61 @@
+.Controls, .Controls div {
+    width: 250px;
+    display: flex;
+    justify-content: center;
+  
+    button {
+      height: 40px;
+      border-radius: 40px;
+      border: 0;
+      flex: 1;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: 'Roboto', sans-serif;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 1px;
+      position: relative;
+      outline: 0;
+      transition: all .3s;
+      padding: 0;
+  
+      &.start {
+        background: #D9534F;
+        color: #fff;
+  
+        &:hover {
+          background: #b64441;
+        }
+      }
+  
+      &.reset {
+        background: transparent;
+        flex: 0;
+        margin-right: 25px;
+        color: #888;
+  
+        &:hover {
+          color: #666;
+        }
+      }
+  
+      &.pause {
+        background: #eea73c;
+        color: #fff;
+  
+        &:hover {
+          background: #d3912f;
+        }
+      }
+  
+      &.resume {
+        background: #91b62d;
+        color: #fff;
+  
+        &:hover {
+          background: #7d9e23;
+        }
+      }
+    }
+  }
+  
