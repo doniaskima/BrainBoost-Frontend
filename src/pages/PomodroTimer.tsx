@@ -12,7 +12,15 @@ import routes from "../routes";
 import { useMaterialTailwindController } from "../context/index";
 import { useState } from "react";
 import Pomodro from "../components/TimerComponent/Pomodro";
+
+const types = [
+  { name: 'Pomodoro', time: 1500 },
+  { name: 'Short Break', time: 300 },
+  { name: 'Long Break', time: 900 }
+];
+
  
+
 
 export function PomodroTimer() {
   const [controller, dispatch] = useMaterialTailwindController();
@@ -30,7 +38,7 @@ export function PomodroTimer() {
       <div className="p-4 xl:ml-80">
         <DashboardNavbar />
         <Configurator />
-        <Pomodro/>
+        <Pomodro types={types}/>
         <IconButton
           size="lg"
           color="white"
