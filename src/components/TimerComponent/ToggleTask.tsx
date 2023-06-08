@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { memo } from 'react';
 
-export default function ToggleTask() {
-  return (
-    <div>
-      
-    </div>
-  )
+
+interface TaskToggleProps {
+  task: boolean;
+  toggleTask: () => void;
 }
+
+const TaskToggle: React.FC<TaskToggleProps> = ({ task, toggleTask }) => (
+  <button
+    className={`ToggleTask ${task ? 'active' : ''}`}
+    onClick={toggleTask}
+    title={task ? 'Disable Task' : 'Enable Task'}
+  >
+    <i className={'fa fa-tasks'} />
+  </button>
+);
+
+export default memo(TaskToggle);

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import TypeSelect from './TypeSelect';
 import TimeDisplay from './TimeDisplay';
 import Controls from './Controls';
+import ToggleTask from './ToggleTask';
+import Shortcuts from './Shortcuts';
 
 interface PomodoroProps {
     types: { name: string; time: number }[];
   }
   
-
 const Pomodoro: React.FC<PomodoroProps> = ({ types }: PomodoroProps) => {
     const [selectedType,setSelectedType] = useState(types[0]);
     const [time,setTime] = useState(types[0].time);
@@ -109,13 +110,6 @@ const Pomodoro: React.FC<PomodoroProps> = ({ types }: PomodoroProps) => {
         return ((total - current) / total) * 100;
       };
     
-      const handleToggleSound = () => {
-        setSound((prevState) => {
-          const newSound = !prevState;
-          window.localStorage.setItem('pomodoro-react-sound', String(newSound));
-          return newSound;
-        });
-      };
     
       const handleToggleTask = () => {
         setTaskStatus((prevState) => {
@@ -146,7 +140,10 @@ const Pomodoro: React.FC<PomodoroProps> = ({ types }: PomodoroProps) => {
           pause={pauseTimer}
           status={getStatus()}
         />
+         <ToggleTask task={taskStatus} toggleTask={handleToggleTask} />
+         <Shortcuts />
         </div>
+        
     </div>
   )
 }

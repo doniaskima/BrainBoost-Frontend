@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 
-
 interface ControlsProps {
   start: () => void;
   reset: () => void;
