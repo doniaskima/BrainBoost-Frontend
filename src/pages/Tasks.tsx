@@ -10,6 +10,7 @@ import {
 import routes from "../routes";
 import { useMaterialTailwindController } from "../context/index";
 import { useState } from "react";
+import Board from "../components/Tasks/Board";
  
 
 export function Tasks() {
@@ -26,8 +27,9 @@ export function Tasks() {
         }
       />
       <div className="p-4 xl:ml-80">
-        <DashboardNavbar />
+        <DashboardNavbar /> 
         <Configurator />
+        <Board/>
         <IconButton
           size="lg"
           color="white"
