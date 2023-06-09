@@ -1,0 +1,14 @@
+.tasks{
+    overflow-y:scroll;
+    scrollbar-width: thin;
+    display: flex;
+    flex-direction: row;
+    height: 80vh;
+    color:black;
+    .column-tasks{
+        height: 100%;
+        width:100%;
+        flex: 0 0 auto;
+        display: block;
+    }
+}
