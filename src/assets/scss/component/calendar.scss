@@ -1,0 +1,82 @@
+.calendar {
+  box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  color: #8898aa;
+  .fc-header-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 20px 20px 20px 50px;
+    margin: 0 !important;
+    .fc-button-group {
+      .fc-button {
+        background-color: #17a2b8 !important;
+        color: white;
+      }
+    }
+  }
+  .fc-event-main {
+    padding: 0;
+    font-size: 0.9rem;
+    border-radius: 0.3rem;
+    border: 0;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .fc-event {
+    margin: 2px 9px 1px !important;
+  }
+  .fc-daygrid-day-events {
+    min-height: 2em;
+    margin-top: 1px;
+  }
+  .fc-event-title {
+    padding: 0.4rem 0.5rem;
+    display: block;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+}
+.btn-group-colors > .btn {
+  box-shadow: none;
+  border-radius: 50% !important;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  margin-right: 0.5rem;
+  margin-bottom: 0.25rem;
+  position: relative;
+}
+.modal-footer .btn {
+  color: white;
+}
+.modal-footer .btn:hover {
+  color: white;
+}
+.btn-group-colors>.btn:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 28px;
+  color: #fff;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  opacity: 0;
+  content: "";
+  font-family: NucleoIcons,sans-serif;
+  font-size: 14px;
+  transition: opacity .2s,-webkit-transform .2s;
+  transition: transform .2s,opacity .2s;
+  transition: transform .2s,opacity .2s,-webkit-transform .2s;
+}
+.btn-group-colors>.btn.active:before {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  opacity: 1;
+}

@@ -1,0 +1,35 @@
+.head-task {
+  border-bottom: 1px solid #dedede;
+  margin-bottom: 10px;
+  .item-head-task {
+    padding: 5px 10px 5px 10px;
+    cursor: pointer;
+    min-width: 100px;
+    text-align: center;
+  }
+  .item-head-task-active {
+    color: #4285f4;
+    background-color: white;
+    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, 0.15);
+  }
+}
+.button-type {
+  min-width: 100px;
+  background-color: white;
+  outline: none;
+  margin-left: 20px;
+  border: 1px solid #cbd4db;
+  padding: 5px;
+  text-align: center;
+  border-radius: 5px;
+  color: #6f7782;
+  font-size: 13px;
+}
+.button-type:hover {
+  background-color: #cbd4db;
+  color: black;
+}
+.button-type-active {
+  background-color: #007bff;
+  color: white;
+}

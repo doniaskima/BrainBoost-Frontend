@@ -1,0 +1,63 @@
+.codepin {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-animation: background 5s cubic-bezier(1, 0, 0, 1) infinite;
+  animation: background 5s cubic-bezier(1, 0, 0, 1) infinite;
+}
+
+.container-codepin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#game-input-codepin {
+  height: 3.5rem;
+  font-weight: bold;
+  border: 3.5px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 1.4rem;
+  line-height: 2.375rem;
+  text-align: center;
+  max-width: 18.75rem;
+  min-width: 6.25rem;
+  color: rgb(51, 51, 51);
+  outline: none;
+  font-size: 1.25rem;
+}
+#logo-kahoot {
+  max-width: 18.75rem;
+  margin: 2rem;
+}
+
+@-webkit-keyframes background {
+  0% {
+    background-color: #f6a04d;
+  }
+  33% {
+    background-color: #59c5ab;
+  }
+  67% {
+    background-color: #1bbbdb;
+  }
+  100% {
+    background-color: #eea136;
+  }
+}
+
+@keyframes background {
+  0% {
+    background-color: #f6a04d;
+  }
+  33% {
+    background-color: #59c5ab;
+  }
+  67% {
+    background-color: #1bbbdb;
+  }
+  100% {
+    background-color: #eea136;
+  }
+}

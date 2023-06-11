@@ -1,0 +1,100 @@
+.content{
+  padding: 1rem;
+}
+.answer {
+  position: relative;
+  overflow: visible;
+  margin-bottom: 1.25rem;
+  margin-right: 1.25rem;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  align-items: center;
+   display: flex;
+  flex: 1 0 auto;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  color: rgb(255, 255, 255);
+  fill: rgb(255, 255, 255);
+  transition: box-shadow 0.2s ease 0s, background 0.2s ease 0s, opacity 0.2s ease 0s;
+  border-radius: 4px;
+  min-height: 2.25rem;
+  max-width: 100%;
+  overflow-x: hidden;
+  /* height: calc(50% - 0.125rem); */
+  height: 42vh;
+  width: calc(50% - 3rem);
+  padding: 0.3125rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px -0.25rem 0px 0px inset;
+  box-sizing: border-box;
+  cursor: auto;
+}
+.pin{
+  margin-right: 3rem;
+}
+.score{
+  margin-left: 3rem;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: center; 
+  padding: 0.5rem;
+  background-color: #333333;
+  height: 3rem;
+  width: 10rem;
+}
+.nickname{
+  padding:0.5rem;
+}
+.navbar-choose-answer {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  color: rgb(0, 0, 0);
+  font-size: 1.35rem;
+  /* min-height: 5.125rem; */
+  min-height: 10vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  top: 0px;
+  border-bottom: 0.1875rem solid rgba(0, 0, 0, 0.15);
+}
+.left-navbar {
+  display: flex;
+}
+.right-navbar{
+  display: flex;
+}
+.jueOOD {
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+.top-answer{
+  display: flex;
+}
+.bottom-answer{
+  display: flex;
+}
+#answer-1 {
+  background-color: rgb(226, 27, 60);
+}
+#answer-2 {
+  background-color: rgb(19, 104, 206);
+}
+#answer-3 {
+  background-color: rgb(216, 158, 0);
+}
+#answer-4 {
+  background-color: rgb(38, 137, 12);
+}

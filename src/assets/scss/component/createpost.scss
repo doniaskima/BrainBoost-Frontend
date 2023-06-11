@@ -1,0 +1,248 @@
+$main: #00b4ff;
+
+.new-status-input {
+  background-color: white;
+  // border: 1px solid $main;
+  border-radius: 0.5rem;
+  padding: 10px 20px 20px 20px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  textarea {
+    height: 50px;
+    max-height: 400px !important;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #050505;
+    margin: 10px 0;
+    border-radius: 1.5rem;
+    padding: 10px 20px;
+    background-color: #f0f2f5;
+    resize: none;
+    font-size: 19px;
+  }
+
+  .calendar-event {
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 1.5rem;
+
+    background: #f3f3f3;
+    border-radius: 25px;
+
+    label {
+      min-width: 70px;
+    }
+  }
+
+  input {
+    border-radius: 1.5rem;
+    margin-left: unset !important;
+  }
+
+  .post-buttons {
+    .btn {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      color: #8f8f8f;
+      border-radius: 10px;
+      height: 50px;
+
+      &:hover {
+        background-color: #f3f3f3;
+      }
+
+      &.post-able {
+        background-color: #00b4ff;
+        color: white;
+      }
+    }
+
+    .col:not(:last-child) {
+      border-right: 1px solid #e7e7e7;
+    }
+  }
+}
+
+.left-card {
+  background-color: white;
+  // border: 1px solid $main;
+  border-radius: 0.5rem;
+  padding: 20px;
+  min-height: 100px;
+  margin-bottom: 20px;
+
+  .today-events {
+    .event {
+      margin-bottom: 10px;
+      .title {
+        font-weight: bold;
+      }
+      .time {
+        font-size: 0.8em;
+      }
+    }
+    .current-event {
+      .title,
+      .time {
+        color: #f40d0d;
+      }
+    }
+  }
+}
+
+.classroom-posts {
+  border-radius: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.user-avatar {
+  border-radius: 50px;
+  margin-right: 20px;
+}
+
+// ---------------------- //
+
+.classroom-post-card {
+  border: 1px solid $main;
+  margin-bottom: 20px;
+
+  .dropdown-item {
+    font-size: 14px;
+  }
+
+  .dropdown-toggle.btn {
+    background-color: transparent;
+    color: #a0a0a0;
+    border: none;
+
+    &::after {
+      display: none;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &:hover {
+      border-radius: 20px;
+      background: #f3f3f3;
+    }
+  }
+
+  .post-time {
+    font-size: 0.8em;
+    color: gray;
+    margin-top: 3px;
+  }
+
+  // --- COMMENTS ---
+
+  .comment-input-container {
+    .user-avatar {
+      box-shadow: 0 0 0px 2px #00b4ff;
+    }
+
+    .btn {
+      height: fit-content;
+      color: #a0a0a0;
+      background-color: transparent;
+      border: none;
+      transition: all 0.5s;
+
+      &.sendable {
+        color: $main;
+        transform: scale(1.5);
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    textarea {
+      border: none;
+      outline: none;
+      background-color: #f3f3f3;
+      border-radius: 20px;
+      padding: 5px 15px;
+      resize: none;
+      height: 36px;
+      transition: all 0.5s;
+
+      &.sendable {
+        background-color: #eefaff;
+        box-shadow: 0 0 0px 1px #00b4ff;
+      }
+    }
+  }
+
+  .comments-container {
+    .dropdown-toggle {
+      opacity: 0;
+    }
+
+    .comment:hover {
+      .dropdown-toggle {
+        opacity: 1;
+      }
+    }
+
+    .comment {
+      padding-top: 2px;
+      padding-bottom: 5px;
+      &:not(:last-child) {
+        border-bottom: 1px solid whitesmoke;
+      }
+    }
+  }
+
+  .google-calendar-event {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f3f3f3;
+    font-size: 19px;
+    line-height: 25px;
+    color: #8f8f8f;
+
+    label {
+      min-width: 70px;
+    }
+
+    b {
+      color: #3e3e3e;
+    }
+
+    a {
+      color: #3e3e3e;
+    }
+
+    h4 {
+      font-size: 1.2em;
+    }
+
+    .event-header {
+      background-color: #ff8e4f;
+      padding: 10px;
+      color: white;
+    }
+
+    .event-details {
+      line-height: 2em;
+      padding: 10px 20px;
+      position: relative;
+
+      .join-button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+
+        .btn {
+          border-radius: 20px;
+          padding: 5px 20px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,93 @@
+.list-templete {
+  display: flex;
+  & .templete {
+    background-color: #97a0af;
+    background-size: cover;
+    background-position: 50%;
+    border-radius: 3px;
+    color: #fff;
+    display: block;
+    position: relative;
+    text-decoration: none;
+    height: 120px;
+    flex: 1 0 22%;
+    margin-right: 2%;
+    max-width: 20.5%;
+    margin-bottom: 2%;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  & .wrap-templete {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    bottom: 0;
+    display: block;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  & .content {
+    display: flex;
+    height: 80px;
+    position: relative;
+    flex-direction: column;
+    padding: 8px;
+    & .tag-templete {
+      display: inline;
+      border-radius: 3px;
+      background-color: hsla(0, 0%, 100%, 0.69);
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 16px;
+      align-items: center;
+      color: #172b4d;
+      width: -webkit-fit-content;
+      width: fit-content;
+      width: -moz-fit-content;
+    }
+    & .name-templete {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      & h1 {
+        position: relative;
+        font-size: 16px;
+        color: #fff;
+        font-weight: 700;
+        line-height: 20px;
+        margin: 2px 0 0;
+      }
+    }
+  }
+}
+
+.recently-viewed {
+  & .boards-page-board-section-header {
+    margin: 0 0 0 40px;
+    padding: 0 0 11px;
+    position: relative;
+    display: flex;
+
+    & .boards-page-board-section-header-name {
+      display: inline-block;
+      line-height: 24px;
+      font-size: 20px;
+      font-weight: 700;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    & .boards-page-board-section-header-icon {
+      left: -40px;
+      position: absolute;
+      top: 0;
+    }
+  }
+}

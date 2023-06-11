@@ -1,0 +1,104 @@
+// html,
+// body {
+//   margin: 0;
+//   padding: 0;
+//   height: 100%;
+//   overflow: hidden;
+// }
+.kzvJek {
+  position: fixed;
+  top: -10vw;
+  left: -10vw;
+  min-width: 50vw;
+  min-height: 50vw;
+  background-color: rgb(0, 0, 0);
+  transform: rotate(45deg);
+  opacity: 0.1;
+  animation: 8s ease-in-out 0s infinite alternate none running juibOf;
+}
+.heWDjw {
+  position: fixed;
+  bottom: -55vw;
+  right: -35vw;
+  min-width: 85vw;
+  min-height: 85vw;
+  border-radius: 50vw;
+  background-color: rgb(0, 0, 0);
+  opacity: 0.1;
+  animation: 6s ease-in-out 0s infinite alternate none running swZap;
+}
+.lobby .content {
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  background-color: #46178f;
+}
+.btn-danger {
+  width: 150px;
+}
+.list-username {
+  font-size: 25px;
+  font-weight: bold;
+  color: #f5365c;
+  margin: 0;
+}
+.code-pin {
+  height: 15rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid brown;
+}
+.code-pin p {
+  font-size: 30px;
+  font-weight: bold;
+}
+.container-player {
+  padding-top: 25px;
+  padding-left: 40px;
+}
+.icon-warning {
+  margin-right: 20px;
+}
+.number-player {
+  font-size: 40px;
+}
+.number-player span {
+  margin-top: 10px;
+  margin-left: 1rem;
+  font-size: 40px;
+  font-weight: bold;
+}
+.waiting {
+  font-weight: bold;
+  font-size: 35px;
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+.waiting:after {
+  display: inline-block;
+  animation: dotty steps(1, end) 3s infinite;
+  content: '';
+}
+
+@keyframes dotty {
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+  100% {
+    content: '';
+  }
+}

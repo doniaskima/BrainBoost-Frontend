@@ -1,0 +1,116 @@
+.post-list {
+  //   width: 700px;
+  // margin: 0 50px;
+  // display: flex;
+  .post {
+    min-width: 800px;
+    margin-top: 20px;
+    border-radius: 8px;
+    background: white;
+    padding: 20px;
+    color: #3e3e3e;
+    line-height: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .avatar {
+    min-height: 50px;
+    min-width: 50px;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
+  .post-header .details {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+    color: #9a9a9a;
+    line-height: 14px;
+  }
+
+  .post-header .details span:first-child {
+    font-size: 14px;
+    color: #4a4a4a;
+    font-weight: bold;
+    margin-bottom: 3px;
+  }
+  .post-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .post .post-content-action {
+    margin: 0 16px;
+  }
+  .post .post-content-action .action {
+    position: relative;
+  }
+  .post .post-content-action .action .action-detail-action {
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .post
+    .post-content-action
+    .action
+    .action-detail-action
+    .action-detail-action-like {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .post .post-content-action .action .action-btn {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(176, 179, 184, 0.5);
+    border-bottom: 1px solid rgba(176, 179, 184, 0.5);
+  }
+  .post .post-content-action .action .action-btn .action-btn-comment,
+  .post .post-content-action .action .action-btn .action-btn-like {
+    width: 50%;
+    margin: 3px 0;
+    padding: 5px 0;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .post-content {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  .post-comments {
+    margin-top: 20px;
+  }
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: #eeeeee;
+  }
+  .comment {
+    margin-top: 20px;
+    display: flex;
+  }
+
+  .comment p {
+    border-radius: 20px;
+    background: #eeeeee;
+    margin-left: 10px;
+    padding: 15px;
+    font-size: 13px;
+  }
+  .comment span {
+    font-weight: bold;
+    margin-right: 6px;
+  }
+}

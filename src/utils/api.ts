@@ -1,7 +1,6 @@
 import axios from 'axios';
 import config from '../config';
 
-// import { configureFakeBackend } from '../services/fake-backend';
 
 const axiosInstance = axios.create({
   baseURL: config.API_URL,
@@ -10,7 +9,6 @@ const axiosInstance = axios.create({
 });
 
 const requestHandler = (request: any) => {
-  // Thêm token vào header nếu user vẫn tồn tại
   let valueToken = document.cookie.substring(6);
   request.headers['x-access-token'] = valueToken;
   return request;
@@ -31,6 +29,5 @@ axiosInstance.interceptors.response.use(
   (error) => errorHandler(error),
 );
 
-// configureFakeBackend(axiosInstance);
 
 export default axiosInstance;

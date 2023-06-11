@@ -1,0 +1,74 @@
+.status-payment {
+  min-height: 100vh;
+}
+.section-title {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  padding: 0.125rem 1.75rem;
+  border-radius: 30px;
+  background-color: #ffe7eb;
+  color: #ff5574;
+  font-weight: 600;
+  font-size: 1.55rem;
+}
+.header {
+  padding-top: 8rem;
+  padding-bottom: 5rem;
+  text-align: center;
+}
+
+.header .h1-large {
+  margin-bottom: 1.25rem;
+  font-size: 2.75rem;
+}
+
+.header .p-large {
+  margin-bottom: 2.75rem;
+  font-size: 1.25rem;
+}
+
+.header .btn-solid-lg {
+  display: block;
+  margin-bottom: 1.75rem;
+}
+
+.header .quote {
+  display: block;
+  color: #222222;
+}
+
+.header .quote i {
+  margin-right: 0.5rem;
+  color: #222222;
+}
+
+.header .text-container {
+  margin-bottom: 5rem;
+}
+.header .btn-solid-lg {
+  margin-right: 1.5rem;
+  margin-bottom: 0;
+}
+
+.header .btn-solid-lg,
+.header .quote {
+  display: inline-block;
+}
+.btn-solid-lg {
+  display: inline-block;
+  padding: 1.625rem 2.625rem 1.625rem 2.625rem;
+  border: 1px solid #ff5574;
+  border-radius: 30px;
+  background-color: #ff5574;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 0;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.btn-solid-lg:hover {
+  background-color: transparent;
+  color: #ff5574; /* needs to stay here because of the color property of a tag */
+  text-decoration: none;
+}

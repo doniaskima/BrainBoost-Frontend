@@ -1,0 +1,36 @@
+.board-view {
+  overflow-x: hidden;
+}
+.column-task {
+  width: 700px;
+}
+.row-task {
+  margin-left: 10px;
+}
+.Mytask {
+  display: flex;
+}
+.my-navbar .row {
+  margin: 20px 20px;
+}
+.card .card-body {
+  /* padding: 15px 15px 10px 15px; */
+  padding: 10px 0px;
+}
+.my-detail-task {
+  overflow-y: scroll;
+  max-height: 400px;
+}
+.text-gray-mytask {
+  color: #5a5c69 !important;
+  font-size: 13px;
+}
+.content-name-tasks {
+  width: 100%;
+}
+.card-body-task {
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

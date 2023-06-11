@@ -1,0 +1,64 @@
+.avatar-project {
+  border-radius: 10px;
+}
+.head-project {
+  // background-color: #f4f5f7;
+  background-color: #f8f9fe;
+}
+.head-project-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0 auto;
+  // max-width: 650px;
+  padding: 15px;
+  position: relative;
+}
+
+.head-project-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 0 0 20px;
+}
+.name-project {
+  display: flex;
+  align-items: center;
+}
+.access-project {
+  font-size: 12px;
+  color: #5e6c84;
+  padding: 0 6px 0 2px;
+  vertical-align: bottom;
+}
+
+.private-icon {
+  color: rgb(235, 90, 70);
+  display: inline-block;
+  fill: inherit;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.btn-edit {
+  color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 6px 12px;
+  text-decoration: none;
+  background-color: rgba(9, 30, 66, 0.04);
+  box-shadow: none;
+  border: none;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 85ms;
+  transition-timing-function: ease;
+}

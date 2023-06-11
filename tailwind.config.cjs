@@ -27,6 +27,13 @@ module.exports = withMT({
         Indigo:"#5603ad",
         purple: '#8965e0',
         Decent:'#4ca1af',
+        'sh-white': '#EDEDEE',
+        'sh-white-500': '#929A9E',
+        'sh-blue': '#8D53FF',
+        'sh-blue-500': '#8AC5EB',
+        'sh-purple': '#ec4899',
+        'sh-dark': '#2D3748',
+        'sh-dark-500': '#1A202C',
       },
       boxShadow: {
         card: "0px 35px 120px -15px #211e35",
