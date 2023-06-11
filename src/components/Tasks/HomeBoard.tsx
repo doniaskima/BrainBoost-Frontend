@@ -1,15 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container } from 'reactstrap';
 import SVG from 'react-inlinesvg';
 import { toast } from 'react-toastify';
+import { projectService } from '../../services/projects/api';
+import { AuthProvider, useAuth } from "../../context/authProvider";
+import ModalCreate from "../../modals/ModalCreate";
+
 
 const HomeBoard = () => {
+  const { user, logout } = useAuth(); 
   const [data, setData] = useState([]);
-  const [listJoin, setListJoin] = useState([]);
   const [isShowCreate, setShowCreate] = useState(false);
-  
+
+  const createProject = (name: string, avatar: any) => {
+    projectService
+      .addProject({ name: name, avatar: avatar })
+      .then((res) => {
+        let project = res.data.data.project;
+        setData([...data, project]);
+        toast.success('Successfully created project!');
+        setShowCreate(false);
+      })
+      .catch((err) => {
+        toast.error('Unable to create project');
+      });
+  };
+  useEffect(() => {
+    projectService
+      .getProject()
+      .then((res) => {
+        setData(res.data.data);
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          // Handle unauthorized access (optional)
+           // Logout the user or perform any other necessary action
+        }
+        toast.error("Error: Unable to retrieve data");
+      });
+  }, []);
+
   return (
-    <Container fluid>
+  
+          <Container fluid>
       <div className="my-project mt-4">
         <div className="grid gap-0 grid-cols-1 md:grid-cols-2">
           <div className="_1wRFJUvIaoq-sR ml-8">
@@ -62,9 +95,9 @@ const HomeBoard = () => {
                 </div>
                 <div className='relative group inline-block'>
                   <h3 className='text-3xl font-bold animate-up mb-4 tracking-widest inline-block cursor-pointer'>
-                    Welcome to{' '}
+                    Welcome to 
                     <span className='font-bold tracking-widest animate-up bg-gradient-to-r from-sh-purple to-sh-purple cursor-default select-none'>
-                      BrainBoost
+                    {' '} BrainBoost
                     </span>{' '}
                     Board!<span className='italic'>!</span>
                   </h3>
@@ -81,15 +114,28 @@ const HomeBoard = () => {
                   style={{ width: '150px', height: '50px' }}
                   onClick={() => {
                     setShowCreate(true);
+                    console.log(isShowCreate)
                   }}>
                   Create Project
                 </Button>
+                {
+                 isShowCreate && (
+                  <ModalCreate
+                  createProject={createProject}
+                  isShowCreate={isShowCreate}
+                  setShowCreate={setShowCreate}
+                 />
+                 )
+                }
+
               </div>
             </div>
           </section>
         </div>
       </div>
     </Container>
+
+ 
   );
 };
 

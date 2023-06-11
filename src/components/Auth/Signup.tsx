@@ -58,20 +58,20 @@ export default () => {
     event.preventDefault();
     if (emailValidate(email)) {
       if (isPasswordValid) {
-        if (matchPassword) {
           setLoading(true);
           const { user, message } = await signupWithUserCredentials(
             name,
             email,
             password
           );
+          console.log(user);
           if (user !== null) {
             navigate("/home");
             return;
           }
           setError(message);
           return;
-        }
+
         setError("Both passwords must be the same");
         return;
       }
@@ -261,9 +261,9 @@ export default () => {
                   email.
                 </p>
     
-                <button onClick={handleResendEmail}>
+                {/* <button onClick={handleResendEmail}>
                   Did not receive the email? Click here to send again.
-                </button>
+                </button> */}
                 {serverError && <Error>{serverError}</Error>}
               </div>
             );
@@ -275,7 +275,7 @@ export default () => {
                 <p>Try to register again. You may have given the wrong email. </p>
                 <p>If you want to be able to use the same name, reset the registration :</p>
     
-                <button onClick={handleResetRegister}>Click here to reset the registration</button>
+                {/* <button onClick={handleResetRegister}>Click here to reset the registration</button> */}
                 {serverError && <Error>{serverError}</Error>}
               </div>
             );

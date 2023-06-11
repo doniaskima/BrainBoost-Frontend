@@ -1,50 +1,65 @@
 import React, { useState } from 'react';
-import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-const ModalCreate = ({ createProject }) => {
-  const [state, setState] = useState(false);
-
-  const openModal = () => {
-    setState(true);
-  };
+const ModalCreate = ({ createProject, isShowCreate, setShowCreate }) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   const closeModal = () => {
-    setState(false);
+    setShowCreate(false);
   };
 
-  const handleCreateProject = () => {
-    let name = document.getElementById('name').value;
-    let description = document.getElementById('description').value;
-    let avatar =
-      'https://tuoitredoisong.net/wp-content/uploads/2019/10/dich-Project-la-gi-trong-tieng-viet.jpg';
-    createProject(name, description, avatar);
+  const handleCreate = () => {
+    createProject(name, description);
+    setName('');
+    setDescription('');
   };
 
   return (
-    <div>
-      <Button color="primary" onClick={openModal}>
-        Open Modal
-      </Button>
-
-      <Modal size="lg" isOpen={state} centered toggle={closeModal}>
-        <ModalBody>
-          {/* Modal content */}
-          <form>
-            {/* Form inputs */}
-            <input id="name" type="text" placeholder="Please enter project name" />
-            <textarea id="description" style={{ height: '100px' }} placeholder="Please enter project description"></textarea>
-          </form>
-        </ModalBody>
-        <ModalFooter>
-          {/* Modal buttons */}
-          <Button color="primary" onClick={handleCreateProject}>
-            Create
-          </Button>
-          <Button color="danger" onClick={closeModal}>
-            Close
-          </Button>
-        </ModalFooter>
-      </Modal>
+    <div className={`modal ${isShowCreate ? 'show' : ''}`}>
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Create Project</h5>
+            <button type="button" className="close" onClick={closeModal}>
+              <span>&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <form>
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  className="form-control"
+                  placeholder="Please enter project name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  id="description"
+                  className="form-control"
+                  style={{ height: '100px' }}
+                  placeholder="Please enter project description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-primary" onClick={handleCreate}>
+              Create
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={closeModal}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

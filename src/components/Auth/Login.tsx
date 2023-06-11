@@ -80,6 +80,8 @@ export default function Login() {
     setLoading(true);
     if (emailValidate(email)) {
       const { user, message } = await loginWithUserCredentials(email, password);
+      console.log(user);
+      console.log(message);
       if (user === null) {
         setError(message);
         setLoading(false);
