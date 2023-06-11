@@ -1,48 +1,69 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container } from 'reactstrap';
 import SVG from 'react-inlinesvg';
+import axios from "axios";
 import { toast } from 'react-toastify';
-import { projectService } from '../../services/projects/api';
+import {BASE_URL} from "../../utils/utils"
+
 import { AuthProvider, useAuth } from "../../context/authProvider";
 import ModalCreate from "../../modals/ModalCreate";
+import projectService from "../../services/projects/api";
+interface Project {
+  _id: string;
+  name: string;
+  description: string;
+}
 
 
 const HomeBoard = () => {
-  const { user, logout } = useAuth(); 
+  const { user, logout, token } = useAuth();
   const [data, setData] = useState([]);
+  const [error, setError] = useState("");
   const [isShowCreate, setShowCreate] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [newProject, setNewProject] = useState('');
+  const [loading, setLoading] = useState(false);
+ 
 
-  const createProject = (name: string, avatar: any) => {
-    projectService
-      .addProject({ name: name, avatar: avatar })
-      .then((res) => {
-        let project = res.data.data.project;
-        setData([...data, project]);
-        toast.success('Successfully created project!');
-        setShowCreate(false);
-      })
-      .catch((err) => {
-        toast.error('Unable to create project');
+  useEffect(()=>{
+   const getProjects = async()=>{
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `${BASE_URL}/api/project/getProject`
+        );
+        setProjects(data);
+        console.log(projects)
+      } catch (error) {
+        setError("Failed to fetch members.");
+      } finally {
+        setLoading(false);
+      }
+    } ;
+    getProjects(); 
+  },[])
+  const createProject = async (name:string, description:string) => {
+    try {
+      const { data } = await axios.post(`${BASE_URL}/api/project/addProject`, {
+        name: name,
+        description: description,
       });
+
+      if (!data.status) {
+        setError(data.message);
+        return;
+      }
+      console.log("project added")
+      console.log(name);
+      console.log(description);
+
+    } catch (error) {
+      setError("Failed to add project.");
+    }
   };
-  useEffect(() => {
-    projectService
-      .getProject()
-      .then((res) => {
-        setData(res.data.data);
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 401) {
-          // Handle unauthorized access (optional)
-           // Logout the user or perform any other necessary action
-        }
-        toast.error("Error: Unable to retrieve data");
-      });
-  }, []);
-
   return (
-  
-          <Container fluid>
+ 
+     <Container fluid>
       <div className="my-project mt-4">
         <div className="grid gap-0 grid-cols-1 md:grid-cols-2">
           <div className="_1wRFJUvIaoq-sR ml-8">
@@ -134,8 +155,7 @@ const HomeBoard = () => {
         </div>
       </div>
     </Container>
-
- 
+  
   );
 };
 

@@ -29,38 +29,41 @@ import Profile from './pages/Profile';
 import { ConfirmPage } from './components/Auth';
 import { AuthRoute } from './components/AuthRoute';
 import RightSection from './components/Chat/RightSection';
+import { AuthProvider } from './context/authProvider';
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<HeroPage />} />
-        <Route path="/login" element={<Login />} />
-        {/* <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
-        <Route path="/account/confirm/:token" element={ <ConfirmPage  />} /> */}
-        <Route path="/home" element={<Home />} />
-        {/* <Route
-          path='/login/reset/:token'
-          element={
-            <AuthRoute>
-              <ResetPasswordPage />
-            </AuthRoute>
-          }
-        /> */}
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/chat/:recipientId" element={<Chat />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/drive" element={<Drive />} />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/pomodroTimer" element={<PomodroTimer />} />
-        <Route path="/studyWithme" element={<StudyWithme />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-    </div>
+  <div className="App">
+    <Routes>
+      <Route path="/" element={<HeroPage />} />
+      <Route path="/login" element={<Login />} />
+      {/* <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
+      <Route path="/account/confirm/:token" element={ <ConfirmPage  />} /> */}
+      <Route path="/home" element={<Home />} />
+      {/* <Route
+        path='/login/reset/:token'
+        element={
+          <AuthRoute>
+            <ResetPasswordPage />
+          </AuthRoute>
+        }
+      /> */}
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/chat" element={<Chat />} />
+      <Route path="/chat/:recipientId" element={<Chat />} />
+      <Route path="/courses" element={<Courses />} />
+      <Route path="/drive" element={<Drive />} />
+      <Route path="/notification" element={<Notification />} />
+      <Route path="/pomodroTimer" element={<PomodroTimer />} />
+      <Route path="/studyWithme" element={<StudyWithme />} />
+      <Route path="/tasks" element={<Tasks />} />
+      <Route path="/profile" element={<Profile />} />
+    </Routes>
+  </div>
+
+ 
   );
 }
 

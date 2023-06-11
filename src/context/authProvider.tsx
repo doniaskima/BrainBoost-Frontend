@@ -3,25 +3,24 @@ import React, { createContext, useContext, useState } from "react";
 import { BASE_URL } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 
-
 export interface User {
-    _id: string;
-    name: string;
-    email: string;
-    password: string;
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
 }
- 
 
 interface AuthContextValue {
-    user: User | null;
-    loginWithUserCredentials: (email: string, password: string) => Promise<any>;
-    emailValidate: (email: string) => boolean;
-    signupWithUserCredentials: (name: string, email: string, password: string) => Promise<any>;
-    logout: () => void;
-    setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  user: User | null;
+  token: string; // Include the token property
+  loginWithUserCredentials: (email: string, password: string) => Promise<any>;
+  emailValidate: (email: string) => boolean;
+  signupWithUserCredentials: (name: string, email: string, password: string) => Promise<any>;
+  logout: () => void;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setToken: React.Dispatch<React.SetStateAction<string>>; // Include the setToken property
 }
-  
-  
+
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -34,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedToken = localStorage.getItem("token");
     return storedToken || "";
   });
-
+  console.log("Token value:", token);
   if (token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
@@ -86,9 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   function emailValidate(email: string) {
-    return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-      email
-    );
+    return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email);
   }
 
   const logout = () => {
@@ -100,18 +97,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const authContextValue: AuthContextValue = {
     user,
+    token, // Include the token in the context value
     loginWithUserCredentials,
     emailValidate,
     signupWithUserCredentials,
     logout,
     setUser,
+    setToken, // Include the setToken in the context value
   };
 
-  return (
-    <AuthContext.Provider value={authContextValue}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): AuthContextValue => {

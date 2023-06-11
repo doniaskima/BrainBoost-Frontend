@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-const ModalCreate = ({ createProject, isShowCreate, setShowCreate }) => {
+const ModalCreate : React.FC<{
+  isShowCreate: boolean;
+  setShowCreate: Function;
+  createProject: Function;
+}> = ({ isShowCreate, setShowCreate, createProject }) => {
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -9,7 +14,7 @@ const ModalCreate = ({ createProject, isShowCreate, setShowCreate }) => {
   };
 
   const handleCreate = () => {
-    createProject(name, description);
+    createProject(name,description);
     setName('');
     setDescription('');
   };
