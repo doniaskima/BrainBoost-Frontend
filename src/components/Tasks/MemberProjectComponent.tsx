@@ -47,7 +47,6 @@ const MemberProject: React.FC = () => {
       avatar: string;
     }>
   >([]);
-  const [listOnline, setListOnline] = useState([]);
   const [userId, setUserId] = useState();
   const [userIdAdmin, setUserIdAdmin] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -58,12 +57,9 @@ const MemberProject: React.FC = () => {
   });
   const [page, setPage] = useState(1);
   const memberOnePage = 5;
-
   useEffect(() => {
     getData();
   }, [page, projectId]);
-
- 
 
    function getUsers(projectId) {
        return axios.get(`${BASE_URL}/api/project/getUsers?projectId=${projectId}`);
@@ -98,18 +94,47 @@ const MemberProject: React.FC = () => {
       });
   };
   
-
-  
-
   const setAdmin = async (memberId) => {
-    // Set member as admin logic
+    axios.post(`${BASE_URL}/project/setAdmin`, {
+      projectId: projectId,
+      memberId: memberId,
+    })
+    .then((res) => {
+      toast.success('Successfully added admin privileges');
+      setListUser(res.data.data.users);
+      setUserIdAdmin([]);
+      let _userAdmin = [];
+      res.data.data.userAdmin.forEach((userAdminId) => {
+        _userAdmin.push(userAdminId);
+      });
+      setUserIdAdmin([..._userAdmin]);
+    })
+    .catch((err) => {
+      toast.error(err.response?.data?.err || 'An unexpected error occurred');
+    });
   };
 
   const deleteMember = async (memberId) => {
-    // Delete member logic
+    axios.post(`${BASE_URL}/deleteMember`, {
+      projectId: projectId,
+      memberId: memberId,
+    })
+    .then((res) => {
+      toast.success('Member successfully deleted!');
+      setListUser(res.data.data.users);
+      setUserIdAdmin([]);
+      let _userAdmin = [];
+      res.data.data.userAdmin.forEach((userAdminId) => {
+        _userAdmin.push(userAdminId);
+      });
+      setUserIdAdmin([..._userAdmin]);
+    })
+    .catch((err) => {
+      toast.error(err.request.response.error);
+    });
   };
 
-  const handleShowInvite = (value) => { // Renamed function
+  const handleShowInvite = (value) => { 
     setIsModalOpen(value);
     setShowInvite(value);
   };

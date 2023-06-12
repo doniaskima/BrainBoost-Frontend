@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { BASE_URL } from "../utils/utils"
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 interface ModalInviteProps {
   isOpen: boolean;
@@ -19,15 +22,19 @@ const ModalInvite: React.FC<ModalInviteProps> = ({
   const [checkMail, setCheckMail] = useState(false);
   const [email, setEmail] = useState('');
 
-  const inviteMember = () => {
-    // Invite member logic
-    if (validateEmail(email)) {
-      // Invitation success
-      console.log('Invitation sent to:', email);
-    } else {
-      // Invalid email
-      console.log('Invalid email:', email);
-    }
+  const inviteMember = (email) => {
+    axios.post(`${BASE_URL}/project/inviteJoinProject`, {
+      projectId: projectId,
+      emailInvite: email,
+    })
+    .then((res) => {
+      toast.success('Invitation to join the project has been sent');
+    })
+    .catch((err) => {
+      toast.error(
+        err.response?.data?.error || 'An unexpected error occurred',
+      );
+    });
   };
 
   function validateEmail(email) {
@@ -74,13 +81,14 @@ const ModalInvite: React.FC<ModalInviteProps> = ({
               </div>
             </div>
             <button
-              data-test-id="team-invite-submit-button"
-              onClick={inviteMember}
-              className={`invite-team-button ${checkMail ? '' : 'disabled'}`}
-              disabled={!checkMail}
+                data-test-id="team-invite-submit-button"
+                onClick={() => inviteMember(email)} // Pass the email as an argument to inviteMember
+                className={`invite-team-button ${checkMail ? '' : 'disabled'}`}
+                disabled={!checkMail}
             >
               Invite to Workspace
             </button>
+
           </div>
         </ModalBody>
         <ModalFooter>
