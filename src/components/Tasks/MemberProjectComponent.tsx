@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { BASE_URL } from "../../utils/utils"
+import axios from "axios";
 import {
   Badge,
   Button,
@@ -61,9 +63,43 @@ const MemberProject: React.FC = () => {
     getData();
   }, [page, projectId]);
 
+ 
+
+   function getUsers(projectId) {
+       return axios.get(`${BASE_URL}/api/project/getUsers?projectId=${projectId}`);
+  }
+
   const getData = () => {
-    // Fetch data here
+    axios
+      .get(`${BASE_URL}/users/getUserId`)
+      .then((response) => {
+        const userId = response.data?.id;
+        if (userId) {
+          setUserId(userId);
+          getUsers(projectId)
+            .then((res) => {
+              setListUser(res.data.users);
+              console.log(listUser);
+              let _userAdmin = res.data.userAdmin.map((userAdmin) => userAdmin._id);
+              setUserIdAdmin(_userAdmin);
+             
+            })
+            .catch((err) => {
+              console.log(err);
+              toast.error('An unexpected error occurred while fetching user data');
+            });
+        } else {
+          toast.error('User ID is missing in the response');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        toast.error('Unable to authenticate user!');
+      });
   };
+  
+
+  
 
   const setAdmin = async (memberId) => {
     // Set member as admin logic
