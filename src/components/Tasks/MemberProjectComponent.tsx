@@ -78,7 +78,7 @@ const MemberProject: React.FC = () => {
               console.log(listUser);
               let _userAdmin = res.data.userAdmin.map((userAdmin) => userAdmin._id);
               setUserIdAdmin(_userAdmin);
-             
+
             })
             .catch((err) => {
               console.log(err);
@@ -139,31 +139,54 @@ const MemberProject: React.FC = () => {
     setShowInvite(value);
   };
 
+  const getListPage = (): Array<{
+    _id: string;
+    username: string;
+    email: string;
+    role: Role;
+    avatar: string;
+  }> => {
+    let maxLen = listUser.length;
+    let maxPage = Math.ceil(maxLen / memberOnePage);
+    if (page < 1 || page > maxPage) {
+      return [];
+    }
+    let len = page * memberOnePage > maxLen ? maxLen : page * memberOnePage;
+    let list = [];
+    for (let i = (page - 1) * memberOnePage; i < len; i++) {
+      list.push(listUser[i]);
+    }
+    for (let i = len; i < page * memberOnePage; i++) {
+      list.push(NaN);
+    }
+    return list;
+  };
   return (
-    <>
-      <Container fluid>
-        <Card className="shadow">
-          <CardHeader className="border-0">
-            <h3 className="mb-0">Project members</h3>
-          </CardHeader>
-          <CardHeader className="border-0 d-flex flex-row align-content-center justify-content-between">
-            <h3 className="mb-0">Member</h3>
-            <Button color="primary" onClick={() => handleShowInvite(true)}> {/* Updated function */}
-              <i className="fa fa-user-plus mr-1" aria-hidden="true"></i>
-              <span> Invite member</span>
-            </Button>
-          </CardHeader>
-          <Table className="align-items-center table-flush" responsive>
-            <thead className="thead-light">
-              <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">Role</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {listUser.map((user) => (
+    <div className="member-project" style={{ overflowY: 'hidden' }}>
+     
+        <Container fluid>
+          <Row>
+            <div className="col">
+              <Card className="shadow">
+                <CardHeader className="border-0 d-flex flex-row align-content-center justify-content-between">
+                  <h3 className="mb-0">Member</h3>
+                  <Button color="primary" onClick={() => handleShowInvite(true)}>
+                    <i className="fa fa-user-plus mr-1 " aria-hidden="true"></i>
+                    <span> Invite member</span>
+                  </Button>
+                </CardHeader>
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Username</th>
+                      <th scope="col">Gmail</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Admin</th>
+                      <th scope="col" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {listUser.map((user) => (
                 <tr key={user._id}>
                   <th scope="row">
                     <Media className="align-items-center">
@@ -215,9 +238,9 @@ const MemberProject: React.FC = () => {
                   </td>
                 </tr>
               ))}
-            </tbody>
-          </Table>
-          <CardFooter className="py-4">
+                  </tbody>
+                </Table>
+                <CardFooter className="py-4">
             <nav aria-label="...">
               <Pagination
                 className="pagination justify-content-end mb-0"
@@ -250,9 +273,11 @@ const MemberProject: React.FC = () => {
               </Pagination>
             </nav>
           </CardFooter>
-        </Card>
-      </Container>
-      {showInvite && (
+              </Card>
+            </div>
+          </Row>
+        </Container>
+        {showInvite && (
         <ModalInvite
           isOpen={isModalOpen}
           toggle={() => handleShowInvite(false)}  
@@ -269,7 +294,8 @@ const MemberProject: React.FC = () => {
           action={() => deleteMember(dataModal.id)}
         />
       )}
-    </>
+    </div>
+    
   );
 };
 
