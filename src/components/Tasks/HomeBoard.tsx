@@ -13,43 +13,36 @@ import { Templete } from "./Templete";
 import ProjectCard from "./ProjectCard";
 
 interface Project {
-  _id: string;
+
   name: string;
   description: string;
-  avatar: string;
+
 }
 
 const HomeBoard = () => {
-  const { user, logout, token } = useAuth();
-  const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [isShowCreate, setShowCreate] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]); // Update initial state to undefined
-  const [newProject, setNewProject] = useState('');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [newProject, setNewProject] = useState("");
   const [loading, setLoading] = useState(false);
-  console.log(projects)
+  const [fetchingProjects, setFetchingProjects] = useState(false); // New state for fetching projects
 
   useEffect(() => {
     const getProjects = async () => {
       setLoading(true);
+      setFetchingProjects(true); // Set fetchingProjects to true before initiating the API call
       try {
         const { data } = await axios.get(`${BASE_URL}/api/project/getProject`);
-        setProjects((prevProjects) => {
-          console.log("Previous projects length:", prevProjects.length);
-          return data;
-        });
+        setProjects(data);
       } catch (error) {
         setError("Failed to fetch members.");
       } finally {
         setLoading(false);
+        setFetchingProjects(false); // Set fetchingProjects to false after fetching projects
       }
     };
     getProjects();
-  }, []); // Empty dependency array
-
-  useEffect(() => {
-    console.log("Updated projects length:", projects?.projects?.length);
-  }, [projects]);
+  }, []);
 
   const createProject = async (name: string, description: string) => {
     try {
@@ -63,16 +56,11 @@ const HomeBoard = () => {
         return;
       }
 
-      // Update the projects state with the new project
-      setProjects((prevProjects) => [
-        ...prevProjects,
-        {
-          _id: data._id,
-          name: name,
-          description: description,
-          avatar: '', // Add an empty avatar property for now
-        },
-      ]);
+      setFetchingProjects(true); // Set fetchingProjects to true before initiating the API call
+      // Fetch projects again to update the project list after adding a new project
+      const { data: updatedProjects } = await axios.get(`${BASE_URL}/api/project/getProject`);
+      setProjects(updatedProjects);
+      setFetchingProjects(false); // Set fetchingProjects to false after fetching projects
 
       console.log("Project added:", name);
       console.log("Description:", description);
@@ -80,6 +68,9 @@ const HomeBoard = () => {
       setError("Failed to add project.");
     }
   };
+  useEffect(() => {
+    console.log("Updated projects length:", projects?.projects?.length);
+  }, [projects]);
 
   return (
     <Container fluid>
