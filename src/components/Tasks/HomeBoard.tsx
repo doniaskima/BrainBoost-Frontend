@@ -8,10 +8,12 @@ import {BASE_URL} from "../../utils/utils"
 import { AuthProvider, useAuth } from "../../context/authProvider";
 import ModalCreate from "../../modals/ModalCreate";
 import projectService from "../../services/projects/api";
+import { Templete } from "./Templete";
 interface Project {
   _id: string;
   name: string;
   description: string;
+  avatar:string;
 }
 
 
@@ -20,47 +22,64 @@ const HomeBoard = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [isShowCreate, setShowCreate] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]); // Update initial state to undefined
   const [newProject, setNewProject] = useState('');
   const [loading, setLoading] = useState(false);
- 
-
-  useEffect(()=>{
-   const getProjects = async()=>{
+  console.log(projects)
+  useEffect(() => {
+    const getProjects = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(
-          `${BASE_URL}/api/project/getProject`
-        );
-        setProjects(data);
-        console.log(projects)
+        const { data } = await axios.get(`${BASE_URL}/api/project/getProject`);
+        setProjects((prevProjects) => {
+          console.log("Previous projects length:", prevProjects.length);
+          return data;
+        });
       } catch (error) {
         setError("Failed to fetch members.");
       } finally {
         setLoading(false);
       }
-    } ;
-    getProjects(); 
-  },[])
-  const createProject = async (name:string, description:string) => {
+    };
+    getProjects();
+  }, []); // Empty dependency array
+  
+  useEffect(() => {
+    console.log("Updated projects length:", projects?.projects?.length);
+  }, [projects]);
+  
+  
+
+  const createProject = async (name: string, description: string) => {
     try {
       const { data } = await axios.post(`${BASE_URL}/api/project/addProject`, {
         name: name,
         description: description,
       });
-
+  
       if (!data.status) {
         setError(data.message);
         return;
       }
-      console.log("project added")
-      console.log(name);
-      console.log(description);
-
+  
+      // Update the projects state with the new project
+      setProjects((prevProjects) => [
+        ...prevProjects,
+        {
+          _id: data._id,
+          name: name,
+          description: description,
+          avatar: '', // Add an empty avatar property for now
+        },
+      ]);
+  
+      console.log("Project added:", name);
+      console.log("Description:", description);
     } catch (error) {
       setError("Failed to add project.");
     }
   };
+  
   return (
  
      <Container fluid>
@@ -139,7 +158,20 @@ const HomeBoard = () => {
                   }}>
                   Create Project
                 </Button>
-                {
+                {projects?.projects?.length > 0 ? (
+  <ul>
+  {projects?.projects.map((project) => (
+      <li key={project._id}>
+        <h3>{project.name}</h3>
+        <p>{project.description}</p>
+      </li>
+    ))}
+  </ul>
+) : (
+  <p>No projects found.</p>
+)}
+
+                 {
                  isShowCreate && (
                   <ModalCreate
                   createProject={createProject}
@@ -154,6 +186,7 @@ const HomeBoard = () => {
           </section>
         </div>
       </div>
+
     </Container>
   
   );
