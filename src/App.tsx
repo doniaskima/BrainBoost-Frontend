@@ -31,6 +31,7 @@ import { ConfirmPage } from './components/Auth';
 import { AuthRoute } from './components/AuthRoute';
 import RightSection from './components/Chat/RightSection';
 import { AuthProvider } from './context/authProvider';
+import Task from './components/Tasks/Task';
  
 
 
@@ -63,6 +64,7 @@ function App() {
       <Route path="/studyWithme" element={<StudyWithme />} />
       <Route path="tasks/member-project/:projectId" element={<MemberProject/>} />
       <Route path="/tasks" element={<Tasks />} />
+      <Route path="tasks/task-project/:projectId" element={<Task/>} />
       <Route path="/profile" element={<Profile />} />
     </Routes>
   </div>
