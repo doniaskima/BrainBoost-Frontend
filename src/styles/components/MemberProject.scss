@@ -1,0 +1,64 @@
+// Define breakpoints
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+// Define media query mixins
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @error "Invalid breakpoint: #{$breakpoint}. Please use one of the defined breakpoints.";
+  }
+}
+
+// Usage example
+.container {
+  padding: 20px;
+
+  @include respond-to(md) {
+    padding: 40px;
+  }
+}
+
+.card {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+
+  @include respond-to(sm) {
+    padding: 20px;
+  }
+}
+
+.table {
+  width: 100%;
+
+  th,
+  td {
+    @include respond-to(md) {
+      padding: 10px;
+    }
+  }
+}
+
+.pagination {
+  justify-content: flex-end;
+  margin: 0;
+
+  .page-link {
+    color: #333;
+
+    @include respond-to(md) {
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+  }
+}
+ 
