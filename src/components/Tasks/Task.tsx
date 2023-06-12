@@ -69,13 +69,7 @@ export const Task: React.FC = () => {
     }
   };
   useEffect(() => {
-    axios.get(`${BASE_URL}/users/getUserId`)
-      .then((res) => {
-        setUserId(res.data.data.id);
-      })
-      .catch((err) => {
-        toast.error('Please log in');
-      });
+   
   }, []);
   
   useEffect(() => {
