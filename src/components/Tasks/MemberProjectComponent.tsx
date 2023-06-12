@@ -31,8 +31,11 @@ enum Role {
 
 const MemberProject: React.FC = () => {
   const navigate = useNavigate();
-  const projectId = useParams();
-  const [isShowInvite, setShowInvite] = useState(false);
+  const { projectId } = useParams();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalState, setModalState] = useState(false);
+  const [showInvite, setShowInvite] = useState(false); // Renamed variable
   const [listUser, setListUser] = useState<
     Array<{
       _id: string;
@@ -70,12 +73,24 @@ const MemberProject: React.FC = () => {
     // Delete member logic
   };
 
+  const handleShowInvite = (value) => { // Renamed function
+    setIsModalOpen(value);
+    setShowInvite(value);
+  };
+
   return (
     <>
       <Container fluid>
         <Card className="shadow">
           <CardHeader className="border-0">
             <h3 className="mb-0">Project members</h3>
+          </CardHeader>
+          <CardHeader className="border-0 d-flex flex-row align-content-center justify-content-between">
+            <h3 className="mb-0">Member</h3>
+            <Button color="primary" onClick={() => handleShowInvite(true)}> {/* Updated function */}
+              <i className="fa fa-user-plus mr-1" aria-hidden="true"></i>
+              <span> Invite member</span>
+            </Button>
           </CardHeader>
           <Table className="align-items-center table-flush" responsive>
             <thead className="thead-light">
@@ -96,74 +111,46 @@ const MemberProject: React.FC = () => {
                         href="#pablo"
                         onClick={(e) => e.preventDefault()}
                       >
-                        <img alt={user.username} src={user.avatar} />
+                        <img alt="..." src={user.avatar} />
                       </a>
                       <Media>
-                        <span className="mb-0 text-sm">{user.username}</span>
+                        <span className="mb-0 text-sm">
+                          {user.username}
+                        </span>
                       </Media>
                     </Media>
                   </th>
                   <td>{user.email}</td>
                   <td>
                     <Badge color="" className="badge-dot mr-4">
+                      <i className="bg-warning" />
                       {user.role}
                     </Badge>
                   </td>
                   <td className="text-right">
-                    {user._id === userId ? (
-                      <Button
-                        className="btn-icon btn-2"
-                        color="danger"
-                        type="button"
-                        onClick={() => {
-                          setShowModal(true);
-                          setDataModal({
-                            id: user._id,
-                            title: 'Delete member',
-                            type: 'deleteMember',
-                          });
-                        }}
+                    <UncontrolledDropdown>
+                      <DropdownToggle
+                        className="btn-icon-only text-light"
+                        role="button"
+                        size="sm"
+                        color=""
+                        onClick={(e) => e.preventDefault()}
                       >
-                        <span className="btn-inner--icon">
-                          <i className="ni ni-fat-remove" />
-                        </span>
-                        <span className="btn-inner--text">Delete</span>
-                      </Button>
-                    ) : (
-                      <>
-                        {userIdAdmin.includes(userId) && user.role !== Role.Admin ? (
-                          <UncontrolledDropdown>
-                            <DropdownToggle
-                              className="btn-icon-only text-light"
-                              href="#pablo"
-                              role="button"
-                              size="sm"
-                              color=""
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <i className="fas fa-ellipsis-v" />
-                            </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-arrow" right>
-                              <DropdownItem onClick={() => setAdmin(user._id)}>
-                                Set as Admin
-                              </DropdownItem>
-                              <DropdownItem
-                                onClick={() => {
-                                  setShowModal(true);
-                                  setDataModal({
-                                    id: user._id,
-                                    title: 'Delete member',
-                                    type: 'deleteMember',
-                                  });
-                                }}
-                              >
-                                Delete Member
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
-                        ) : null}
-                      </>
-                    )}
+                        <i className="fas fa-ellipsis-v" />
+                      </DropdownToggle>
+                      <DropdownMenu className="dropdown-menu-arrow" right>
+                        <DropdownItem
+                          onClick={() => setAdmin(user._id)}
+                        >
+                          Set as Admin
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={() => deleteMember(user._id)}
+                        >
+                          Delete
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
                   </td>
                 </tr>
               ))}
@@ -175,34 +162,25 @@ const MemberProject: React.FC = () => {
                 className="pagination justify-content-end mb-0"
                 listClassName="justify-content-end mb-0"
               >
-                <PaginationItem className={page === 1 ? 'disabled' : ''}>
+                <PaginationItem
+                  className={page === 1 ? 'disabled' : ''}
+                >
                   <PaginationLink
-                    href="#pablo"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setPage(page - 1);
-                    }}
-                    tabIndex="-1"
+                    onClick={() => setPage(page - 1)}
+                    tabIndex={-1}
                   >
                     <i className="fas fa-angle-left" />
                     <span className="sr-only">Previous</span>
                   </PaginationLink>
                 </PaginationItem>
-                <PaginationItem className="active">
-                  <PaginationLink
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
+                <PaginationItem>
+                  <PaginationLink onClick={() => setPage(page)}>
                     {page}
                   </PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
                   <PaginationLink
-                    href="#pablo"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setPage(page + 1);
-                    }}
+                    onClick={() => setPage(page + 1)}
                   >
                     <i className="fas fa-angle-right" />
                     <span className="sr-only">Next</span>
@@ -213,17 +191,23 @@ const MemberProject: React.FC = () => {
           </CardFooter>
         </Card>
       </Container>
-      {/* <ModalInvite
-        isOpen={isShowInvite}
-        toggle={() => setShowInvite(!isShowInvite)}
-        projectId={projectId}
-      />
-      <ModalTrueFalse
-        isOpen={showModal}
-        toggle={() => setShowModal(!showModal)}
-        dataModal={dataModal}
-        projectId={projectId}
-      /> */}
+      {showInvite && (
+        <ModalInvite
+          isOpen={isModalOpen}
+          toggle={() => handleShowInvite(false)}  
+          state={modalState}
+          setState={setModalState}
+          projectId={projectId}
+        />
+      )}
+      {showModal && (
+        <ModalTrueFalse
+          isOpen={showModal}
+          toggle={() => setShowModal(!showModal)}
+          data={dataModal}
+          action={() => deleteMember(dataModal.id)}
+        />
+      )}
     </>
   );
 };
