@@ -24,12 +24,15 @@ import PomodroTimer from './pages/PomodroTimer';
 import StudyWithme from './pages/StudyWithme';
 import Tasks from './pages/Tasks';
 import Profile from './pages/Profile';
+import MemberProject from './pages/MemberProject';
 
 // Component imports
 import { ConfirmPage } from './components/Auth';
 import { AuthRoute } from './components/AuthRoute';
 import RightSection from './components/Chat/RightSection';
 import { AuthProvider } from './context/authProvider';
+ 
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -58,6 +61,7 @@ function App() {
       <Route path="/notification" element={<Notification />} />
       <Route path="/pomodroTimer" element={<PomodroTimer />} />
       <Route path="/studyWithme" element={<StudyWithme />} />
+      <Route path="tasks/member-project/:projectId" element={<MemberProject/>} />
       <Route path="/tasks" element={<Tasks />} />
       <Route path="/profile" element={<Profile />} />
     </Routes>

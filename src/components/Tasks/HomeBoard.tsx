@@ -11,6 +11,7 @@ import ModalCreate from "../../modals/ModalCreate";
 import projectService from "../../services/projects/api";
 import { Templete } from "./Templete";
 import ProjectCard from "./ProjectCard";
+import { useNavigate } from "react-router";
 
 interface Project {
 
@@ -21,6 +22,7 @@ interface Project {
 
 const HomeBoard = () => {
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   const [isShowCreate, setShowCreate] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [newProject, setNewProject] = useState("");
@@ -179,6 +181,8 @@ const HomeBoard = () => {
                 key={project._id}
                 name={project.name}
                 description={project.description}
+                projectId={project._id} // Pass the projectId to the ProjectCard component
+                onClick={() => navigate(`/tasks/member-project/${project._id}`)} // Add an onClick handler to navigate to the tasks page
               />
             ))}
           </div>
