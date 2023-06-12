@@ -1,22 +1,50 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { IconButton } from "@material-tailwind/react";
+import { toast } from 'react-toastify';
+import {
+  Badge,
+  Button,
+  Card,
+  CardFooter,
+  CardHeader,
+  Container,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Media,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Row,
+  Table,
+  UncontrolledDropdown,
+} from 'reactstrap';
 import {
   Sidenav,
   DashboardNavbar,
   Configurator,
  
 } from "../layout/index";
+
+enum Role {
+  Admin = 'Admin',
+  Member = 'Member',
+  MemberPlus = 'MemberPlus',
+  MemberPro = 'MemberPro',
+}
+
 import routes from "../routes";
 import { useMaterialTailwindController } from "../context/index";
 import { useState } from "react";
+import MemberProjectComponent from "../components/Tasks/MemberProjectComponent";
  
 
 export function MemberProject() {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavType } = controller;
   const [openConfigurator,setOpenConfigurator]=useState(false)
-
+   
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
       <Sidenav
@@ -28,6 +56,7 @@ export function MemberProject() {
       <div className="p-4 xl:ml-80">
         <DashboardNavbar />
         <Configurator />
+        <MemberProjectComponent/>
         <IconButton
           size="lg"
           color="white"
