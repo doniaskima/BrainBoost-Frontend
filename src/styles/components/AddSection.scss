@@ -1,0 +1,13 @@
+.add-section{
+    width:100vw;
+}
+.column-tasks{
+    height: 100%;
+    width: 100%;
+    flex:0 0 auto;
+    display: block;
+    .column-task-sort{
+        height: 100%;
+        width: 100%;
+    }
+}

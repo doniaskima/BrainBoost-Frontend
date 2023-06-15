@@ -13,7 +13,8 @@ function Board2() {
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [dataTasks, setDataTasks] = useState<Array<Section>>([]);
   const [labels, setLabels] = useState<Array<Label>>([]);
-  
+  const {projectId} = useParams();
+  console.log(projectId);
   const onDragEnd = (result) => {
     // if (!result.destination) {
     //   return;
@@ -80,9 +81,20 @@ function Board2() {
    }}
    >
       <DragDropContext onDragEnd={onDragEnd}>
-          Board2
+          
       </DragDropContext>
-       <AddSection/>
+       <AddSection
+        dataTasks={{
+        data:dataTasks,
+        setData:setDataTasks,
+        }}
+        showModal={{
+        status:showTaskDetails,
+        setStatus: setShowTaskDetails,
+       }}
+        projectId={projectId}
+        size={'xl'}
+       />
    </div>
   )
 }
