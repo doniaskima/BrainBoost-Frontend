@@ -3,10 +3,11 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { useParams } from 'react-router';
 import { Section, Task ,Label } from './InterfaceTask';
 import { toast } from 'react-toastify';
+import AddSection from './AddSection';
 
 function Board2() {
-  const { params } = useParams();
-  const { projectId } = params as any;
+  
+   
   const [userId, setUserId] = useState('');
   const [taskDetails, setTaskDetails] = useState<Task>(null);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
@@ -79,9 +80,9 @@ function Board2() {
    }}
    >
       <DragDropContext onDragEnd={onDragEnd}>
-
+          Board2
       </DragDropContext>
-    
+       <AddSection/>
    </div>
   )
 }

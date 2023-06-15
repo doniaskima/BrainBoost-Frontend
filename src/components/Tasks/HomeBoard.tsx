@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container } from 'reactstrap';
-import SVG from 'react-inlinesvg';
 import Spinner from "../Spinner"
 import axios from "axios";
-import { toast } from 'react-toastify';
 import { BASE_URL } from "../../utils/utils"
-
-import { AuthProvider, useAuth } from "../../context/authProvider";
 import ModalCreate from "../../modals/ModalCreate";
-import projectService from "../../services/projects/api";
-import { Templete } from "./Templete";
 import ProjectCard from "./ProjectCard";
 import { useNavigate } from "react-router";
 
