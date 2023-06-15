@@ -13,6 +13,7 @@ interface Props {
 
 const AddSection: React.FC<Props> = (props: Props) => {
   const [showModal, setShowModal] = useState(false);
+  console.log(showModal)
   const [nameSection, setNameSection] = useState('');
 
   return (
@@ -80,8 +81,40 @@ const AddSection: React.FC<Props> = (props: Props) => {
                 </Dropdown>
               </div>
             </div>
+            <div className="form-group">
+                <label className='form-control-label d-block mb-3'>Label</label>
+                <div 
+                className="btn-group-toggle btn-group-colors event-tag btn-group align-items-center task-body-second"
+                role="group"
+                data-toggle="buttons"
+
+                >
+                </div>
+            </div>
           </form>
         </Modal.Body>
+        <Modal.Footer>
+          <div>
+            <Button
+              style={{
+                backgroundColor: '#5e72e4',
+              }}
+              onClick={(e) => {
+                 
+              }}>
+              Create
+            </Button>
+          </div>
+          <button
+            type="button"
+            className="ml-auto btn btn-link"
+            onClick={() => props.showModal.setStatus(false)}
+            style={{
+              color: '#5e72e4',
+            }}>
+            Close
+          </button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
