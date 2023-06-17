@@ -8,6 +8,9 @@ import { useParams } from 'react-router';
 import SectionComponent from './SectionComponent';
 import AddSection from './AddSection';
 import TaskDetails from './TaskDetails';
+import { BASE_URL } from '../../utils/utils';
+import axios from 'axios';
+
 const Board2: React.FC = () => {
   const { projectId } = useParams();
   const [userId, setUserId] = useState('');
@@ -16,6 +19,38 @@ const Board2: React.FC = () => {
   const [dataTasks, setDataTasks] = useState<Array<Section>>([]);
   const [labels, setLabels] = useState<Array<Label>>([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tasksResponse = await axios.get(`${BASE_URL}/api/tasks/getTasks?projectId=${projectId}`);
+        setDataTasks(tasksResponse.data.data);
+
+        const labelsResponse = await axios.get(`${BASE_URL}/api/project/getLabels?projectId=${projectId}`);
+        setLabels(labelsResponse.data.data);
+        console.log(labelsResponse);
+      } catch (error) {
+        toast.error('An unexpected error occurred');
+      }
+    };
+
+    const fetchUserId = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/users/getUserId`);
+        const userId = response.data?.id;
+        console.log(userId);
+        if (userId) {
+          setUserId(userId);
+        } else {
+          toast.error('User ID is missing in the response');
+        }
+      } catch (error) {
+        toast.error('Login session ended');
+      }
+    };
+
+    fetchData();
+    fetchUserId();
+  }, []);
 
 
   const onDragEnd = (result) => {
