@@ -6,16 +6,20 @@ import { MaterialTailwindControllerProvider } from "./context/index";
 import './index.css';
 import { ThemeProvider } from "@material-tailwind/react";
 import { AuthProvider } from './context/authProvider';
+import { ConfigProvider } from 'antd';
+import { antdConfig } from './constants/index';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
         <ThemeProvider>
-          <MaterialTailwindControllerProvider>
+        <ConfigProvider {...antdConfig}>
+          <MaterialTailwindControllerProvider>      
           <AuthProvider>
             <App />
          </AuthProvider>
           </MaterialTailwindControllerProvider>
+          </ConfigProvider>
         </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,

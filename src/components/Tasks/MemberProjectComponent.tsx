@@ -52,6 +52,7 @@ enum Role {
 const MemberProject: React.FC = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const tableLocale = enUSIntl;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalState, setModalState] = useState(false);
@@ -154,6 +155,12 @@ const MemberProject: React.FC = () => {
         toast.error(err.request.response.error);
       });
   };
+  const locale = {
+    emptyText: 'No Data',
+    searchPlaceholder: 'Search',
+    resetText: 'Reset',
+    columnSetting: 'Column Settings', // Change the default value here
+  };
 
   const handleShowInvite = (value) => {
     setIsModalOpen(value);
@@ -185,7 +192,7 @@ const MemberProject: React.FC = () => {
                   <div key={user.id}>
                     <ProTable
                       cardBordered={false}
-                      locale={enUSIntl}
+                      locale={tableLocale}
                       cardProps={{
                         subTitle: 'Users',
                         tooltip: {
