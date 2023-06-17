@@ -41,7 +41,7 @@ import ChooseList from './ChooseList';
 import LazyImage from '../lazy-image';
 import BasePageContainer from './BasePageContainer';
 import { Link } from 'react-router-dom';
-
+import Loader from '../loader/index'; 
 enum Role {
   Admin = 'Admin',
   Member = 'Member',
@@ -75,6 +75,7 @@ const MemberProject: React.FC = () => {
   });
   const [page, setPage] = useState(1);
   const memberOnePage = 5;
+
   useEffect(() => {
     getData();
   }, [page, projectId]);
@@ -158,6 +159,7 @@ const MemberProject: React.FC = () => {
     setIsModalOpen(value);
     setShowInvite(value);
   };
+
   const breadcrumb: BreadcrumbProps = {
     items: [
       {
@@ -176,157 +178,160 @@ const MemberProject: React.FC = () => {
         <BasePageContainer breadcrumb={breadcrumb}>
           <ConfigProvider locale={enUSIntl}>
             <IntlProvider locale="en">
-              {listUser.map((user) => (
-                <div key={user.id}>
-                  <ProTable
-                    cardBordered={false}
-                    
-                    locale={enUSIntl}
-                    cardProps={{
-                      subTitle: 'Users',
-                      tooltip: {
-                        className: 'opacity-60',
-                        title: 'Mocked data',
-                      },
-                      title: <FiUsers className="opacity-60" />,
-                    }}
-                    search={false}
-                    bordered={true}
-                    rowKey="id"
-                    scroll={{ x: true }}
-                    tableLayout={'fixed'}
-                    rowSelection={false}
-                    pagination={{
-                      showQuickJumper: true,
-                      pageSize: 10,
-                      showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-                      locale: {
-                        items_per_page: 'items per page',
-                        jump_to: 'Go to',
-                        jump_to_confirm: 'Confirm',
-                        page: '',
-                        prev_page: 'Previous Page',
-                        next_page: 'Next Page',
-                        prev_5: 'Previous 5 Pages',
-                        next_5: 'Next 5 Pages',
-                        prev_3: 'Previous 3 Pages',
-                        next_3: 'Next 3 Pages',
-                      },
-                    }}
-                    columns={[
-                      {
-                        title: 'Username',
-                        dataIndex: 'username',
-                        ellipsis: true,
-                        key: 'username',
-                        search: false, // Disable search for this column
-                      },
-                      {
-                        title: 'Email',
-                        ellipsis: true,
-                        dataIndex: 'email',
-                        key: 'email',
-                        search: false, // Disable search for this column
-                      },
-                      {
-                        title: 'Avatar',
-                        dataIndex: 'avatar',
-                        key: 'avatar',
-                        search: false, // Disable search for this column
-                        render: (_, record) => (
-                          <Avatar
-                            src={record.avatar}
-                            alt={record.username}
-                            size={32}
-                            className="mr-2"
-                          />
-                        ),
-                      },
-                      {
-                        title: 'Role',
-                        dataIndex: 'role',
-                        key: 'role',
-                        search: false, // Disable search for this column
-                        render: (_, record) => {
-                          const isAdmin = userIdAdmin.includes(record._id);
-                          const role = isAdmin ? (
-                            <Badge color="success">{Role.Admin}</Badge>
-                          ) : (
-                            <Badge color="primary">{record.role}</Badge>
-                          );
-                          return <div>{role}</div>;
+              {listUser.length === 0 ? ( // Use Loader component when listUser is empty
+                <Loader />
+              ) : (
+                listUser.map((user) => (
+                  <div key={user.id}>
+                    <ProTable
+                      cardBordered={false}
+                      locale={enUSIntl}
+                      cardProps={{
+                        subTitle: 'Users',
+                        tooltip: {
+                          className: 'opacity-60',
+                          title: 'Users',
                         },
-                      },
-                      {
-                        title: 'Action',
-                        valueType: 'option',
-                        dataIndex: 'id',
-                        key: 'id',
-                        width: 200,
-                        search: false, // Disable search for this column
-                        render: (_, record) => {
-                          const isAdmin = userIdAdmin.includes(record._id);
-                          return (
-                            <div>
-                              <TableDropdown
-                                onSelect={async (key) => {
-                                  if (key === 'admin') {
-                                    await setAdmin(record._id);
-                                  } else if (key === 'delete') {
-                                    await deleteMember(record._id);
-                                  }
-                                }}
-                                menus={[
-                                  {
-                                    key: 'admin',
-                                    name: isAdmin ? 'Remove Admin' : 'Make Admin',
-                                    icon: <CiCircleMore />,
-                                    disabled: record._id === userId,
-                                  },
-                                  {
-                                    key: 'delete',
-                                    name: 'Delete',
-                                    icon: <CiCircleMore />,
-                                    disabled: record._id === userId,
-                                  },
-                                ]}
-                              />
-                            </div>
-                          );
+                        title: <FiUsers className="opacity-60" />,
+                      }}
+                      search={false}
+                      bordered={true}
+                      rowKey="id"
+                      scroll={{ x: true }}
+                      tableLayout={'fixed'}
+                      rowSelection={false}
+                      pagination={{
+                        showQuickJumper: true,
+                        pageSize: 10,
+                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                        locale: {
+                          items_per_page: 'items per page',
+                          jump_to: 'Go to',
+                          jump_to_confirm: 'Confirm',
+                          page: '',
+                          prev_page: 'Previous Page',
+                          next_page: 'Next Page',
+                          prev_5: 'Previous 5 Pages',
+                          next_5: 'Next 5 Pages',
+                          prev_3: 'Previous 3 Pages',
+                          next_3: 'Next 3 Pages',
                         },
-                      },
-                    ]}
-                    toolBarRender={() => [
-                      <Button
-                        key="invite"
-                        type="primary"
-                        onClick={() => handleShowInvite(true)}
-                      >
-                        Invite
-                      </Button>,
-                    ]}
-                    request={async (
-                      params: ProColumns['params'] & {
-                        pageSize?: number;
-                        current?: number;
-                        keyword?: string;
-                      },
-                      sort,
-                      filter,
-                    ): Promise<RequestData<Partial<any>>> => {
-                      return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          resolve({
-                            data: listUser,
-                            success: true,
-                            total: listUser.length,
-                          });
-                        }, 200);
-                      });
-                    }}
-                  />
-                </div>
-              ))}
+                      }}
+                      columns={[
+                        {
+                          title: 'Username',
+                          dataIndex: 'username',
+                          ellipsis: true,
+                          key: 'username',
+                          search: false, // Disable search for this column
+                        },
+                        {
+                          title: 'Email',
+                          ellipsis: true,
+                          dataIndex: 'email',
+                          key: 'email',
+                          search: false, // Disable search for this column
+                        },
+                        {
+                          title: 'Avatar',
+                          dataIndex: 'avatar',
+                          key: 'avatar',
+                          search: false, // Disable search for this column
+                          render: (_, record) => (
+                            <Avatar
+                              src={record.avatar}
+                              alt={record.username}
+                              size={32}
+                              className="mr-2"
+                            />
+                          ),
+                        },
+                        {
+                          title: 'Role',
+                          dataIndex: 'role',
+                          key: 'role',
+                          search: false, // Disable search for this column
+                          render: (_, record) => {
+                            const isAdmin = userIdAdmin.includes(record._id);
+                            const role = isAdmin ? (
+                              <Badge color="success">{Role.Admin}</Badge>
+                            ) : (
+                              <Badge color="primary">{record.role}</Badge>
+                            );
+                            return <div>{role}</div>;
+                          },
+                        },
+                        {
+                          title: 'Action',
+                          valueType: 'option',
+                          dataIndex: 'id',
+                          key: 'id',
+                          width: 200,
+                          search: false, // Disable search for this column
+                          render: (_, record) => {
+                            const isAdmin = userIdAdmin.includes(record._id);
+                            return (
+                              <div>
+                                <TableDropdown
+                                  onSelect={async (key) => {
+                                    if (key === 'admin') {
+                                      await setAdmin(record._id);
+                                    } else if (key === 'delete') {
+                                      await deleteMember(record._id);
+                                    }
+                                  }}
+                                  menus={[
+                                    {
+                                      key: 'admin',
+                                      name: isAdmin ? 'Remove Admin' : 'Make Admin',
+                                      icon: <CiCircleMore />,
+                                      disabled: record._id === userId,
+                                    },
+                                    {
+                                      key: 'delete',
+                                      name: 'Delete',
+                                      icon: <CiCircleMore />,
+                                      disabled: record._id === userId,
+                                    },
+                                  ]}
+                                />
+                              </div>
+                            );
+                          },
+                        },
+                      ]}
+                      toolBarRender={() => [
+                        <Button
+                          key="invite"
+                          type="primary"
+                          onClick={() => handleShowInvite(true)}
+                        >
+                          Invite
+                        </Button>,
+                      ]}
+                      request={async (
+                        params: ProColumns['params'] & {
+                          pageSize?: number;
+                          current?: number;
+                          keyword?: string;
+                        },
+                        sort,
+                        filter,
+                      ): Promise<RequestData<Partial<any>>> => {
+                        return new Promise((resolve, reject) => {
+                          setTimeout(() => {
+                            resolve({
+                              data: listUser,
+                              success: true,
+                              total: listUser.length,
+                            });
+                          }, 200);
+                        });
+                      }}
+                    />
+                  </div>
+                ))
+              )}
             </IntlProvider>
           </ConfigProvider>
         </BasePageContainer>
@@ -334,7 +339,7 @@ const MemberProject: React.FC = () => {
       {showInvite && (
         <ModalInvite
           isOpen={isModalOpen}
-          toggle={() => handleShowInvite(false)}  
+          toggle={() => handleShowInvite(false)}
           state={modalState}
           setState={setModalState}
           projectId={projectId}
