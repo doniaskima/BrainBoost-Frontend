@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/pro-components": "^2.5.11",
     "@craco/craco": "^7.1.0",
     "@emotion/cache": "^11.10.8",
     "@emotion/react": "^11.10.8",
@@ -56,6 +57,7 @@
     "react-hook-form": "^7.43.9",
     "react-icons": "^4.9.0",
     "react-inlinesvg": "^3.0.2",
+    "react-intl": "^6.4.4",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.10.0",
     "react-spinners": "^0.13.8",
