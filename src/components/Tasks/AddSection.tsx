@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Button } from 'reactstrap';
+import { BASE_URL } from '../../utils/utils';
  
  
 interface Props {
@@ -16,9 +18,30 @@ const AddSection: React.FC<Props> = (props: Props) => {
   const [nameSection, setNameSection] = useState('');
   const [descriptionSection, setDescriptionSection] = useState('');
   const [err, setErr] = useState(null);
+ 
+
   const addSection = () => {
-    
+    if (nameSection === '') {
+      toast.error('Please enter a section name');
+      // setErr('Please enter a section name');
+      return;
+    }
+  
+    axios.post(`${BASE_URL}/api/section/addSection`, {
+        projectId: props.projectId,
+        name: nameSection,
+      })
+      .then((res) => {
+        toast.success('Success');
+        props.dataTasks.setData(res.data.data);
+        setShowModal(false);
+      })
+      .catch((err) => {
+        toast.error(err.response?.data?.error || 'An unexpected error occurred');
+      });
   };
+  
+ 
   return (
     <div className="add-section">
       <div
