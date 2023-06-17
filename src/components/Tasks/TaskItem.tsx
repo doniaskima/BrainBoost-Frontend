@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import '../../../../assets/scss/component/board.scss';
 
 import {
   // getPriority,

@@ -1,8 +1,19 @@
+ 
+export interface Assignment {
+  _id: string;
+  username: string;
+  avatar: string;
+  email: string;
+  
+  isActive?: boolean;
+  money?: number;
+}
 
 export interface Task {
   _id: string;
   sectionId: string | Section;
   name: string;
+  assignment: Array<Assignment>;
   dueDate: {
     // one day: from: null, to: Date
     from: Date; // null || Date
@@ -47,3 +58,4 @@ export interface Section {
   tasks: Array<Task>;
   projectId: string;
 }
+ 

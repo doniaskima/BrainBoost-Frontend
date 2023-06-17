@@ -1,28 +1,98 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { useParams } from 'react-router';
+import { Section, Task } from './InterfaceTask';
 import { toast } from 'react-toastify';
-import { Button } from 'reactstrap';
-import { Dropdown, Modal } from 'react-bootstrap';
-import { Section, Task, Label } from './InterfaceTask';
+import { Label } from './InterfaceTask';
+import { useParams } from 'react-router';
+import SectionComponent from './SectionComponent';
 import AddSection from './AddSection';
-
-function Board2() {
+import TaskDetails from './TaskDetails';
+const Board2: React.FC = () => {
+  const { projectId } = useParams();
   const [userId, setUserId] = useState('');
   const [taskDetails, setTaskDetails] = useState<Task>(null);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [dataTasks, setDataTasks] = useState<Array<Section>>([]);
   const [labels, setLabels] = useState<Array<Label>>([]);
-  const { projectId } = useParams();
+
+
 
   const onDragEnd = (result) => {
-    // Drag and drop logic
+    if (!result.destination) {
+      return;
+    }
+    let taskId = result.draggableId;
+    let sectionFromId = result.source.droppableId;
+    let indexFrom = result.source.index;
+    let sectionToId = result.destination.droppableId;
+    let indexTo = result.destination.index;
+    if (sectionToId === sectionFromId) {
+      let section = dataTasks.filter(
+        (section) => section._id === sectionFromId,
+      )[0];
+      let task = section.tasks[indexFrom];
+      section.tasks.splice(indexFrom, 1);
+      let listTask1 = [...section.tasks];
+      let listTask2 = [...section.tasks];
+      section.tasks = [
+        ...listTask1.splice(0, indexTo),
+        task,
+        ...listTask2.splice(indexTo),
+      ];
+      setDataTasks(dataTasks);
+    } else {
+      let sectionFrom = dataTasks.filter(
+        (section) => section._id === sectionFromId,
+      )[0];
+      let sectionTo = dataTasks.filter(
+        (section) => section._id === sectionToId,
+      )[0];
+      let taskFrom = sectionFrom.tasks[indexFrom];
+      sectionFrom.tasks.splice(indexFrom, 1);
+      let listTask1 = [...sectionTo.tasks];
+      let listTask2 = [...sectionTo.tasks];
+      sectionTo.tasks = [
+        ...listTask1.splice(0, indexTo),
+        taskFrom,
+        ...listTask2.splice(indexTo),
+      ];
+    }
+   
   };
-
   return (
-    <div className="tasks" onClick={() => setShowTaskDetails(true)}>
+    <div
+      className="tasks"
+      onClick={() => {
+        setShowTaskDetails(false);
+      }}>
       <DragDropContext onDragEnd={onDragEnd}>
-        Drag and Drop
+        {dataTasks.map((section, index) => {
+          return (
+            <SectionComponent
+              userId={userId}
+              dataTasks={{
+                data: dataTasks,
+                setData: setDataTasks,
+              }}
+              section={section}
+              showTaskDetails={{
+                status: showTaskDetails,
+                setStatus: setShowTaskDetails,
+              }}
+              taskDetails={{
+                task: taskDetails,
+                setTask: setTaskDetails,
+              }}
+              labels={{
+                data: labels,
+                setData: (_labels) => {
+                  setLabels(_labels);
+                },
+              }}
+            />
+          );
+        })}
       </DragDropContext>
       <AddSection
         dataTasks={{
@@ -33,11 +103,31 @@ function Board2() {
           status: showTaskDetails,
           setStatus: setShowTaskDetails,
         }}
-        projectId={projectId}
         size={'xl'}
+        projectId={projectId}
       />
+      {taskDetails ? (
+        <>
+          <TaskDetails
+            dataTasks={{
+              data: dataTasks,
+              setData: setDataTasks,
+            }}
+            task={{ task: taskDetails, setTask: setTaskDetails }}
+            show={showTaskDetails}
+            setShow={setShowTaskDetails}
+            labels={{
+              data: labels,
+              setData: (_labels) => {
+                setLabels(_labels);
+              },
+            }}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
-}
-
+};
 export default Board2;

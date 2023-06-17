@@ -32,6 +32,7 @@ import { AuthRoute } from './components/AuthRoute';
 import RightSection from './components/Chat/RightSection';
 import { AuthProvider } from './context/authProvider';
 import Task from './components/Tasks/Task';
+import ChooseList from './components/Tasks/ChooseList';
  
 
 
@@ -61,6 +62,7 @@ function App() {
       <Route path="/drive" element={<Drive />} />
       <Route path="/notification" element={<Notification />} />
       <Route path="/pomodroTimer" element={<PomodroTimer />} />
+      <Route path="/tasks/chooselist/:projectId" element={<ChooseList />} />
       <Route path="/studyWithme" element={<StudyWithme />} />
       <Route path="tasks/member-project/:projectId" element={<MemberProject/>} />
       <Route path="/tasks" element={<Tasks />} />

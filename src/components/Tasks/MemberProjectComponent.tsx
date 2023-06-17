@@ -23,6 +23,7 @@ import {
 } from 'reactstrap';
 import ModalInvite from '../../modals/ModalInvite';
 import ModalTrueFalse from '../../modals/ModalTrueFalse';
+import ChooseList from './ChooseList';
 
 enum Role {
   Admin = 'Admin',
@@ -165,6 +166,9 @@ const MemberProject: React.FC = () => {
     <div className="member-project" style={{ overflowY: 'hidden' }}>
      
         <Container fluid>
+        <Row className="d-flex align-items-center">            
+                <ChooseList projectId={projectId} />
+        </Row>
           <Row>
             <div className="col">
               <Card className="shadow">

@@ -8,6 +8,7 @@ import Board2 from './Board2';
 import Timeline from './Timeline';
 import axios from 'axios';
 import { BASE_URL } from '../../utils/utils';
+import WrapperProject from './WrapperProject';
 
 export enum TypeView {
   board = 'board',
@@ -44,12 +45,12 @@ export const Task: React.FC = () => {
   const renderSelect = (typeview: TypeView, icon, name) => {
     return (
       <div
-        key={typeview} // Add a unique key prop here
+        key={typeview}  
         className={
           'item-head-task ' + (view === typeview ? 'item-head-task-active' : '')
         }
         onClick={() => {
-          navigate(`/task-project/${projectId}?view=${typeview}`);
+          navigate(`/tasks/task-project/${projectId}?view=${typeview}`);
           setView(typeview);
         }}
       >
@@ -88,14 +89,16 @@ export const Task: React.FC = () => {
 
   return (
     <div className="task-project container-fluid w-100">
-      <Container fluid>
-        <div className="d-flex justify-content-start w-100 head-task flex-row-reverse">
-          {listSelectView.map((element) => {
-            return renderSelect(element.typeView, element.icon, element.name);
-          })}
-        </div>
-        <div className="w-100">{renderView()}</div>
-      </Container>
+      <WrapperProject>
+        <Container fluid>
+          <div className="d-flex justify-content-start w-100 head-task flex-row-reverse">
+            {listSelectView.map((element) => {
+              return renderSelect(element.typeView, element.icon, element.name);
+            })}
+          </div>
+          <div className="w-100">{renderView()}</div>
+        </Container>
+      </WrapperProject>
     </div>
   );
 };

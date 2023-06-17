@@ -9,7 +9,6 @@ import React, { useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import '../../../../assets/scss/component/board.scss';
 import { Section, Task } from './InterfaceTask';
 import { Label } from 'reactstrap';
 import { TaskItem } from './TaskItem';
