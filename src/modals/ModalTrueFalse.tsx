@@ -1,21 +1,17 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
- 
+import { Modal, Button } from 'react-bootstrap';
+
 interface Props {
   size?: 'sm' | 'lg' | 'xl';
   show: boolean;
   data: {
     title: string;
-    button_1:
-      | {
-          title: string;
-        }
-      | any;
-    button_2:
-      | {
-          title: string;
-        }
-      | any;
+    button_1: {
+      title: string;
+    };
+    button_2: {
+      title: string;
+    };
   };
   onlyTitle?: boolean;
   setClose: () => void;
@@ -23,55 +19,70 @@ interface Props {
   funcButton_1: () => void;
   funcButton_2: () => void;
 }
-const ModalTrueFalse: React.FC<Props> = (props: Props) => {
+
+const ModalTrueFalse: React.FC<Props> = ({
+  size,
+  show,
+  data,
+  onlyTitle,
+  setClose,
+  funcOnHide,
+  funcButton_1,
+  funcButton_2,
+}: Props) => {
+  const handleHide = () => {
+    setClose();
+    if (funcOnHide) {
+      funcOnHide();
+    }
+  };
+
+  const handleButton1Click = () => {
+    funcButton_1();
+    setClose();
+  };
+
+  const handleButton2Click = () => {
+    funcButton_2();
+    setClose();
+  };
+
   return (
     <>
       <Modal
         className="modal-confirm"
-        size={props.size ? 'sm' : props.size}
-        show={props.show} // false: Không hiển thị, true: hiển thị
-        onHide={() => {
-          props.setClose();
-          if (props.funcOnHide) {
-            props.funcOnHide();
-          }
-        }}
+        size={size}
+        show={show}
+        onHide={handleHide}
         scrollable
-        centered>
+        centered
+      >
         <Modal.Header closeButton className="d-flex flex-column">
           <div className="icon-box">
             <i className="fas fa-exclamation-circle"></i>
           </div>
-          <h4 className="modal-title w-100">Are you sure?</h4>
+          <h4 className="modal-title w-100 mt-4 ">Are you sure?</h4>
         </Modal.Header>
         <Modal.Body>
           <p>
-            {props.onlyTitle
-              ? props.data.title
-              : `Do you really want to ${props.data.title}? This process cannot be
-            undone.`}
+            {onlyTitle
+              ? data.title
+              : `Do you really want to ${data.title}? This process cannot be undone.`}
           </p>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-center">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            data-dismiss="modal"
-            onClick={() => {
-              props.funcButton_1();
-              props.setClose();
-            }}>
-            {props.data.button_1.title}
-          </button>
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={() => {
-              props.funcButton_2();
-              props.setClose();
-            }}>
-            {props.data.button_2.title}
-          </button>
+          <Button
+            variant="secondary"
+            onClick={handleButton1Click}
+          >
+            {data.button_1.title}
+          </Button>
+          <Button
+            variant="danger"
+            onClick={handleButton2Click}
+          >
+            {data.button_2.title}
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

@@ -23,7 +23,7 @@ const RenameSection: React.FC<Props> = (props: Props) => {
       setErr('Please enter the section name');
       return;
     }
-  
+    
     axios
       .post(`${BASE_URL}/api/tasks/updateTask`, {
         projectId: props.projectId,
