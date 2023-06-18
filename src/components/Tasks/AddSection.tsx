@@ -7,6 +7,7 @@ import { Button } from 'reactstrap';
 import { BASE_URL } from '../../utils/utils';
 import { Section } from './InterfaceTask';
  
+
 interface Props {
   showModal: { status: boolean; setStatus: (value) => void };
   dataTasks: { data: Array<Section>; setData: (data) => void };
@@ -46,12 +47,7 @@ const AddSection: React.FC<Props> = (props: Props) => {
  
   return (
     <div className="add-section">
-      <div
-        style={{ height: '100%' }}
-        onClick={() => {
-          props.showModal.setStatus(false);
-        }}>
-        <div className="column-tasks">
+           <div className="column-tasks">
           <div className="column-task-sort">
             <div className="board-task">
               <Button
@@ -65,6 +61,11 @@ const AddSection: React.FC<Props> = (props: Props) => {
             </div>
           </div>
         </div>
+      <div
+        style={{ height: '100%' }}
+        onClick={() => {
+          props.showModal.setStatus(false);
+        }}>
       </div>
       <Modal
         show={showModal}

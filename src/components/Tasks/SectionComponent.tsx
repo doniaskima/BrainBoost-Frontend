@@ -15,6 +15,7 @@ import { TaskItem } from './TaskItem';
 import ModalTrueFalse from '../../modals/ModalTrueFalse';
 import axios from 'axios';
 import { BASE_URL } from '../../utils/utils';
+import ModalAddTask from './AddTask';
 
 interface Props {
   userId: string;
@@ -187,6 +188,8 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                 </div>
               </div>
             </div>
+    
+
             <ModalTrueFalse
               size="sm"
               show={showModalTrueFalse}
@@ -208,6 +211,7 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
         );
       }}
     </Droppable>
+    
   );
 };
 
