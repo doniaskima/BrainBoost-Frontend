@@ -102,7 +102,7 @@ const MemberProject: React.FC = () => {
             })
             .catch((err) => {
               console.log(err);
-              toast.error('An unexpected error occurred while fetching user data');
+              toast.error('Member has already joined the project');
             });
         } else {
           toast.error('User ID is missing in the response');

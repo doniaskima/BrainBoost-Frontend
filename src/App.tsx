@@ -7,6 +7,7 @@ import './styles/globals.css';
 import './App.css';
 import './styles/main.scss';
 import './assets/css/style.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Page components
 import HeroPage from './pages/HeroPage';
@@ -33,45 +34,43 @@ import RightSection from './components/Chat/RightSection';
 import { AuthProvider } from './context/authProvider';
 import Task from './components/Tasks/Task';
 import ChooseList from './components/Tasks/ChooseList';
- 
-
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   return (
-  <div className="App">
-    <Routes>
-      <Route path="/" element={<HeroPage />} />
-      <Route path="/login" element={<Login />} />
-      {/* <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
-      <Route path="/account/confirm/:token" element={ <ConfirmPage  />} /> */}
-      <Route path="/home" element={<Home />} />
-      {/* <Route
-        path='/login/reset/:token'
-        element={
-          <AuthRoute>
-            <ResetPasswordPage />
-          </AuthRoute>
-        }
-      /> */}
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/chat" element={<Chat />} />
-      <Route path="/chat/:recipientId" element={<Chat />} />
-      <Route path="/courses" element={<Courses />} />
-      <Route path="/drive" element={<Drive />} />
-      <Route path="/notification" element={<Notification />} />
-      <Route path="/pomodroTimer" element={<PomodroTimer />} />
-      <Route path="/tasks/chooselist/:projectId" element={<ChooseList />} />
-      <Route path="/studyWithme" element={<StudyWithme />} />
-      <Route path="tasks/member-project/:projectId" element={<MemberProject/>} />
-      <Route path="/tasks" element={<Tasks />} />
-      <Route path="tasks/task-project/:projectId" element={<Task/>} />
-      <Route path="/profile" element={<Profile />} />
-    </Routes>
-  </div>
-
- 
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<HeroPage />} />
+        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login/forgot" element={ <ResetPasswordRequestPage />} />
+        <Route path="/account/confirm/:token" element={ <ConfirmPage  />} /> */}
+        <Route path="/home" element={<Home />} />
+        {/* <Route
+          path='/login/reset/:token'
+          element={
+            <AuthRoute>
+              <ResetPasswordPage />
+            </AuthRoute>
+          }
+        /> */}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat/:recipientId" element={<Chat />} />
+        <Route path="/courses" element={<Courses />} />
+        <Route path="/drive" element={<Drive />} />
+        <Route path="/notification" element={<Notification />} />
+        <Route path="/pomodroTimer" element={<PomodroTimer />} />
+        <Route path="/tasks/chooselist/:projectId" element={<ChooseList />} />
+        <Route path="/studyWithme" element={<StudyWithme />} />
+        <Route path="tasks/member-project/:projectId" element={<MemberProject/>} />
+        <Route path="/tasks" element={<Tasks />} />
+        <Route path="tasks/task-project/:projectId" element={<Task/>} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+      <ToastContainer />
+    </div>
   );
 }
 

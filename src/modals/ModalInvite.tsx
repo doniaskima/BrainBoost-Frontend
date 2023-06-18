@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
-import { BASE_URL } from "../utils/utils"
+import { BASE_URL } from '../utils/utils';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -22,22 +22,25 @@ const ModalInvite: React.FC<ModalInviteProps> = ({
   const [checkMail, setCheckMail] = useState(false);
   const [email, setEmail] = useState('');
 
-  const inviteMember = (email) => {
-    axios.post(`${BASE_URL}/project/inviteJoinProject`, {
-      projectId: projectId,
-      emailInvite: email,
-    })
-    .then((res) => {
-      toast.success('Invitation to join the project has been sent');
-    })
-    .catch((err) => {
-      toast.error(
-        err.response?.data?.error || 'An unexpected error occurred',
-      );
-    });
+  const inviteMember = (email: string) => {
+    axios
+      .post(`${BASE_URL}/api/project/inviteJoinProject`, {
+        projectId: projectId,
+        emailInvite: email,
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success('Invitation to join the project has been sent');
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(email);
+        console.log(projectId);
+        toast.error(err.response?.data?.error || 'An unexpected error occurred');
+      });
   };
 
-  function validateEmail(email) {
+  function validateEmail(email: string) {
     const re =
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
@@ -63,35 +66,46 @@ const ModalInvite: React.FC<ModalInviteProps> = ({
       >
         <ModalBody>
           <div className="invite-team-container">
-            <h2 className="invite-team-title">Invite your team</h2>
+            <h2 className="text-black">Invite your team</h2>
             <p className="invite-team-subtitle">
               Trello makes teamwork your best work. Invite your new team members to get going!
             </p>
             <div className="invite-team-input-container">
               <input
-                type="email"
+                type="text"
                 id="email-member"
                 placeholder="admin@gmail.com"
                 data-test-id="add-members-input"
-                className={`invite-team-input ${checkMail ? '' : 'invalid'}`}
-                onChange={handleInputChange}
+                className="inputbox-input mt-4 mb-4"
+                onChange={(e) => {
+                  let email = e.target.value;
+                  if (validateEmail(email)) {
+                    setCheckMail(true);
+                  } else {
+                    setCheckMail(false);
+                  }
+                }}
+                style={{ minWidth: '2px' }}
               />
               <div className="invite-team-tip">
                 <strong>Pro tip!</strong> Paste as many emails here as needed.
               </div>
             </div>
-            <button
-                data-test-id="team-invite-submit-button"
-                onClick={() => inviteMember(email)} // Pass the email as an argument to inviteMember
-                className={`invite-team-button ${checkMail ? '' : 'disabled'}`}
-                disabled={!checkMail}
-            >
-              Invite to Workspace
-            </button>
-
           </div>
         </ModalBody>
         <ModalFooter>
+          <button
+            data-test-id="team-invite-submit-button"
+            onClick={() => {
+              let email = (document.getElementById('email-member') as HTMLInputElement).value;
+              inviteMember(email);
+              setState(false);
+            }}
+            className="btn btn-info"
+            disabled={!checkMail}
+          >
+            Invite to Workspace
+          </button>
           <Button color="primary" onClick={toggle}>
             Close
           </Button>
