@@ -9,6 +9,7 @@ import AddSection from './AddSection';
 import TaskDetails from './TaskDetails';
 import { BASE_URL } from '../../utils/utils';
 import axios from 'axios';
+import Loader from '../loader';
 
 const Board2: React.FC = () => {
   const { projectId } = useParams();
@@ -17,17 +18,22 @@ const Board2: React.FC = () => {
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [dataTasks, setDataTasks] = useState<Section[]>([]);
   const [labels, setLabels] = useState<Label[]>([]);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true); // Set loading state to true
+
       try {
         const tasksResponse = await axios.get(`${BASE_URL}/api/tasks/getTasks?projectId=${projectId}`);
         setDataTasks(tasksResponse.data.data);
 
         const labelsResponse = await axios.get(`${BASE_URL}/api/project/getLabels?projectId=${projectId}`);
         setLabels(labelsResponse.data.data);
-        console.log(dataTasks);
+
+        setIsLoading(false); // Set loading state to false
       } catch (error) {
+        setIsLoading(false); // Set loading state to false
         toast.error('An unexpected error occurred');
       }
     };
@@ -95,36 +101,43 @@ const Board2: React.FC = () => {
       className="tasks"
       onClick={() => {
         setShowTaskDetails(false);
-      }}>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {dataTasks.map((section, index) => {
-          return (
-            <SectionComponent
-              key={section._id}
-              userId={userId}
-              dataTasks={{
-                data: dataTasks,
-                setData: setDataTasks,
-              }}
-              section={section}
-              showTaskDetails={{
-                status: showTaskDetails,
-                setStatus: setShowTaskDetails,
-              }}
-              taskDetails={{
-                task: taskDetails,
-                setTask: setTaskDetails,
-              }}
-              labels={{
-                data: labels,
-                setData: (_labels) => {
-                  setLabels(_labels);
-                },
-              }}
-            />
-          );
-        })}
-      </DragDropContext>
+      }}
+    >
+      {isLoading ? (
+        <div className="spinner-container">
+           <Loader/>
+        </div>
+      ) : (
+        <DragDropContext onDragEnd={onDragEnd}>
+          {dataTasks.map((section, index) => {
+            return (
+              <SectionComponent
+                key={section._id}
+                userId={userId}
+                dataTasks={{
+                  data: dataTasks,
+                  setData: setDataTasks,
+                }}
+                section={section}
+                showTaskDetails={{
+                  status: showTaskDetails,
+                  setStatus: setShowTaskDetails,
+                }}
+                taskDetails={{
+                  task: taskDetails,
+                  setTask: setTaskDetails,
+                }}
+                labels={{
+                  data: labels,
+                  setData: (_labels) => {
+                    setLabels(_labels);
+                  },
+                }}
+              />
+            );
+          })}
+        </DragDropContext>
+      )}
       <AddSection
         dataTasks={{
           data: dataTasks,

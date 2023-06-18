@@ -7,7 +7,6 @@ import { Button } from 'reactstrap';
 import { BASE_URL } from '../../utils/utils';
 import { Section } from './InterfaceTask';
  
- 
 interface Props {
   showModal: { status: boolean; setStatus: (value) => void };
   dataTasks: { data: Array<Section>; setData: (data) => void };
