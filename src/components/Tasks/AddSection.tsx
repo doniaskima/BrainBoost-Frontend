@@ -5,6 +5,7 @@ import { Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Button } from 'reactstrap';
 import { BASE_URL } from '../../utils/utils';
+import { Section } from './InterfaceTask';
  
  
 interface Props {
@@ -35,6 +36,8 @@ const AddSection: React.FC<Props> = (props: Props) => {
         toast.success('Success');
         props.dataTasks.setData(res.data.data);
         setShowModal(false);
+       
+
       })
       .catch((err) => {
         toast.error(err.response?.data?.error || 'An unexpected error occurred');

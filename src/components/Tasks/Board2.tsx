@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Section, Task } from './InterfaceTask';
@@ -14,10 +13,10 @@ import axios from 'axios';
 const Board2: React.FC = () => {
   const { projectId } = useParams();
   const [userId, setUserId] = useState('');
-  const [taskDetails, setTaskDetails] = useState<Task>(null);
+  const [taskDetails, setTaskDetails] = useState<Task | null>(null);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
-  const [dataTasks, setDataTasks] = useState<Array<Section>>([]);
-  const [labels, setLabels] = useState<Array<Label>>([]);
+  const [dataTasks, setDataTasks] = useState<Section[]>([]);
+  const [labels, setLabels] = useState<Label[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +26,7 @@ const Board2: React.FC = () => {
 
         const labelsResponse = await axios.get(`${BASE_URL}/api/project/getLabels?projectId=${projectId}`);
         setLabels(labelsResponse.data.data);
-        console.log(labelsResponse);
+        console.log(dataTasks);
       } catch (error) {
         toast.error('An unexpected error occurred');
       }
@@ -50,8 +49,7 @@ const Board2: React.FC = () => {
 
     fetchData();
     fetchUserId();
-  }, []);
-
+  }, [projectId]);
 
   const onDragEnd = (result) => {
     if (!result.destination) {
@@ -63,38 +61,35 @@ const Board2: React.FC = () => {
     let sectionToId = result.destination.droppableId;
     let indexTo = result.destination.index;
     if (sectionToId === sectionFromId) {
-      let section = dataTasks.filter(
-        (section) => section._id === sectionFromId,
-      )[0];
-      let task = section.tasks[indexFrom];
-      section.tasks.splice(indexFrom, 1);
-      let listTask1 = [...section.tasks];
-      let listTask2 = [...section.tasks];
-      section.tasks = [
-        ...listTask1.splice(0, indexTo),
-        task,
-        ...listTask2.splice(indexTo),
-      ];
-      setDataTasks(dataTasks);
+      let updatedDataTasks = dataTasks.map((section) => {
+        if (section._id === sectionFromId) {
+          let tasks = [...section.tasks];
+          let task = tasks.splice(indexFrom, 1)[0];
+          tasks.splice(indexTo, 0, task);
+          return { ...section, tasks };
+        } else {
+          return section;
+        }
+      });
+      setDataTasks(updatedDataTasks);
     } else {
-      let sectionFrom = dataTasks.filter(
-        (section) => section._id === sectionFromId,
-      )[0];
-      let sectionTo = dataTasks.filter(
-        (section) => section._id === sectionToId,
-      )[0];
-      let taskFrom = sectionFrom.tasks[indexFrom];
-      sectionFrom.tasks.splice(indexFrom, 1);
-      let listTask1 = [...sectionTo.tasks];
-      let listTask2 = [...sectionTo.tasks];
-      sectionTo.tasks = [
-        ...listTask1.splice(0, indexTo),
-        taskFrom,
-        ...listTask2.splice(indexTo),
-      ];
+      let updatedDataTasks = dataTasks.map((section) => {
+        if (section._id === sectionFromId) {
+          let tasks = [...section.tasks];
+          let task = tasks.splice(indexFrom, 1)[0];
+          return { ...section, tasks };
+        } else if (section._id === sectionToId) {
+          let tasks = [...section.tasks];
+          tasks.splice(indexTo, 0, task);
+          return { ...section, tasks };
+        } else {
+          return section;
+        }
+      });
+      setDataTasks(updatedDataTasks);
     }
-   
   };
+
   return (
     <div
       className="tasks"
@@ -105,6 +100,7 @@ const Board2: React.FC = () => {
         {dataTasks.map((section, index) => {
           return (
             <SectionComponent
+              key={section._id}
               userId={userId}
               dataTasks={{
                 data: dataTasks,
@@ -141,28 +137,25 @@ const Board2: React.FC = () => {
         size={'xl'}
         projectId={projectId}
       />
-      {taskDetails ? (
-        <>
-          <TaskDetails
-            dataTasks={{
-              data: dataTasks,
-              setData: setDataTasks,
-            }}
-            task={{ task: taskDetails, setTask: setTaskDetails }}
-            show={showTaskDetails}
-            setShow={setShowTaskDetails}
-            labels={{
-              data: labels,
-              setData: (_labels) => {
-                setLabels(_labels);
-              },
-            }}
-          />
-        </>
-      ) : (
-        <></>
+      {taskDetails && (
+        <TaskDetails
+          dataTasks={{
+            data: dataTasks,
+            setData: setDataTasks,
+          }}
+          task={{ task: taskDetails, setTask: setTaskDetails }}
+          show={showTaskDetails}
+          setShow={setShowTaskDetails}
+          labels={{
+            data: labels,
+            setData: (_labels) => {
+              setLabels(_labels);
+            },
+          }}
+        />
       )}
     </div>
   );
 };
+
 export default Board2;

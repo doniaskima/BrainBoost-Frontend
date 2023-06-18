@@ -10,7 +10,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Section, Task } from './InterfaceTask';
-import { Label } from 'reactstrap';
+import { Label } from 'react-bootstrap';
 import { TaskItem } from './TaskItem';
 import ModalTrueFalse from '../../modals/ModalTrueFalse';
  
@@ -31,6 +31,7 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
   const [showModalAddTask, setShowModalAddTask] = useState(false);
   const [showModalTrueFalse, setShowModalTrueFalse] = useState(false);
   const [showModalRename, setShowModalRename] = useState(false);
+  console.log(props.section);
   return (
     <Droppable droppableId={props.section._id} key={props.section._id}>
       {(provided, snapshot) => {
