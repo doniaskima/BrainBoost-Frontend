@@ -35,6 +35,7 @@ import { AuthProvider } from './context/authProvider';
 import Task from './components/Tasks/Task';
 import ChooseList from './components/Tasks/ChooseList';
 import { ToastContainer } from 'react-toastify';
+import PostList from './pages/PostList';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -66,6 +67,7 @@ function App() {
         <Route path="/studyWithme" element={<StudyWithme />} />
         <Route path="tasks/member-project/:projectId" element={<MemberProject/>} />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/tasks/postList/:projectId" element={<PostList />} />
         <Route path="tasks/task-project/:projectId" element={<Task/>} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
