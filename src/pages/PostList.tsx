@@ -13,7 +13,6 @@ export default function PostList() {
     const { projectId } = useParams();
     const [listOnline, setListOnline] = useState([]);
     const [postList, setPostList] = useState([]);
-    console.log(postList)
     const [user, setUser] = useState({
       userId: '',
       role: '',
