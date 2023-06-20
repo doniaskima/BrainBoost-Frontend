@@ -118,7 +118,7 @@ const CreatePost: React.FC<any> = (props: any) => {
                 />
               </div>
               <Row>
-                <Col md={12} className="mt-3 d-flex align-items-center">
+                <Col md={10} className="mt-3 d-flex align-items-center">
                   <label className="label-required">Title</label>
                   <input
                     type="text"
@@ -193,7 +193,7 @@ const CreatePost: React.FC<any> = (props: any) => {
             {!hasCalendarEvent && (
               <Col className="col">
                 <Button className="w-100" onClick={() => setHasCalendarEvent(!hasCalendarEvent)}>
-                  <img className="mr-2" src="/image/add-meeting.svg" alt="" />
+                 
                   More meetings
                 </Button>
               </Col>
