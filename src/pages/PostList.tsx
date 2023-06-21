@@ -7,21 +7,19 @@ import { toast } from 'react-toastify';
 import { BASE_URL } from '../utils/utils';
 import moment from 'moment';
 import PostItem from '../components/Post/PostItem';
-import { useQuery, useMutation } from 'react-query';
 
 export default function PostList() {
   const [userId, setUserId] = useState('');
   const { projectId } = useParams();
-
-  const { data: postList, isLoading: isPostListLoading, isError: isPostListError, refetch: refetchPostList } = useQuery('postList', () =>
-    axios.get(`${BASE_URL}/api/posts/getPosts`)
-  );
+  const [listOnline, setListOnline] = useState([]);
+  const [postList, setPostList] = useState([]);
+  const [user, setUser] = useState('');
 
   const fetchUserId = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/users/getUserId`);
       console.log('User ID Response:', response);
-      const userId = response.data.id; // Update this line
+      const userId = response.data.id;
       console.log('User ID:', userId);
       if (userId) {
         setUserId(userId);
@@ -33,30 +31,50 @@ export default function PostList() {
     }
   };
 
-  const addPostMutation = useMutation((content) =>
-    axios.post(`${BASE_URL}/api/posts/addPost`, {
-      projectId: projectId,
-      content: content,
-    })
-  );
-
   const addPost = (content) => {
-    addPostMutation.mutate(content);
+    axios
+      .post(`${BASE_URL}/api/posts/addPost`, {
+        projectId: projectId,
+        content: content,
+      })
+      .then(async (res) => {
+        toast.success('Successfully created a new post');
+        setPostList(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        toast.error('Failed to create the post!');
+      });
+  };
+
+  const getListPost = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/users/getUserInfo`, {
+        params: {
+          userId: userId,
+        },
+      });
+      setUser(response.data.data);
+      console.log(response.data);
+    } catch (error) {
+      toast.error('Failed to retrieve user information!');
+    }
+    try {
+      const response = await axios.post(`${BASE_URL}/api/posts/getPost`, {
+        projectId: projectId,
+      });
+      setPostList(response.data || []);
+      console.log("setListPosts",response.data)
+    } catch (error) {
+      toast.error('Failed to retrieve posts!');
+    }
+
   };
 
   useEffect(() => {
     fetchUserId();
+    getListPost();
   }, []);
-
-  useEffect(() => {
-    if (addPostMutation.isSuccess) {
-      toast.success('Successfully created a new post');
-      refetchPostList();
-    }
-    if (addPostMutation.isError) {
-      toast.error('Failed to create the post!');
-    }
-  }, [addPostMutation.isSuccess, addPostMutation.isError]);
 
   return (
     <div className="post-list">
@@ -69,20 +87,14 @@ export default function PostList() {
                 addPost(content);
               }}
             />
-            {isPostListLoading ? (
-              <div>Loading...</div>
-            ) : isPostListError ? (
-              <div>Error loading post list</div>
-            ) : (
-              postList.map((post, index) => (
-                <PostItem
-                  key={index}
-                  {...post}
-                  userId={user.userId}
-                  date={moment(post.createdAt).format('YYYY-MM-DD')}
-                />
-              ))
-            )}
+            {postList.map((post) => (
+              <PostItem
+                key={post._id}
+                {...post}
+                userId={userId}
+                date={moment(post.createdAt).format('YYYY-MM-DD')}
+              />
+            ))}
           </div>
         </div>
       </WrapperProject>

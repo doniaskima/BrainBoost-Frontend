@@ -1,0 +1,29 @@
+.tableCalendar {
+    width: 100%;
+    text-align: center;
+    table-layout: fixed;
+    /* border: 1px solid black; */
+}
+thead {
+    width: 100%;
+}
+thead th{
+    font-weight: bold;
+    /* border: 1px solid black; */
+    padding: 10px 0;
+    width: "14%";
+}
+tr td {
+    padding: 5px 10px;
+    /* border: 1px solid black; */
+    height: 100px;
+}
+.dayOutMonth {
+    border: 1px solid #EFEFEF;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+.dayOfMonth {
+    width: 100%;
+}

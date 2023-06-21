@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
 import {
@@ -14,6 +14,8 @@ import {
 } from 'reactstrap';
 import ModalEditPost from './ModalEditPost';
 import ModalTrueFalse from '../../modals/ModalTrueFalse';
+import { BASE_URL } from '../../utils/utils';
+import axios from 'axios';
 
 function PostHeader({
   userId,
@@ -39,14 +41,16 @@ function PostHeader({
         </div>
         <div className="ml-auto bd-highlight">
           <UncontrolledDropdown
-            disabled={userId === author?._id ? false : true}>
+            disabled={userId === author?._id ? false : true}
+          >
             <DropdownToggle
               className="btn-icon-only text-light"
               role="button"
               size="sm"
               color=""
               onClick={(e) => e.preventDefault()}
-              disabled={userId === author?._id ? false : true}>
+              disabled={userId === author?._id ? false : true}
+            >
               <i
                 className={
                   userId === author?.authorId
@@ -57,20 +61,21 @@ function PostHeader({
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
               <DropdownItem
-                onClick={(e) => {
-                  // e.preventDefault()
+                onClick={() => {
                   setShowEdit(true);
                   setDataUser(author);
-                }}>
+                }}
+              >
                 <span style={{ fontWeight: 'bold' }} className="text-primary">
                   Edit post
                 </span>
               </DropdownItem>
               <DropdownItem
-                onClick={(e) => {
+                onClick={() => {
                   setDataDelete(postId);
                   setShowDelete(true);
-                }}>
+                }}
+              >
                 <span style={{ fontWeight: 'bold' }} className="text-danger">
                   Delete post
                 </span>
@@ -103,17 +108,37 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
   const { projectId } = useParams();
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [dataDelete, setDataDelete] = useState();
-  const [dataEdit, setDataEdit] = useState();
-  const [dataUser, setDataUser] = useState({});
+  const [dataDelete, setDataDelete] = useState(null);
+  const [dataUser, setDataUser] = useState(null);
+
   const deletePost = async (postId) => {
-    // Delete post logic
+    try {
+      await axios.post(`${BASE_URL}/api/posts/deletePost/${postId}`)
+      toast.success('Post deleted successfully');
+    } catch (error) {
+      toast.error('Failed to delete the post');
+    }
   };
+  
   const editPost = async (postId, content) => {
-    // Edit post logic
+    try {
+      await axios.post(`${BASE_URL}/api/posts/updatePost/${postId}`, { content });
+      toast.success('Post edited successfully');
+    } catch (error) {
+      toast.error('Failed to edit the post');
+    }
   };
+  
+
   const addComment = async (postId, comment) => {
-    // Add comment logic
+    try {
+      // Perform the add comment request to your backend API
+      // Example:
+      // await axios.post(`/api/posts/${postId}/comments`, { comment });
+      toast.success('Comment added successfully');
+    } catch (error) {
+      toast.error('Failed to add the comment');
+    }
   };
 
   return (
@@ -138,6 +163,16 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
         }}
         funcOnHide={() => {}}
       />
+      <ModalEditPost
+        data={{ content: content, postId: _id, author: { ...dataUser } }}
+        show={showEdit}
+        funcQuit={() => {
+          setShowEdit(false);
+        }}
+        funcEdit={(postId, content) => {
+          editPost(postId, content);
+      }}></ModalEditPost>
+
 
       <div className="post">
         <PostHeader
