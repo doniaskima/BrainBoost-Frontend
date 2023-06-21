@@ -24,7 +24,6 @@ function PostHeader({
   setShowEdit,
   setDataUser,
   setDataDelete,
-  setDataEdit,
 }) {
   return (
     <>
@@ -101,28 +100,28 @@ function PostComments({ comments }) {
 }
 
 function PostItem({ authorId, date, content, comments, _id, userId }) {
-  const { params } = useParams();
-  const { projectId } = params as any;
-  const [showDelete, setShowDetele] = useState(false);
+  const { projectId } = useParams();
+  const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [dataDelete, setDataDelte] = useState();
+  const [dataDelete, setDataDelete] = useState();
   const [dataEdit, setDataEdit] = useState();
   const [dataUser, setDataUser] = useState({});
   const deletePost = async (postId) => {
-
+    // Delete post logic
   };
   const editPost = async (postId, content) => {
-   
+    // Edit post logic
   };
-  const AddComment = async (postId, comment) => {
-   
+  const addComment = async (postId, comment) => {
+    // Add comment logic
   };
+
   return (
     <>
       <ModalTrueFalse
         show={showDelete}
         data={{
-          title: 'delete the post ',
+          title: 'Delete the post',
           button_1: {
             title: 'Cancel',
           },
@@ -131,23 +130,14 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
           },
         }}
         setClose={() => {
-          setShowDetele(false);
+          setShowDelete(false);
         }}
         funcButton_1={() => {}}
         funcButton_2={() => {
           deletePost(dataDelete);
         }}
-        funcOnHide={() => {}}></ModalTrueFalse>
-
-      {/* <ModalEditPost
-        data={{ content: content, postId: _id, author: { ...dataUser } }}
-        show={showEdit}
-        funcQuit={() => {
-          setShowEdit(false);
-        }}
-        funcEdit={(postId, content) => {
-          editPost(postId, content);
-        }}></ModalEditPost> */}
+        funcOnHide={() => {}}
+      />
 
       <div className="post">
         <PostHeader
@@ -155,11 +145,10 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
           author={authorId}
           date={date}
           postId={_id}
-          setShowDelete={setShowDetele}
+          setShowDelete={setShowDelete}
           setShowEdit={setShowEdit}
           setDataUser={setDataUser}
-          setDataDelete={setDataDelte}
-          setDataEdit={setDataEdit}
+          setDataDelete={setDataDelete}
         />
         <div className="post-content row justify-content-center">
           <div className="col-11">
@@ -167,7 +156,6 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
           </div>
         </div>
         <div className="post-content-action">
-      
           <div className="action">
             <div className="action-detail-action">
               <div className="action-detail-action-like">
@@ -185,10 +173,10 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
                   src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254609/react%20fb%20icon/care_1_y1dxgw.png"
                   alt="action"
                 />
-                <span>Bạn và 3 người khác</span>
+                <span>You and 3 others</span>
               </div>
               <div className="action-detail-action-comment">
-                <span>{comments.length} bình luận </span>
+                <span>{comments.length} comments</span>
               </div>
             </div>
             <div className="action-btn">
@@ -202,36 +190,32 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
               <div className="action-btn-comment">
                 <img
                   src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254779/react%20fb%20icon/btn-comment_kc8zvu.png"
-                  alt="action comment "
+                  alt="action comment"
                 />
-                <span className="ml-3">Bình luận</span>
+                <span className="ml-3">Comment</span>
               </div>
             </div>
           </div>
         </div>
 
         <PostComments comments={comments} />
-        <FormGroup className="mb-3 ">
-          <InputGroup className="input-group-alternative ">
-            {/* <InputGroupAddon addonType="prepend">
-              <InputGroupText>
-                <i className="fas fa-edit"></i>
-              </InputGroupText>
-            </InputGroupAddon> */}
+
+        <FormGroup className="mb-3">
+          <InputGroup className="input-group-alternative">
             <Input
               id={_id}
               style={{ backgroundColor: '#f0f2f5' }}
-              placeholder="Viết bình luận"
+              placeholder="Write a comment"
               type="email"
               autoComplete="new-email"
               className="pl-3"
               onChange={(event) => {
                 event.target.onkeyup = (key) => {
                   let comment = document.getElementById(
-                    _id,
+                    _id
                   ) as HTMLInputElement;
                   if (key.keyCode === 13) {
-                    AddComment(_id, comment.value);
+                    addComment(_id, comment.value);
                     comment.value = '';
                   }
                 };
