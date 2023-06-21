@@ -36,6 +36,8 @@ import Task from './components/Tasks/Task';
 import ChooseList from './components/Tasks/ChooseList';
 import { ToastContainer } from 'react-toastify';
 import PostList from './pages/PostList';
+import Editor from './pages/Editor';
+import MyListBlog from './pages/MyListBlog';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -69,6 +71,8 @@ function App() {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/tasks/postList/:projectId" element={<PostList />} />
         <Route path="tasks/task-project/:projectId" element={<Task/>} />
+        <Route path="/my-blog" element={<MyListBlog/>} />
+        {/* <Route path="/editor" element={<Editor/>} /> */}
         <Route path="/profile" element={<Profile />} />
       </Routes>
       <ToastContainer />
