@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
-
 import {
   DropdownItem,
   DropdownMenu,
@@ -14,7 +14,6 @@ import {
 } from 'reactstrap';
 import ModalEditPost from './ModalEditPost';
 import ModalTrueFalse from '../../modals/ModalTrueFalse';
-import { useParams } from 'react-router';
 
 function PostHeader({
   userId,
@@ -102,19 +101,21 @@ function PostComments({ comments }) {
 }
 
 function PostItem({ authorId, date, content, comments, _id, userId }) {
-  const { projectId } = useParams();
+  const { params } = useParams();
+  const { projectId } = params as any;
   const [showDelete, setShowDetele] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [dataDelete, setDataDelte] = useState();
   const [dataEdit, setDataEdit] = useState();
   const [dataUser, setDataUser] = useState({});
   const deletePost = async (postId) => {
+
   };
   const editPost = async (postId, content) => {
-
+   
   };
   const AddComment = async (postId, comment) => {
-
+   
   };
   return (
     <>
@@ -138,7 +139,7 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
         }}
         funcOnHide={() => {}}></ModalTrueFalse>
 
-      <ModalEditPost
+      {/* <ModalEditPost
         data={{ content: content, postId: _id, author: { ...dataUser } }}
         show={showEdit}
         funcQuit={() => {
@@ -146,7 +147,7 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
         }}
         funcEdit={(postId, content) => {
           editPost(postId, content);
-        }}></ModalEditPost>
+        }}></ModalEditPost> */}
 
       <div className="post">
         <PostHeader
@@ -166,59 +167,7 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
           </div>
         </div>
         <div className="post-content-action">
-          {/* <div
-          className="list-btn-action"
-          style={{
-            top: '0px',
-            left: '0px',
-            opacity: 0,
-            backgroundColor: '#f0f2f5',
-            borderRadius: '10px',
-          }}>
-          <span data-name="Thích" className="mr-2">
-            <img
-              src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254615/react%20fb%20icon/like_yak6sm.png"
-              alt="like"
-            />
-          </span>
-          <span data-name="Yêu thích" className="mr-2">
-            <img
-              src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254614/react%20fb%20icon/love_f7xt7j.png"
-              alt="heart"
-            />
-          </span>
-          <span data-name="Thương Thương" className="mr-2">
-            <img
-              src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254609/react%20fb%20icon/care_1_y1dxgw.png"
-              alt="love"
-            />
-          </span>
-          <span data-name="Haha" className="mr-2">
-            <img
-              src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254650/react%20fb%20icon/haha_zjqk0h.png"
-              alt="haha"
-            />
-          </span>
-          <span data-name="Wow" className="mr-2">
-            <img
-              src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254611/react%20fb%20icon/wow_socetu.png"
-              alt="wow"
-            />
-          </span>
-          <span data-name="Buồn" className="mr-2">
-            <img
-              src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254614/react%20fb%20icon/sad_qvnhgr.png"
-              alt="cry"
-            />
-          </span>
-          <span data-name="Phẩn nộ" className="mr-2">
-            <img src="../images/icon/angry.png" alt="angry" />
-          </span>
-          <span data-name="Mãi yêu" className="mr-2">
-            <img src="../images/icon/flower.png" alt="flower" />
-          </span>
-        </div> */}
-
+      
           <div className="action">
             <div className="action-detail-action">
               <div className="action-detail-action-like">

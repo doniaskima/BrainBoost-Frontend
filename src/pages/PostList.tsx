@@ -8,74 +8,81 @@ import { socket } from '../socket';
 import { BASE_URL } from '../utils/utils';
 import moment from 'moment';
 import PostItem from '../components/Post/PostItem';
-
 export default function PostList() {
-    const { projectId } = useParams();
-    const [listOnline, setListOnline] = useState([]);
-    const [postList, setPostList] = useState([]);
-    const [user, setUser] = useState({
-      userId: '',
-      role: '',
-      avatar: '',
-      language: '',
-      email: '',
-      username: '',
-      birthday: '',
-    });
+  const [userId, setUserId] = useState('');
+  const { projectId } = useParams();
+  const [listOnline, setListOnline] = useState([]);
+  const [postList, setPostList] = useState([]);
+  const [user, setUser] = useState('');
 
-    const addPost = (content) => {
-      axios
-        .post(`${BASE_URL}/api/posts/addPost`, {
-          projectId: projectId,
-          content: content,
-        })
-        .then(async (res) => {
-          toast.success('Successfully created a new post');
-          console.log(res);
-          socket.emit('createdPost', {
-            postList: res.data.data,
-            roomId: projectId,
-          });
-        })
-        .catch((err) => {
-          toast.error('Failed to create the post!');
-        });
-    };
+  console.log("postList", postList);
 
-    const getListPost = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/api/posts/getPost`, {
-          params: {
-            projectId: projectId,
-          },
-        });
-        setPostList(response.data.data);
-      } catch (error) {
-         console.log(error);
+  const fetchUserId = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/users/getUserId`);
+      if (userId) {
+        setUserId(userId);
+      } else {
+        toast.error('User ID is missing in the response');
       }
-      try {
-        const response = await axios.get(`${BASE_URL}/api/users/getUserInfo`);
-        setUser(response.data.data);
-      } catch (error) {
-        toast.error('Failed to retrieve user information!');
-      }
-    };
+    } catch (error) {
+      toast.error('Login session ended');
+    }
+  };
 
-    useEffect(() => {
-      getListPost();
-      socket.on('loadPost', (data) => {
-        console.log(data);
-        setPostList(data.data.postList);
+  const addPost = (content) => {
+    axios
+      .post(`${BASE_URL}/api/posts/addPost`, {
+        projectId: projectId,
+        content: content,
+      })
+      .then(async (res) => {
+        toast.success('Successfully created a new post');
+      })
+      .catch((err) => {
+        toast.error('Failed to create the post!');
       });
-    }, []);
-    
+  };
+
+  const getListPost = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/api/posts/getPost`, {
+        params: {
+          projectId: projectId,
+        },
+      });
+      setPostList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      const response = await axios.get(`${BASE_URL}/users/getUserInfo`, {
+        params: {
+          userId: userId,
+        },
+      });
+      setUser(response.data);
+    } catch (error) {
+      toast.error('Failed to retrieve user information!');
+    }
+  };
+
+  useEffect(() => {
+    getListPost();
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
+    console.log("postList", postList);
+  }, [postList]);
+
   return (
     <div className="post-list">
-        <WrapperProject>
+      <WrapperProject>
         <div className="d-flex flex-row justify-content-start">
-            <div className="col-8 mx-2">
+          <div className="col-8 mx-2">
             <CreatePost
-              author={{ name: user.username, avatar: user.avatar }}
+              author={user ? { name: user.name, avatar: user.avatar } : null}
               funcCreatePost={(content) => {
                 addPost(content);
               }}
@@ -88,9 +95,9 @@ export default function PostList() {
                 date={moment(post.createdAt).format('YYYY-MM-DD')}
               />
             ))}
-            </div>
+          </div>
         </div>
-        </WrapperProject>
+      </WrapperProject>
     </div>
   )
 }
