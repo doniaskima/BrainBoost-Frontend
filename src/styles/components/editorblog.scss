@@ -1,0 +1,53 @@
+.editor-blog {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.editor-blog-title {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.editor-blog-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.editor-blog-content {
+  min-height: 300px;
+  padding: 10px;
+}
+
+.editor-blog-save {
+  display: block;
+  margin: 20px auto;
+  width: 200px;
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.editor-blog-save:hover {
+  background-color: #0056b3;
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+}
+
+.modal-body {
+  text-align: center;
+}
+
+.modal-footer {
+  justify-content: center;
+}

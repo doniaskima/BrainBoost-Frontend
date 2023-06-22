@@ -45,16 +45,16 @@ const EditorBlog: React.FC = () => {
   };
   useEffect(() => {
     try {
-        // const response =   axios.get(`${BASE_URL}/users/getUserInfo`, {
-        //   params: {
-        //     userId: userId,
-        //   },
-        // });
-        // setUser({
-        //     _id: res.data.data.userId,
-        //     ...res.data.data,
-        //   });
-        // console.log(response.data);
+        const response =   axios.get(`${BASE_URL}/users/getUserInfo`, {
+          params: {
+            userId: userId,
+          },
+        });
+        setUser({
+            _id: res.data.data.userId,
+            ...res.data.data,
+          });
+        console.log(response.data);
       } catch (error) {
         toast.error('Failed to retrieve user information!');
       }

@@ -6,7 +6,6 @@ import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-
 interface Props {
   size?: 'sm' | 'lg' | 'xl';
   showModal: boolean;
@@ -18,15 +17,15 @@ const ModalCreateVideo: React.FC<Props> = (props: Props) => {
   const [isFree, setIsFree] = useState(true);
   const [isPublic, setIsPublic] = useState(true);
   const [nameVideo, setNameVideo] = useState('');
-  const [thumbnailVideo, setThumbnailVideo] = useState(null);
-  const [urlVideo, setUrlVideo] = useState(null);
+  const [thumbnailVideo, setThumbnailVideo] = useState<string | null>(null);
+  const [urlVideo, setUrlVideo] = useState<string | null>(null);
   const [descriptionVideo, setDescriptionVideo] = useState('');
   const navigate = useNavigate();
 
-  const getVideoId = (url) => {
-    var regEx =
+  const getVideoId = (url: string): string | false => {
+    const regEx =
       '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)';
-    var matches = url.match(regEx);
+    const matches = url.match(regEx);
     if (matches) {
       return matches[1];
     }
@@ -155,32 +154,41 @@ const ModalCreateVideo: React.FC<Props> = (props: Props) => {
             Close
           </button>
           <button
-  type="button"
-  className="btn btn-primary"
-  onClick={() => {
-    let id = getVideoId(urlVideo);
-    axios
-      .post('http://localhost:8080/api/videos/addVideo', {
-        title: nameVideo,
-        description: descriptionVideo,
-        security: !isPublic || props.projectId ? 'Private' : 'Public',
-        videoId: id,
-        thumbnail: thumbnailVideo,
-        projectId: props.projectId,
-      })
-      .then((res) => {
-        let videoId = res.data.data.videoId;
-        toast.success('Success');
-        navigate(`/youtube/${props.projectId}/${videoId}`);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error(error);
-      });
-  }}
->
-  Create Video
-</button>
+            type="button"
+            className="btn btn-primary"
+            onClick={() => {
+              if (urlVideo) {
+                const id = getVideoId(urlVideo);
+                axios
+                  .post('http://localhost:8080/api/videos/addVideo', {
+                    title: nameVideo,
+                    description: descriptionVideo,
+                    security: !isPublic || props.projectId ? 'Private' : 'Public',
+                    videoId: id,
+                    thumbnail: thumbnailVideo,
+                    projectId: props.projectId,
+                  })
+                  .then((res) => {
+                    console.log(res.data); // Debug statement
+                    const responseData = res.data;
+                    if (responseData && responseData.videoId) {
+                      const videoId = responseData.videoId;
+                      console.log('videoId', videoId);
+                      toast.success('Success');
+                      navigate(`/youtube/${props.projectId}/${videoId}`);
+                    } else {
+                      console.error('Invalid response data');
+                    }
+                  })
+                  
+                  .catch((error) => {
+                    console.error('Error:', error);
+                  });
+              }
+            }}
+          >
+            Create Video
+          </button>
         </Modal.Footer>
       </Modal>
     </div>

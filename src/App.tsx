@@ -40,6 +40,8 @@ import Editor from './pages/Editor';
 import MyListBlog from './pages/MyListBlog';
 import ProjectAnalysis from "./components/anylysis/ProjectAnalysis"
 import TrainingList from './components/Training/TrainingList';
+import YoutubeView from './components/Training/YoutubeView';
+import EditorBlog from './components/Blog/EditorBlog';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -75,6 +77,8 @@ function App() {
         <Route path="tasks/task-project/:projectId" element={<Task/>} />
         <Route path="tasks/analysis/:projectId" element={<ProjectAnalysis/>} />
         <Route path="tasks/training/:projectId" element={<TrainingList/>} />
+        <Route path="tasks/training/:projectId/editor/:projectId" element={<EditorBlog/>} />
+        <Route path="/youtube/:projectId/:videoId" element={<YoutubeView/>} />
         <Route path="/my-blog" element={<MyListBlog/>} />
         {/* <Route path="/editor" element={<Editor/>} /> */}
         <Route path="/profile" element={<Profile />} />
