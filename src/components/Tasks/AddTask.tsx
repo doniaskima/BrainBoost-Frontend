@@ -39,7 +39,7 @@ const ModalAddTask: React.FC<Props> = (props: Props) => {
         setDueDate({ from: new Date(), to: new Date() });
         // setErr('');
         props.dataTasks.setData(res.data.data);
-        toast.success('Thành công');
+        toast.success('Task Added');
         props.callBack();
       })
       .catch((err) => {

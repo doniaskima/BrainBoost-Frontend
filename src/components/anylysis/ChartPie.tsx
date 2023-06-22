@@ -1,6 +1,5 @@
 import React from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
-// import {CanvasJSReact} from ''
 
 const ChartPie: React.FC<{
   name: any;

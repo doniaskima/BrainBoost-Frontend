@@ -44,13 +44,6 @@ const ChooseList: React.FC<any> = (props) => {
                Training
              </button>
           </li>
-          <li className="mr-4">
-          <button
-                onClick={() => navigate(`/tasks/member-project/${projectId}`)} // Add an onClick handler to navigate to the tasks page
-             >
-               Settings
-             </button>
-          </li>
         </ul>
       </nav>
     </div>
