@@ -9,12 +9,6 @@ const ChooseList: React.FC<any> = (props) => {
     <div className="choose-list">
       <nav className="navbar navbar-default navbar-static-top d-flex justify-content-center pl-1 pt-2">
         <ul className="nav nav-pills">
-          {/* <li className="mr-4">
-            <NavLink to={'/admin/index'} activeClassName="selected">
-              Home
-              <div className="border"></div>
-            </NavLink>
-          </li> */}
           <li className="mr-4">
              <button
                 onClick={() => navigate(`/tasks/member-project/${projectId}`)} // Add an onClick handler to navigate to the tasks page
@@ -38,10 +32,10 @@ const ChooseList: React.FC<any> = (props) => {
           </li>
           <li className="mr-4">
           <button
-                onClick={() => navigate(`/tasks/member-project/${projectId}`)} // Add an onClick handler to navigate to the tasks page
+                onClick={() => navigate(`/tasks/analysis/${projectId}`)} // Add an onClick handler to navigate to the tasks page
              >
                Anylisis
-             </button>
+          </button>
           </li>
           <li className="mr-4">
           <button
