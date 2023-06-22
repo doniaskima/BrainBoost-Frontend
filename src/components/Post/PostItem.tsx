@@ -111,21 +111,22 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
   const [dataDelete, setDataDelete] = useState(null);
   const [dataUser, setDataUser] = useState(null);
 
-  const deletePost = async (postId) => {
+  const deletePost = async (postId: string) => {
     try {
-      await axios.post(`${BASE_URL}/api/posts/deletePost/${postId}`)
-      toast.success('Post deleted successfully');
+      await axios.post(`${BASE_URL}/api/posts/deletePost`, { postId });
+      console.log("postId",postId)
+      toast.success("Post deleted successfully");
     } catch (error) {
-      toast.error('Failed to delete the post');
+      toast.error("Failed to delete the post");
     }
   };
-  
-  const editPost = async (postId, content) => {
+
+  const editPost = async (postId: string, content: string) => {
     try {
-      await axios.post(`${BASE_URL}/api/posts/updatePost/${postId}`, { content });
-      toast.success('Post edited successfully');
+      await axios.post(`${BASE_URL}/api/posts/updatePost`, { postId, content });
+      toast.success("Post edited successfully");
     } catch (error) {
-      toast.error('Failed to edit the post');
+      toast.error("Failed to edit the post");
     }
   };
   

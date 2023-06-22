@@ -13,6 +13,7 @@ interface Props {
   section: Section;
   size;
 }
+
 const RenameSection: React.FC<Props> = (props: Props) => {
   const [nameSection, setNameSection] = useState('');
   const [descriptionSection, setDescriptionSection] = useState('');

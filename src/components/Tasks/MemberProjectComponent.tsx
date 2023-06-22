@@ -38,7 +38,6 @@ import {
 import ModalInvite from '../../modals/ModalInvite';
 import ModalTrueFalse from '../../modals/ModalTrueFalse';
 import ChooseList from './ChooseList';
-import LazyImage from '../lazy-image';
 import BasePageContainer from './BasePageContainer';
 import { Link } from 'react-router-dom';
 import Loader from '../loader/index'; 
@@ -60,7 +59,7 @@ const MemberProject: React.FC = () => {
   const [listUser, setListUser] = useState<
     Array<{
       _id: string;
-      username: string;
+      name: string;
       email: string;
       role: Role;
       avatar: string;
@@ -227,9 +226,9 @@ const MemberProject: React.FC = () => {
                       columns={[
                         {
                           title: 'Username',
-                          dataIndex: 'username',
+                          dataIndex: 'name',
                           ellipsis: true,
-                          key: 'username',
+                          key: 'name',
                           search: false, // Disable search for this column
                         },
                         {
@@ -247,7 +246,7 @@ const MemberProject: React.FC = () => {
                           render: (_, record) => (
                             <Avatar
                               src={record.avatar}
-                              alt={record.username}
+                              alt={record.name}
                               size={32}
                               className="mr-2"
                             />

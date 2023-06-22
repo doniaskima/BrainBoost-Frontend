@@ -74,6 +74,7 @@ export default function PostList() {
   useEffect(() => {
     fetchUserId();
     getListPost();
+    console.log(postList)
   }, []);
 
   return (
