@@ -1,5 +1,6 @@
 import React from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Bar, Pie, HorizontalBar } from 'react-chartjs-2';
+// import {CanvasJSReact} from ''
 
 const ChartPie: React.FC<{
   name: any;
@@ -69,7 +70,7 @@ const ChartPie: React.FC<{
   } else {
     return (
       <div className="chart" style={{ height: 'auto', paddingBottom: '50px' }}>
-        {/* <HorizontalBar
+        <HorizontalBar
           data={chartDataBar}
           width={chartDataBar.width}
           height={chartDataBar.height}
@@ -89,7 +90,7 @@ const ChartPie: React.FC<{
               text: '',
             },
           }}
-        /> */}
+        />
       </div>
     );
   }

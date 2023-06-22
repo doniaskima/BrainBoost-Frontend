@@ -39,6 +39,7 @@ import PostList from './pages/PostList';
 import Editor from './pages/Editor';
 import MyListBlog from './pages/MyListBlog';
 import ProjectAnalysis from "./components/anylysis/ProjectAnalysis"
+import TrainingList from './components/Training/TrainingList';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -73,6 +74,7 @@ function App() {
         <Route path="/tasks/postList/:projectId" element={<PostList />} />
         <Route path="tasks/task-project/:projectId" element={<Task/>} />
         <Route path="tasks/analysis/:projectId" element={<ProjectAnalysis/>} />
+        <Route path="tasks/training/:projectId" element={<TrainingList/>} />
         <Route path="/my-blog" element={<MyListBlog/>} />
         {/* <Route path="/editor" element={<Editor/>} /> */}
         <Route path="/profile" element={<Profile />} />
