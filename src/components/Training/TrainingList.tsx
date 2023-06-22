@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps*/
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import SVG from 'react-inlinesvg';
+ 
 import { Container } from 'reactstrap';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -108,12 +108,12 @@ const TrainingList: React.FC = () => {
                   className="title mb-4"
                   style={{ cursor: 'pointer' }}
                   onClick={() => handleCreateBlog()}>
-                  <SVG
+                  {/* <SVG
                     src={'/svg/icon.svg'}
                     height={27}
                     width={27}
                     className="mr-3"
-                  />
+                  /> */}
                   <span>Featured Posts</span>
                 </div>
                 <div className="list-templete">
@@ -143,13 +143,13 @@ const TrainingList: React.FC = () => {
                 className="title mb-4"
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleCreateVideo()}>
-                <SVG
+                {/* <SVG
                   src={'/svg/icon.svg'}
                   height={27}
                   width={27}
                   className="mr-3"
-                />
-                <span>Video nổi bật</span>
+                /> */}
+                <span> Featured video</span>
               </div>
               <div className="list-templete">
                 <Carousel
@@ -174,13 +174,13 @@ const TrainingList: React.FC = () => {
             </div>
             <div className="course mt-4">
               <div className="title mb-4">
-                <SVG
+                {/* <SVG
                   src={'/svg/icon.svg'}
                   height={27}
                   width={27}
                   className="mr-3"
-                />
-                <span>Khóa học nổi bật</span>
+                /> */}
+                <span>Featured course</span>
               </div>
               <div className="list-templete">
                 <Templete
