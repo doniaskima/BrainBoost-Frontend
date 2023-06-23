@@ -104,7 +104,7 @@ const Board2: React.FC = () => {
     };
     
     axios
-      .post(`${BASE_URL}/changeSection`, changeSectionData)
+      .post(`${BASE_URL}/api/tasks/changeSection`, changeSectionData)
       .then((res) => {
         setDataTasks(res.data.data.allTasks);
       })

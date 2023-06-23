@@ -172,7 +172,19 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                 </div>
               </div>
             </div>
-             
+            {/* <ModalAddTask
+              show={showModalAddTask}
+              isAddEvent={true}
+              callBack={() => {
+                setShowModalAddTask(false);
+              }}
+              projectId={props.section.projectId}
+              section={props.section}
+              dataTasks={props.dataTasks}
+              labels={{
+                ...props.labels,
+              }}
+            /> */}
            
             <RenameSection
               dataTasks={props.dataTasks}
