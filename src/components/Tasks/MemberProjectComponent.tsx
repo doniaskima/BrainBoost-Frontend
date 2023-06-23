@@ -84,34 +84,42 @@ const MemberProject: React.FC = () => {
     return axios.get(`${BASE_URL}/api/project/getUsers?projectId=${projectId}`);
   }
 
-  const getData = () => {
-    axios
-      .get(`${BASE_URL}/users/getUserId`)
-      .then((response) => {
-        const userId = response.data?.id;
-        if (userId) {
-          setUserId(userId);
-          getUsers(projectId)
-            .then((res) => {
-              console.log(res);
-              setListUser(res.data.users);
-              console.log(listUser);
-              let _userAdmin = res.data.userAdmin.map((userAdmin) => userAdmin._id);
-              setUserIdAdmin(_userAdmin);
-            })
-            .catch((err) => {
-              console.log(err);
-              toast.error('Member has already joined the project');
-            });
-        } else {
-          toast.error('User ID is missing in the response');
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        toast.error('Unable to authenticate user!');
-      });
-  };
+const getData = () => {
+  axios
+    .get(`${BASE_URL}/users/getUserId`)
+    .then((response) => {
+      const userId = response.data?.id;
+      if (userId) {
+        setUserId(userId);
+        getUsers(projectId)
+          .then((res) => {
+            console.log(res);
+            setListUser(res.data.users.map((user) => ({
+              ...user,
+              isAdmin: res.data.userAdmin.some((userAdmin) => userAdmin._id === user._id),
+            })));
+            console.log(listUser);
+            console.log("res.data.userAdmin", res.data.userAdmin);
+            
+            const isAdmin = res.data.userAdmin.some((userAdmin) => userAdmin._id === userId);
+            console.log("isAdmin", isAdmin);
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error('Member has already joined the project');
+          });
+      } else {
+        toast.error('User ID is missing in the response');
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+      toast.error('Unable to authenticate user!');
+    });
+};
+
+  
+  
 
   const setAdmin = async (memberId) => {
     axios
@@ -265,6 +273,28 @@ const MemberProject: React.FC = () => {
                               <Badge color="primary">{record.role}</Badge>
                             );
                             return <div>{role}</div>;
+                          },
+                        },
+                        {
+                          title: 'Set Admin',
+                          dataIndex: 'setAdmin',
+                          key: 'setAdmin',
+                          search: false, // Disable search for this column
+                          render: (_, record) => {
+                            const isAdmin = userIdAdmin.includes(record._id);
+                            return (
+                              <div>
+                                
+                                {!isAdmin && (
+                                  <Button
+                                    color="primary"
+                                    onClick={() => setAdmin(record._id)}
+                                  >
+                                    Set as Admin
+                                  </Button>
+                                )}
+                              </div>
+                            );
                           },
                         },
                         {
