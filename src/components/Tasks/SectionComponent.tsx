@@ -15,6 +15,7 @@ import { TaskItem } from './TaskItem';
 import ModalTrueFalse from '../../modals/ModalTrueFalse';
 import ModalAddTask from './AddTask';
 import { BASE_URL } from '../../utils/utils';
+import axios from 'axios';
 interface Props {
   userId: string;
   section: Section;
