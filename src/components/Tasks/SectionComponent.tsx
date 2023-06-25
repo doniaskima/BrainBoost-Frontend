@@ -1,171 +1,225 @@
+ 
+import {
+  faPencilAlt,
+  faPlus,
+  faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { Button } from 'reactstrap';
-
-import { Label, Section } from './InterfaceTask';
-import { taskService } from '../../services/task/api';
-
+ 
+import RenameSection from './RenameSection';
+import { TaskItem } from './TaskItem';
+import { Label, Section, Task } from './InterfaceTask';
+import ModalAddTask from './ModalAddTask';
+import ModalTrueFalse from './ModalTrueFalse';
+import { sectionService } from '../../services/section/api';
 interface Props {
-  show: boolean;
-  callBack: () => void;
-  isAddEvent?: boolean;
-  projectId?: string;
-  section?: Section;
-  dataTasks?: { data: Array<Section>; setData: (data: Array<Section>) => void };
+  userId: string;
+  section: Section;
+  showTaskDetails: { status: boolean; setStatus: (value) => void };
+  taskDetails: { task: Task; setTask: (task: Task) => void };
+  dataTasks: { data: Array<Section>; setData: (data) => void };
   labels: {
     data: Array<Label>;
-    setData: (labels: Array<Label>) => void;
+    setData: (labels) => void;
   };
 }
-
-const ModalAddTask: React.FC<Props> = (props: Props) => {
-  const [taskName, setTaskName] = useState('');
-  const [description, setDescription] = useState('');
-  const [labelId, setLabelId] = useState<string[]>([]);
-  const [dueDate, setDueDate] = useState<{ from: Date; to: Date }>({
-    from: new Date(new Date().setHours(0)),
-    to: new Date(new Date().setHours(23)),
-  });
-
-  const addTask = () => {
-    if (taskName === '') {
-      toast.error('Please enter all required information');
-      return;
-    }
-    taskService
-      .addTask({
-        projectId: props.projectId,
-        sectionId: props.section._id,
-        name: taskName,
-        description: description,
-        labels: labelId,
-        dueDate: dueDate,
-      })
-      .then((res) => {
-        setLabelId([]);
-        setTaskName('');
-        setDueDate({ from: new Date(), to: new Date() });
-        props.dataTasks.setData(res.data.data);
-        toast.success('Success');
-        props.callBack();
-      })
-      .catch((err) => {
-        toast.error(
-          err.response.data?.error || 'An unexpected error occurred',
-        );
-      });
-  };
-
-  const renderColor = () => {
-    return props.labels.data.map((label) => (
-      <>
-        <button
-          type="button"
-          onClick={() => {
-            if (!labelId.includes(label._id)) {
-              setLabelId([...labelId, label._id]);
-            } else {
-              const newLabelId = labelId.filter((id) => id !== label._id);
-              setLabelId(newLabelId);
-            }
-          }}
-          style={{ backgroundColor: label.color }}
-          className={`${
-            labelId.includes(label._id) ? 'active' : ''
-          } btn mr-1`}></button>
-        <span className="mr-3">{label.name}</span>
-      </>
-    ));
-  };
-
+const SectionComponent: React.FC<Props> = (props: Props) => {
+  const [IsDraggable, setIsDraggable] = useState(true);
+  const [showModalAddTask, setShowModalAddTask] = useState(false);
+  const [showModalTrueFalse, setShowModalTrueFalse] = useState(false);
+  const [showModalRename, setShowModalRename] = useState(false);
   return (
-    <div className="calendar-task">
-      <Modal size="sm" show={props.show} scrollable centered>
-        <Modal.Header>
-          <label className="form-control-label m-0">
-            Section: <b>{props.section?.name}</b>
-          </label>
-        </Modal.Header>
-        <Modal.Body>
-          <form className="new-event--form">
-            <div className="form-group">
-              <label className="form-control-label">Task Name</label>
-              <input
-                placeholder="Event Title"
-                type="text"
-                className="form-control-alternative new-event--title form-control"
-                onChange={(e) => {
-                  setTaskName(e.target.value);
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-control-label d-block mb-3">Label</label>
-              <div
-                data-toggle="buttons"
-                role="group"
-                className="btn-group-toggle btn-group-colors event-tag btn-group align-items-center">
-                {renderColor()}
+    <Droppable droppableId={props.section._id} key={props.section._id}>
+      {(provided, snapshot) => {
+        return (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={{ height: '100%' }}
+            onClick={() => {
+              props.showTaskDetails.setStatus(false);
+            }}>
+            <div className="column-tasks">
+              <div className="column-task-sort">
+                <div className="board-task">
+                  <div className="inner-board-task p-0">
+                    <div className="d-flex bd-highlight align-items-center pl-3">
+                      {/* List task name */}
+                      <div className="p-2 flex-grow-1 bd-highlight">
+                        <b>{props.section.name}</b>
+                      </div>
+                      <div className="p-2 bd-highlight">
+                        <div
+                          className="icon-add"
+                          onClick={() => {
+                            setShowModalAddTask(true);
+                          }}>
+                          <FontAwesomeIcon
+                            icon={faPlus}
+                            className="icon-add-inner"
+                          />
+                        </div>
+                      </div>
+                      <div className="p-2 bd-highlight">
+                        <Dropdown>
+                          <Dropdown.Toggle>...</Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item>
+                              <div
+                                className="d-flex bd-highlight"
+                                onClick={() => {
+                                  setShowModalRename(true);
+                                }}>
+                                <div className="p-2 bd-highlight">
+                                  <FontAwesomeIcon icon={faPencilAlt} />
+                                </div>
+                                <div className="mr-auto p-2 bd-highlight">
+                                  Rename section
+                                </div>
+                              </div>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => {
+                                setShowModalTrueFalse(true);
+                              }}>
+                              <div className="d-flex bd-highlight">
+                                <div className="p-2 bd-highlight">
+                                  <FontAwesomeIcon
+                                    icon={faTrashAlt}
+                                    color="#F06A6F"
+                                  />
+                                </div>
+                                <div
+                                  className="mr-auto p-2 bd-highlight"
+                                  style={{ color: '#F06A6F' }}>
+                                  Delete section
+                                </div>
+                              </div>
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
+                    </div>
+                    <div className="list-tasks">
+                      {props.section.tasks.map((task, index) => {
+                        return (
+                          // Body list task
+                          <div className="d-flex align-items-start flex-column bd-highlight mb-1 w-100">
+                            <div className="mb-auto p-2 bd-highlight w-100">
+                              {/* --------------- Task Item --------------- */}
+                              <Draggable
+                                key={task._id}
+                                draggableId={task._id}
+                                index={index}
+                                isDragDisabled={
+                                  props.userId === task.authorId._id
+                                    ? false
+                                    : true
+                                } // enable||disable drag
+                              >
+                                {(provided, snapshot) => {
+                                  return (
+                                    <div className="w-100">
+                                      <div
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        ref={provided.innerRef}>
+                                        <TaskItem
+                                          dataTasks={{ ...props.dataTasks }}
+                                          task={task}
+                                          isDraggable={{
+                                            status: IsDraggable,
+                                            setStatus: setIsDraggable,
+                                          }}
+                                          showTaskDetails={{
+                                            ...props.showTaskDetails,
+                                          }}
+                                          taskDetails={{ ...props.taskDetails }}
+                                        />
+                                      </div>
+                                    </div>
+                                  );
+                                }}
+                              </Draggable>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="form-group">
-              <label className="form-control-label">Description</label>
-              <textarea
-                style={{ height: '100px' }}
-                placeholder="Task Description"
-                className="form-control-alternative edit-event--description textarea-autosize form-control mr-2"
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}></textarea>
-              <i className="form-group--bar"></i>
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          {props.isAddEvent ? (
-            <div>
-              <Button
-                style={{
-                  backgroundColor: '#7b68ee',
-                }}
-                onClick={() => {
-                  addTask();
-                }}>
-                Save
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <Button
-                style={{
-                  backgroundColor: '#5e72e4',
-                }}
-                onClick={(e) => {}}>
-                Update
-              </Button>
-              <Button
-                style={{
-                  backgroundColor: '#f5365c',
-                }}
-                onClick={(e) => {}}>
-                Delete
-              </Button>
-            </div>
-          )}
-          <button
-            type="button"
-            className="ml-auto btn btn-link"
-            onClick={() => props.callBack()}
-            style={{
-              color: '#5e72e4',
-            }}>
-            Close
-          </button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+            
+            <ModalAddTask
+              show={showModalAddTask}
+              isAddEvent={true}
+              callBack={() => {
+                setShowModalAddTask(false);
+              }}
+              projectId={props.section.projectId}
+              section={props.section}
+              dataTasks={props.dataTasks}
+              labels={{
+                ...props.labels,
+              }}
+            />
+            <RenameSection
+              dataTasks={props.dataTasks}
+              projectId={props.section.projectId}
+              showModal={{
+                status: showModalRename,
+                setStatus: (status) => {
+                  setShowModalRename(status);
+                },
+              }}
+              size="xl"
+              section={props.section}
+            />
+            <ModalTrueFalse
+              size="sm"
+              show={showModalTrueFalse}
+              data={{
+                title: `delete section ${props.section.name}`,
+                button_1: { title: 'No' },
+                button_2: { title: 'Yes' },
+              }}
+              setClose={() => {
+                setShowModalTrueFalse(false);
+              }}
+              funcButton_1={() => {
+      
+                setShowModalTrueFalse(false);
+              }}
+              funcButton_2={() => {
+ 
+                sectionService
+                  .deleteSection({
+                    projectId: props.section.projectId,
+                    sectionId: props.section._id,
+                  })
+                  .then((res) => {
+                    setShowModalTrueFalse(false);
+                    props.showTaskDetails.setStatus(false);
+                    props.dataTasks.setData(res.data.data);
+                    toast.success(' Delete section successfully');
+                  })
+                  .catch((err) => {
+                    toast.error(
+                      err.response.data.error ||
+                        'An unexpected error has occurred',
+                    );
+                  });
+              }}
+            />
+          </div>
+        );
+      }}
+    </Droppable>
   );
 };
-
-export default ModalAddTask;
+export default SectionComponent;
