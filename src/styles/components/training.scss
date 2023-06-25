@@ -1,13 +1,16 @@
 .training-list {
+  width:100%;
     .react-multi-carousel-list {
       margin: 0;
     }
+    
     .list-templete {
       display: flex;
+ 
       & .templete-content {
         background-color: #97a0af;
         background-size: cover;
-        background-position: 50%;
+        background-position: 100%;
         -moz-border-radius: 15px;
         -webkit-border-radius: 15px;
         border-radius: 15px;
@@ -94,7 +97,8 @@
     display: flex;
     color: #757575;
     font-size: 1.2rem;
-    margin: 0 -24px;
+    align-items: center;
+    
     div {
       margin-left: 24px;
     }
@@ -109,7 +113,7 @@
       vertical-align: -0.125em;
     }
     .svg-inline--fa.fa-w-16 {
-      width: 1em;
+      width: 4em;
     }
   }
   

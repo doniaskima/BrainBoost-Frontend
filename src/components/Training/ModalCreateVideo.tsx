@@ -66,7 +66,7 @@ const ModalCreateVideo: React.FC<Props> = (props: Props) => {
             </div>
             <div className="form-group">
               <input
-                placeholder="Nhập thumbnail"
+                placeholder="  thumbnail"
                 type="text"
                 className="form-control-alternative new-event--title form-control"
                 onChange={(e) => {

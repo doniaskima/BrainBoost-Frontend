@@ -8,9 +8,8 @@ const YoutubeView: React.FC<any> = (props: any) => {
   const { videoId } = useParams();
   const opts = {
     height: '600',
-    width: '1100',
+    width: '900',
     playerVars: {
-      // https://developers.google.com/youtube/player_parameters
       autoplay: 1,
     },
   };
