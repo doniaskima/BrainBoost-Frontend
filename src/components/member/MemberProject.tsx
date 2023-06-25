@@ -75,7 +75,7 @@ const MemberProject: React.FC = () => {
         setUserId(res.data.data.id);
       })
       .catch((err) => {
-        toast.error('Không thể xác thực người dùng!');
+        toast.error(' Unable to authenticate the user!');
       });
     projectService
       .getUsers(projectId)
@@ -88,14 +88,14 @@ const MemberProject: React.FC = () => {
         setUserIdAdmin(_userAdmin);
       })
       .catch((err) => {
-        toast.error('Một lỗi không mong muốn đã xảy ra');
+        toast.error(' A unexpected error occurred.');
       });
   };
   const setAdmin = async (memberId) => {
     projectService
       .setAdmin({ projectId: projectId, memberId: memberId })
       .then((res) => {
-        toast.success('Thêm quyền admin thành công');
+        toast.success(' Successfully added admin privileges.');
         setListUser(res.data.data.users);
         setUserIdAdmin([]);
         let _userAdmin = [];
@@ -105,14 +105,14 @@ const MemberProject: React.FC = () => {
         setUserIdAdmin([..._userAdmin]);
       })
       .catch((err) => {
-        toast.error(err.response.data.err || 'Một lỗi không mong muốn đã xảy');
+        toast.error(err.response.data.err || ' An unexpected error occurred');
       });
   };
   const dropAdmin = async (memberId) => {
     projectService
       .dropAdmin({ projectId: projectId, memberId: memberId })
       .then((res) => {
-        toast.success('Xóa quyền admin thành công');
+        toast.success(' Successfully removed admin privileges.');
         setListUser(res.data.data.users);
         setUserIdAdmin([]);
         let _userAdmin = [];
@@ -124,7 +124,7 @@ const MemberProject: React.FC = () => {
       })
       .catch((err) => {
         toast.error(
-          err.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
+          err.response?.data?.error || ' An unexpected error occurred.',
         );
       });
   };
@@ -132,7 +132,7 @@ const MemberProject: React.FC = () => {
     projectService
       .deleteMember({ projectId: projectId, memberId: memberId })
       .then((res) => {
-        toast.success('Xóa thành viên thành công!');
+        toast.success(' Member removal successful!');
         setListUser(res.data.data.users);
         setUserIdAdmin([]);
         let _userAdmin = [];
@@ -239,7 +239,7 @@ const MemberProject: React.FC = () => {
                   setDataModal({
                     id: user._id,
                     type: 'setAdmin',
-                    title: 'Bạn có muốn cấp quyền Admin cho ' + user.username,
+                    title: ' Would you like to grant Admin privileges to? ' + user.username,
                   });
                 }}>
                 <span className="text-primary">
@@ -252,7 +252,7 @@ const MemberProject: React.FC = () => {
                   setDataModal({
                     id: user._id,
                     type: 'dropAdmin',
-                    title: 'Bạn có muốn xóa quyền Admin của ' + user.username,
+                    title: ' Would you like to remove Admin privileges from? ' + user.username,
                   });
                 }}>
                 <span className="text-primary">
@@ -265,7 +265,7 @@ const MemberProject: React.FC = () => {
                   setDataModal({
                     id: user._id,
                     type: 'deleteMember',
-                    title: 'Bạn có muốn xóa ' + user.username + ' khỏi Project',
+                    title: ' Do you want to remove? ' + user.username + '  from the project?',
                   });
                 }}>
                 <span className="text-danger">

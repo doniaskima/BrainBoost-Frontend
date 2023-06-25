@@ -71,7 +71,7 @@ const ProjectAnalysis: React.FC = () => {
         setAllUser(res.data.data);
       })
       .catch((err) => {
-        toast.error(err.response?.data?.error || 'Lỗi lấy dữ liệu');
+        toast.error(err.response?.data?.error || ' Data retrieval error');
       });
   }, [projectId]);
   useEffect(() => {
@@ -384,9 +384,9 @@ const ProjectAnalysis: React.FC = () => {
                                 },
                               ],
                               labels: [
-                                'Đã hoàn thành',
-                                'Chưa hoàn thành',
-                                'Quá hạn',
+                                ' Completed',
+                                'Incomplete',
+                                ' overdue',
                               ],
                             },
                           }}

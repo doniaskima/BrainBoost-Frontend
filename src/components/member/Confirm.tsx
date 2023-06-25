@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
- import { confirmService } from '../../../services/mailer/api';
+ 
 import { useParams } from 'react-router-dom';
+import { confirmService } from '../../services/mailer/api';
 
 const Confirm: React.FC = () => {
   const { confirmId } = useParams();
@@ -21,7 +22,7 @@ const Confirm: React.FC = () => {
             alert('Error!!!');
             window.location.href = '/admin/index';
         }
-        // alert("Lỗi xác nhận!");
+ 
       });
   }, [confirmId]);
   return <> </>;

@@ -11,12 +11,12 @@ const Friend: React.FC<any> = (props) => {
       .getUserJoin({ projectId: props.projectId })
       .then((res) => {
         setListUser(res.data.data.users);
-        // console.log(projectId);
+  
       })
       .catch((err) => { });
   }, [props.projectId]);
   function MemberStatus({ username, avatar, status }) {
-    //status: online || offline
+ 
     return (
       <div className="member">
         <img
@@ -39,15 +39,11 @@ const Friend: React.FC<any> = (props) => {
               username={value.username}
               avatar={value.avatar}
               status={'online'
-                // props.listOnline.indexOf(value.userId) !== -1
-                //   ? 'online'
-                //   : 'offline'
+ 
               }></MemberStatus>
           );
         })}
-        {/* <div className="more">
-          <a href="/">Xem thêm</a>
-        </div> */}
+ 
       </div>
     </div>
   );

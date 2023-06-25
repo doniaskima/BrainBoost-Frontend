@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
- 
+
 import { Section, Task } from '../Tasks/InterfaceTask';
 import { randomColor } from 'randomcolor';
 import { TaskUser } from './ProjectAnalysis';
@@ -107,7 +107,7 @@ const ModalDetailTask: React.FC<Props> = (props: Props) => {
     <>
       <Modal
         size={props.size ? 'sm' : props.size}
-        show={props.show} // false: Không hiển thị, true: hiển thị
+        show={props.show} // false: Do not display, true: Display
         onHide={() => {
           props.funcOnHide();
         }}
@@ -178,7 +178,7 @@ const ModalDetailTask: React.FC<Props> = (props: Props) => {
               <div className="col-11">
                 <div className="row">
                   <h3 style={{ color: '#0b8000' }}>
-                    Đã hoàn thành ({complete.complete.length})
+                  Completed ({complete.complete.length})
                   </h3>
                 </div>
                 <div className="row" style={{ width: '100%' }}>
@@ -196,7 +196,7 @@ const ModalDetailTask: React.FC<Props> = (props: Props) => {
               <div className="col-11">
                 <div className="row">
                   <h3 style={{ color: '#bda400' }}>
-                    Chưa hoàn thành ({complete.unComplete.length})
+                  Incomplete ({complete.unComplete.length})
                   </h3>
                 </div>
                 <div className="row" style={{ width: '100%' }}>
@@ -214,7 +214,7 @@ const ModalDetailTask: React.FC<Props> = (props: Props) => {
               <div className="col-11">
                 <div className="row">
                   <h3 style={{ color: '#ff4a4a' }}>
-                    Quá hạn ({overdeadline.length})
+                  Overdue ({overdeadline.length})
                   </h3>
                 </div>
                 <div className="row" style={{ width: '100%' }}>
@@ -232,10 +232,12 @@ const ModalDetailTask: React.FC<Props> = (props: Props) => {
     </>
   );
 };
+
 interface PropsItemTemp {
   task: Task;
   color?: string;
 }
+
 export const ItemTemp: React.FC<PropsItemTemp> = (props: PropsItemTemp) => {
   const formatDate = (textDate) => {
     let date = new Date(textDate);
@@ -251,6 +253,7 @@ export const ItemTemp: React.FC<PropsItemTemp> = (props: PropsItemTemp) => {
       year
     );
   };
+
   return (
     <div
       className="card"

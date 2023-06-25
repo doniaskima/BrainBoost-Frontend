@@ -78,7 +78,7 @@ function App() {
             });
           }
         } else {
-          toast.error('Tài khoản của bạn đã bị khóa');
+          toast.error(' Your account has been locked');
           userService
             .logOut()
             .then((res) => {
@@ -98,7 +98,7 @@ function App() {
     if (user) {
       socket.on('newNotification-client', (data) => {
         if (data.authorId !== user._id && user._id === data.userId) {
-          toast('Bạn có thông báo mới!');
+          toast(' You have a new notification!');
         }
       });
     }
