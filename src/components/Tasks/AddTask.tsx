@@ -61,7 +61,7 @@ export const AddTaskModal: React.FC<Props> = (props: Props) => {
         centered
       >
         <Modal.Header closeButton>
-          <div className="d-flex bd-highlight justify-content-center align-items-center">
+          <div className="d-flex bd-highlight justify-content-start align-items-center">
             <div>
               <FontAwesomeIcon icon={faPlusCircle} />
             </div>

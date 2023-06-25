@@ -81,7 +81,8 @@ const ModalAddTask: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="calendar-task">
-      <Modal size="sm" show={props.show} scrollable centered>
+      
+      <Modal size="sm" className="width-" show={props.show} scrollable centered>
         <Modal.Header>
           <label className="form-control-label m-0">
             Section: <b>{props.section?.name}</b>
@@ -90,7 +91,6 @@ const ModalAddTask: React.FC<Props> = (props: Props) => {
         <Modal.Body>
           <form className="new-event--form">
             <div className="form-group">
-              <label className="form-control-label">Task Name</label>
               <input
                 placeholder="Event Title"
                 type="text"
@@ -101,18 +101,16 @@ const ModalAddTask: React.FC<Props> = (props: Props) => {
               />
             </div>
             <div className="form-group">
-              <label className="form-control-label d-block mb-3">Label</label>
+              <label className="flex justify-between">Label</label>
               <div
-                data-toggle="buttons"
-                role="group"
                 className="btn-group-toggle btn-group-colors event-tag btn-group align-items-center">
                 {renderColor()}
               </div>
             </div>
             <div className="form-group">
-              <label className="form-control-label">Description</label>
+              <label className="flex justify-between">Description</label>
               <textarea
-                style={{ height: '100px' }}
+                style={{ height: '80px' }}
                 placeholder="Task Description"
                 className="form-control-alternative edit-event--description textarea-autosize form-control mr-2"
                 onChange={(e) => {
@@ -125,15 +123,17 @@ const ModalAddTask: React.FC<Props> = (props: Props) => {
         <Modal.Footer>
           {props.isAddEvent ? (
             <div>
-              <Button
-                style={{
-                  backgroundColor: '#7b68ee',
-                }}
-                onClick={() => {
+      
+                           
+              <button className="bookmarkBtn"    onClick={() => {
                   addTask();
                 }}>
-                Save
-              </Button>
+  <span className="IconContainer"> 
+    <svg viewBox="0 0 384 512" height="0.9em" className="icon"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"></path></svg>
+  </span>
+  <p className="text">Save</p>
+</button>
+              
             </div>
           ) : (
             <div>
@@ -153,15 +153,11 @@ const ModalAddTask: React.FC<Props> = (props: Props) => {
               </Button>
             </div>
           )}
+ 
           <button
-            type="button"
-            className="ml-auto btn btn-link"
-            onClick={() => props.callBack()}
-            style={{
-              color: '#5e72e4',
-            }}>
-            Close
-          </button>
+               onClick={() => props.callBack()}
+                className="noselect"><span className="text">Close</span><span className="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+             
         </Modal.Footer>
       </Modal>
     </div>

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import {
   DropdownItem,
   DropdownMenu,
-  DropdownToggle,
+ 
   FormGroup,
   Input,
   InputGroup,
@@ -30,6 +30,7 @@ function PostHeader({
   setDataDelete,
   setDataEdit,
 }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   return (
     <>
       <div className="d-flex bd-highlight mb-3">
@@ -43,46 +44,31 @@ function PostHeader({
           </div>
         </div>
         <div className="ml-auto bd-highlight">
-          <UncontrolledDropdown
-            disabled={userId === author?._id ? false : true}>
-            <DropdownToggle
-              className="btn-icon-only text-light"
-              role="button"
-              size="sm"
-              color=""
-              onClick={(e) => e.preventDefault()}
-              disabled={userId === author?._id ? false : true}>
-              <i
-                className={
-                  userId === author?.authorId
-                    ? 'fas fa-ellipsis-v text-info'
-                    : 'fas fa-ellipsis-v '
-                }
-              />
-            </DropdownToggle>
-            <DropdownMenu className="dropdown-menu-arrow" right>
-              <DropdownItem
-                onClick={(e) => {
-                  // e.preventDefault()
-                  setShowEdit(true);
-                  setDataUser(author);
-                }}>
-                <span style={{ fontWeight: 'bold' }} className="text-primary">
-                  Edit post
-                </span>
-              </DropdownItem>
-              <DropdownItem
-                onClick={(e) => {
-                  setDataDelete(postId);
-                  setShowDelete(true);
-                }}>
-                <span style={{ fontWeight: 'bold' }} className="text-danger">
-                  Delete post
-                </span>
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        </div>
+        <UncontrolledDropdown disabled={userId !== author?._id}>
+ 
+  <div className="flex gap-3">
+    <div onClick={() => {
+      setShowEdit(true);
+      setDataUser(author);
+    }}>
+ <button className="editPost">
+  <p>Edit Post</p>
+</button>
+    </div>
+    <div onClick={() => {
+      setDataDelete(postId);
+      setShowDelete(true);
+    }}>
+     <button className="delete-post">
+     
+  <svg viewBox="0 0 448 512"  className="svgIcon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
+</button>
+    </div>
+  </div>
+</UncontrolledDropdown>
+
+</div>
+
       </div>
     </>
   );
@@ -199,41 +185,14 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
         <div className="post-content-action">
           <div className="action">
             <div className="action-detail-action">
-              <div className="action-detail-action-like">
-                <img
-                  src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254615/react%20fb%20icon/like_yak6sm.png"
-                  alt="like"
-                />
-                <img
-                  className="mr-1"
-                  src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254611/react%20fb%20icon/wow_socetu.png"
-                  alt="action"
-                />
-                <img
-                  className="mr-3"
-                  src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254609/react%20fb%20icon/care_1_y1dxgw.png"
-                  alt="action"
-                />
-                <span>You and 3 other people</span>
-              </div>
-              <div className="action-detail-action-comment">
+              <div className="ml-0">
                 <span>{comments.length} Comment</span>
               </div>
             </div>
-            <div className="action-btn">
-              <div className="action-btn-like">
-                <img
-                  src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254615/react%20fb%20icon/like_yak6sm.png"
-                  alt="like"
-                />
-                <span className="color-gr-yellow ml-3">Like</span>
-              </div>
-              <div className="action-btn-comment">
-                <img
-                  src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254779/react%20fb%20icon/btn-comment_kc8zvu.png"
-                  alt="action comment "
-                />
-                <span className="ml-3">Comment</span>
+            <div className="action-btn  ">
+              <div className="pt-3 pb-3">
+                
+                <span className="ml-0">Comment</span>
               </div>
             </div>
           </div>

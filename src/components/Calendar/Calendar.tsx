@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom';
 import { Label, Section, Task } from '../Tasks/InterfaceTask';
 import { projectService } from '../../services/projects/api';
 import { taskService } from '../../services/task/api';
+import Loader from "../Tasks/TaskLoader"
 
 const Calendar: React.FC<any> = (props) => {
   const { projectId } = useParams();
@@ -33,29 +34,38 @@ const Calendar: React.FC<any> = (props) => {
     from: new Date().toJSON(),
     to: new Date().toJSON(),
   });
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(() => {
+    setIsLoading(true);
     projectService
       .getLabels(projectId)
       .then((res) => {
         setLabels(res.data.data);
+        setIsLoading(false);
       })
       .catch((err) => {
-        toast.error(err.response.data.error || 'Lỗi lấy dữ liệu');
+        toast.error(err.response.data.error || 'Error retrieving data');
+        setIsLoading(false);
       });
   }, []);
+
   useEffect(() => {
+    setIsLoading(true);
     taskService
       .getTasks(projectId)
       .then((res) => {
-        // res.data.data: all sections
         setDataTasks(res.data.data);
+        setIsLoading(false);
       })
       .catch((err) => {
         toast.error(
-          err?.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
+          err?.response?.data?.error || 'An unexpected error occurred',
         );
+        setIsLoading(false);
       });
   }, []);
+
   useEffect(() => {
     let _events = [];
     dataTasks.forEach((section: Section) => {
@@ -71,8 +81,8 @@ const Calendar: React.FC<any> = (props) => {
     });
     setEvents(_events);
   }, [dataTasks]);
+
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    // add Task
     let from = new Date(selectInfo.start);
     let to = new Date(selectInfo.end);
     to.setDate(to.getDate() - 1);
@@ -83,6 +93,7 @@ const Calendar: React.FC<any> = (props) => {
     });
     setIsShowAdd(true);
   };
+
   const handleEventClick = (clickInfo: EventClickArg) => {
     if (clickInfo.event._def.extendedProps.dataTask) {
       setTaskCurrent(clickInfo.event._def.extendedProps.dataTask);
@@ -96,6 +107,7 @@ const Calendar: React.FC<any> = (props) => {
       setIsShowAdd(true);
     }
   };
+
   const renderEventContent = (eventContent: EventContentArg) => {
     return (
       <>
@@ -104,9 +116,12 @@ const Calendar: React.FC<any> = (props) => {
       </>
     );
   };
+
   return (
-  
-      <div className="calendar">
+    <div className="calendar">
+      {isLoading ? (
+        <div className="flex justify-center align-items-center"><Loader/></div>
+      ) : (
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -124,47 +139,48 @@ const Calendar: React.FC<any> = (props) => {
           eventContent={renderEventContent}
           eventClick={handleEventClick}
         />
-        <ModalEditTaskCalendar
-          projectId={projectId}
-          show={{
-            status: isShow,
-            setStatus: (value) => {
-              setIsShow(value);
-              setTaskCurrent(null);
-            },
-          }}
-          dataTasks={{
-            data: dataTasks,
-            setData: (data) => setDataTasks(data),
-          }}
-          labels={{
-            data: labels,
-            setData: (labels) => setLabels(labels),
-          }}
-          task={taskCurrent}
-        />
-        <ModalAddTaskCalendar
-          dataTasks={{
-            data: dataTasks,
-            setData: (data) => {
-              setDataTasks(data);
-            },
-          }}
-          labels={{
-            data: labels,
-            setData: (labels) => setLabels(labels),
-          }}
-          projectId={projectId}
-          show={{
-            status: isShowAdd,
-            setStatus: (status) => {
-              setIsShowAdd(status);
-            },
-          }}
-          dueDate={dateSelect}
-        />
-      </div>
-    
+      )}
+      <ModalEditTaskCalendar
+        projectId={projectId}
+        show={{
+          status: isShow,
+          setStatus: (value) => {
+            setIsShow(value);
+            setTaskCurrent(null);
+          },
+        }}
+        dataTasks={{
+          data: dataTasks,
+          setData: (data) => setDataTasks(data),
+        }}
+        labels={{
+          data: labels,
+          setData: (labels) => setLabels(labels),
+        }}
+        task={taskCurrent}
+      />
+      <ModalAddTaskCalendar
+        dataTasks={{
+          data: dataTasks,
+          setData: (data) => {
+            setDataTasks(data);
+          },
+        }}
+        labels={{
+          data: labels,
+          setData: (labels) => setLabels(labels),
+        }}
+        projectId={projectId}
+        show={{
+          status: isShowAdd,
+          setStatus: (status) => {
+            setIsShowAdd(status);
+          },
+        }}
+        dueDate={dateSelect}
+      />
+    </div>
   );
 };
+
 export default Calendar;

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Container } from 'reactstrap';
 import Calendar from '../Calendar/Calendar';
-import Board2 from './Board2';
+import Board2 from './Board';
 import Timeline from './Timeline';
 import {CiViewBoard} from "react-icons/ci"
 import WrapperProject from './WrapperProject';

@@ -51,7 +51,7 @@ const ModalEditTaskCalendar: React.FC<Props> = (props: Props) => {
   }, [props.task]);
   const updateTask = () => {
     if (!taskName) {
-      toast.error('Hãy nhập tên task trước khi update');
+      toast.error('Please enter a task name before updating.');
       return;
     }
     taskService
@@ -75,25 +75,25 @@ const ModalEditTaskCalendar: React.FC<Props> = (props: Props) => {
               sectionId2: sectionId,
             })
             .then((res) => {
-              toast.success('Thành công');
+              toast.success('Success');
               props.dataTasks.setData(res.data.data.allTasks);
               props.show.setStatus(false);
             })
             .catch((err) => {
               toast.error(
                 err.response?.data?.error ||
-                  'Một lỗi không mong muốn đã xảy ra',
+                'An unexpected error occurred.',
               );
             });
         } else {
-          toast.success('Thành công');
+          toast.success('Success');
           props.dataTasks.setData(res.data.data.allTasks);
           props.show.setStatus(false);
         }
       })
       .catch((err) => {
         toast.error(
-          err.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
+          err.response?.data?.error || ' An unexpected error occurred.',
         );
       });
   };
@@ -104,13 +104,13 @@ const ModalEditTaskCalendar: React.FC<Props> = (props: Props) => {
         taskId: props.task._id,
       })
       .then((res) => {
-        toast.success('Thành công');
+        toast.success('Success');
         props.show.setStatus(false);
         props.dataTasks.setData(res.data.data);
       })
       .catch((err) => {
         toast.error(
-          err.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
+          err.response?.data?.error || ' An unexpected error occurred.',
         );
       });
   };
@@ -156,217 +156,202 @@ const ModalEditTaskCalendar: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="calendar-task">
-      <Modal
-        size="sm"
-        show={props.show.status} // false: Không hiển thị, true: hiển thị
-        scrollable
-        onHide={() => {
-          props.show.setStatus(false);
-        }}
-        centered>
-        <Modal.Header>
-          <h1>Update</h1>
-        </Modal.Header>
-        <Modal.Body>
-          <form className="new-event--form modalEditTaskCalendar">
-            <div className="form-group">
-              <label className="form-control-label">Tên task</label>
-              <div className="task-body-second">
-                <input
-                  placeholder="Task name"
-                  defaultValue={props.task?.name}
-                  type="text"
-                  className="form-control-alternative new-event--title form-control"
-                  onChange={(e) => {
-                    setTaskName(e.target.value);
-                  }}
-                />
-              </div>
+    <Modal
+      size="sm"
+      show={props.show.status}
+      scrollable
+      onHide={() => {
+        props.show.setStatus(false);
+      }}
+      centered
+    >
+      <Modal.Header>
+        <h1>Update</h1>
+      </Modal.Header>
+      <Modal.Body>
+        <form className="new-event--form modalEditTaskCalendar">
+          <div className="form-group">
+            <label>Task name</label>
+            <input
+              placeholder="Task name"
+              defaultValue={props.task?.name}
+              type="text"
+              className="form-control-alternative new-event--title form-control"
+              onChange={(e) => {
+                setTaskName(e.target.value);
+              }}
+            />
+          </div>
+          <div className="form-group">
+            <label>Section</label>
+            <Dropdown
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
+              <Dropdown.Toggle style={{ padding: '10px' }}>
+                {getSectionCurrent()?.name || ''}
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="mb-4">
+                {props.dataTasks?.data?.map((section) => (
+                  <Dropdown.Item
+                    className="pb-8"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setSectionId(section._id);
+                    }}
+                  >
+                    {section.name}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          <div className="form-group">
+            <label>Label</label>
+            <div className="btn-group-toggle btn-group-colors event-tag btn-group align-items-center task-body-second" data-toggle="buttons" role="group">
+              {renderColor()}
             </div>
-            <div className="form-group">
-              <label className="form-control-label d-block mb-3">Section</label>
-              <div className="bd-highlight task-body-second">
-                <Dropdown
+          </div>
+          <div className="">
+            <label>Assignment</label>
+            <DropdownAssignee
+              assignment={assignment || []}
+              projectId={props.projectId}
+              config={{
+                isShowName: false,
+              }}
+              handleInvite={(user: Assignment) => {
+                if (!getAssignmentId().includes(user._id)) {
+                  setAssignment([...assignment, user]);
+                }
+              }}
+              handleDelete={(user) => {
+                if (getAssignmentId().includes(user._id)) {
+                  assignment.splice(getAssignmentId().indexOf(user._id), 1);
+                  setAssignment([...assignment]);
+                }
+              }}
+            />
+          </div>
+          <div className="form-group">
+            <label>Dependencies</label>
+            <Dropdown
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
+              <Dropdown.Toggle style={{ padding: '10px' }}>
+                {dependencies?.name || '_'}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item
                   onClick={(event) => {
                     event.stopPropagation();
-                  }}>
-                  <Dropdown.Toggle style={{ padding: '10px' }}>
-                    {getSectionCurrent()?.name || ''}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {props.dataTasks?.data?.map((section) => (
-                      <Dropdown.Item
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          setSectionId(section._id);
-                        }}>
-                        {section.name}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </div>
-            <div className="form-group">
-              <label className="form-control-label d-block mb-3">Label</label>
-              <div
-                data-toggle="buttons"
-                role="group"
-                className="btn-group-toggle btn-group-colors event-tag btn-group align-items-center task-body-second">
-                {renderColor()}
-              </div>
-            </div>
-            <div className="form-group">
-              <label className="form-control-label d-block mb-3">
-                Assignment
-              </label>
-              <div className="bd-highlight task-body-second">
-                <DropdownAssignee
-                  assignment={assignment || []}
-                  projectId={props.projectId}
-                  config={{
-                    isShowName: false,
+                    setDependencies(null);
                   }}
-                  handleInvite={(user: Assignment) => {
-                    if (!getAssignmentId().includes(user._id)) {
-                      // setAssignmentId([...assignmentId, user._id]);
-                      setAssignment([...assignment, user]);
-                    }
-                  }}
-                  handleDelete={(user) => {
-                    if (getAssignmentId().includes(user._id)) {
-                      assignment.splice(getAssignmentId().indexOf(user._id), 1);
-                      setAssignment([...assignment]);
-                    }
-                  }}
-                />
-              </div>
-              <div></div>
-            </div>
-            <div className="form-group">
-              <label className="form-control-label d-block mb-3">
-                Dependencies
-              </label>
-              <div className="bd-highlight task-body-second">
-                <Dropdown
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}>
-                  <Dropdown.Toggle style={{ padding: '10px' }}>
-                    {dependencies?.name || '_'}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
+                >
+                  _
+                </Dropdown.Item>
+                {props.dataTasks.data.map((section) =>
+                  section.tasks.map((task) => (
                     <Dropdown.Item
                       onClick={(event) => {
                         event.stopPropagation();
-                        setDependencies(null);
-                        // set Dependencies = null
-                      }}>
-                      _
+                        setDependencies(task);
+                      }}
+                    >
+                      {task.name}
                     </Dropdown.Item>
-                    {props.dataTasks.data.map((section) =>
-                      section.tasks.map((task) => (
-                        <Dropdown.Item
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            setDependencies(task);
-                            // set Dependencies = task._id
-                          }}>
-                          {task.name}
-                        </Dropdown.Item>
-                      )),
-                    )}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </div>
-            <div className="form-group">
-              <label className="form-control-label">Due date</label>
-              <div className="task-body-second">
-                <CalenderModal
-                  config={{ isDisabled: false }}
-                  startDate={dueDate.from}
-                  endDate={dueDate.to}
-                  handleChangeDate={(from, to) => {
-                    setDueDate({
-                      from: from,
-                      to: to,
-                    });
-                  }}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label className="form-control-label">Description</label>
-              <textarea
-                style={{ height: '100px' }}
-                defaultValue={description}
-                className="form-control-alternative edit-event--description textarea-autosize form-control mr-2 task-body-second"
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}></textarea>
-              <i className="form-group--bar"></i>
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <div>
-            <Button
-              style={{
-                backgroundColor: '#5e72e4',
-              }}
-              onClick={(e) => {
-                updateTask();
-              }}>
-              Update
-            </Button>
-            <Button
-              style={{
-                backgroundColor: '#f5365c',
-              }}
-              onClick={(e) => {
-                setShowDelete(true);
-              }}>
-              Xóa
-            </Button>
+                  ))
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
-          <button
-            type="button"
-            className="ml-auto btn btn-link"
-            onClick={() => props.show.setStatus(false)}
-            style={{
-              color: '#5e72e4',
-            }}>
-            Close
-          </button>
-        </Modal.Footer>
-      </Modal>
-      <ModalTrueFalse
-        data={{
-          button_1: {
-            title: 'No',
-          },
-          button_2: {
-            title: 'Yes',
-          },
-          title: `delete '${props.task?.name}' `,
-        }}
-        funcButton_1={() => {
-          setShowDelete(false);
-        }}
-        funcButton_2={() => {
-          deleteTask();
-        }}
-        setClose={() => {
-          setShowDelete(false);
-        }}
-        funcOnHide={() => {
-          setShowDelete(false);
-        }}
-        show={showDelete}
-        size={'sm'}
-      />
-    </div>
+          <div className="form-group">
+            <label>Due date</label>
+            <CalenderModal
+              config={{ isDisabled: false }}
+              startDate={dueDate.from}
+              endDate={dueDate.to}
+              handleChangeDate={(from, to) => {
+                setDueDate({
+                  from: from,
+                  to: to,
+                });
+              }}
+            />
+          </div>
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              style={{ height: '100px' }}
+              defaultValue={description}
+              className="form-control-alternative edit-event--description textarea-autosize form-control mr-2 task-body-second"
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            ></textarea>
+            <i className="form-group--bar"></i>
+          </div>
+        </form>
+      </Modal.Body>
+      <Modal.Footer>
+        <div>
+          <Button
+            style={{ backgroundColor: '#5e72e4' }}
+            onClick={(e) => {
+              updateTask();
+            }}
+          >
+            Update
+          </Button>
+          <Button
+            style={{ backgroundColor: '#f5365c' }}
+            onClick={(e) => {
+              setShowDelete(true);
+            }}
+          >
+            Delete
+          </Button>
+        </div>
+        <button
+          type="button"
+          className="ml-auto btn btn-link"
+          onClick={() => props.show.setStatus(false)}
+          style={{ color: '#5e72e4' }}
+        >
+          Close
+        </button>
+      </Modal.Footer>
+    </Modal>
+    <ModalTrueFalse
+      data={{
+        button_1: {
+          title: 'No',
+        },
+        button_2: {
+          title: 'Yes',
+        },
+        title: `delete '${props.task?.name}'`,
+      }}
+      funcButton_1={() => {
+        setShowDelete(false);
+      }}
+      funcButton_2={() => {
+        deleteTask();
+      }}
+      setClose={() => {
+        setShowDelete(false);
+      }}
+      funcOnHide={() => {
+        setShowDelete(false);
+      }}
+      show={showDelete}
+      size={'sm'}
+    />
+  </div>
+  
   );
 };
 

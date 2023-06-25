@@ -1,15 +1,16 @@
 $main: #00b4ff;
-
+.create-post{
+  width:30vw;
+}
 .new-status-input {
   background-color: white;
-  // border: 1px solid $main;
-  border-radius: 0.5rem;
-  padding: 10px 20px 20px 20px;
+  border-radius: 0.6rem;
+  padding: 15px;
   margin-bottom: 1.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  textarea {
-    height: 50px;
-    max-height: 400px !important;
+  textarea { 
+    height: 20px;
+    max-height: 200px !important;
     width: 100%;
     border: none;
     outline: none;

@@ -353,7 +353,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                   {props.task.task.labels.map((label) => {
                     return (
                       <div
-                        className="d-flex justify-content-start align-items-center mr-1 task-lable-group"
+                        className="d-flex justify-content-start align-items-center mr-1 text-white task-lable-group"
                         style={{ backgroundColor: label.color }}>
                         <div
                           className="mr-1 label-task"

@@ -1,4 +1,3 @@
- 
 import {
   faPencilAlt,
   faPlus,
@@ -9,13 +8,14 @@ import React, { useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
- 
+
 import RenameSection from './RenameSection';
 import { TaskItem } from './TaskItem';
 import { Label, Section, Task } from './InterfaceTask';
 import ModalAddTask from './ModalAddTask';
 import ModalTrueFalse from './ModalTrueFalse';
 import { sectionService } from '../../services/section/api';
+
 interface Props {
   userId: string;
   section: Section;
@@ -27,11 +27,28 @@ interface Props {
     setData: (labels) => void;
   };
 }
+
 const SectionComponent: React.FC<Props> = (props: Props) => {
   const [IsDraggable, setIsDraggable] = useState(true);
   const [showModalAddTask, setShowModalAddTask] = useState(false);
   const [showModalTrueFalse, setShowModalTrueFalse] = useState(false);
   const [showModalRename, setShowModalRename] = useState(false);
+  const [showDropdownMenu, setShowDropdownMenu] = useState(false);
+
+  const handleToggleDropdown = (isOpen: boolean) => {
+    setShowDropdownMenu(isOpen);
+  };
+
+  const handleRenameSection = () => {
+    setShowModalRename(true);
+    setShowDropdownMenu(false);
+  };
+
+  const handleDeleteSection = () => {
+    setShowModalTrueFalse(true);
+    setShowDropdownMenu(false);
+  };
+
   return (
     <Droppable droppableId={props.section._id} key={props.section._id}>
       {(provided, snapshot) => {
@@ -42,7 +59,8 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
             style={{ height: '100%' }}
             onClick={() => {
               props.showTaskDetails.setStatus(false);
-            }}>
+            }}
+          >
             <div className="column-tasks">
               <div className="column-task-sort">
                 <div className="board-task">
@@ -57,23 +75,25 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                           className="icon-add"
                           onClick={() => {
                             setShowModalAddTask(true);
-                          }}>
-                          <FontAwesomeIcon
-                            icon={faPlus}
-                            className="icon-add-inner"
-                          />
+                          }}
+                        >
+                          <button className="Btn">
+                            <FontAwesomeIcon
+                              icon={faPlus}
+                              className="icon-add-inner"
+                            />
+                          </button>
                         </div>
                       </div>
                       <div className="p-2 bd-highlight">
-                        <Dropdown>
+                        <Dropdown
+                          show={showDropdownMenu}
+                          onToggle={handleToggleDropdown}
+                        >
                           <Dropdown.Toggle>...</Dropdown.Toggle>
                           <Dropdown.Menu>
-                            <Dropdown.Item>
-                              <div
-                                className="d-flex bd-highlight"
-                                onClick={() => {
-                                  setShowModalRename(true);
-                                }}>
+                            <Dropdown.Item onClick={handleRenameSection}>
+                              <div className="d-flex bd-highlight">
                                 <div className="p-2 bd-highlight">
                                   <FontAwesomeIcon icon={faPencilAlt} />
                                 </div>
@@ -82,10 +102,7 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                                 </div>
                               </div>
                             </Dropdown.Item>
-                            <Dropdown.Item
-                              onClick={() => {
-                                setShowModalTrueFalse(true);
-                              }}>
+                            <Dropdown.Item onClick={handleDeleteSection}>
                               <div className="d-flex bd-highlight">
                                 <div className="p-2 bd-highlight">
                                   <FontAwesomeIcon
@@ -95,7 +112,8 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                                 </div>
                                 <div
                                   className="mr-auto p-2 bd-highlight"
-                                  style={{ color: '#F06A6F' }}>
+                                  style={{ color: '#F06A6F' }}
+                                >
                                   Delete section
                                 </div>
                               </div>
@@ -127,7 +145,8 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                                       <div
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
-                                        ref={provided.innerRef}>
+                                        ref={provided.innerRef}
+                                      >
                                         <TaskItem
                                           dataTasks={{ ...props.dataTasks }}
                                           task={task}
@@ -154,7 +173,7 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                 </div>
               </div>
             </div>
-            
+
             <ModalAddTask
               show={showModalAddTask}
               isAddEvent={true}
@@ -192,11 +211,9 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                 setShowModalTrueFalse(false);
               }}
               funcButton_1={() => {
-      
                 setShowModalTrueFalse(false);
               }}
               funcButton_2={() => {
- 
                 sectionService
                   .deleteSection({
                     projectId: props.section.projectId,
@@ -211,7 +228,7 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
                   .catch((err) => {
                     toast.error(
                       err.response.data.error ||
-                        'An unexpected error has occurred',
+                        'An unexpected error has occurred'
                     );
                   });
               }}
@@ -222,4 +239,5 @@ const SectionComponent: React.FC<Props> = (props: Props) => {
     </Droppable>
   );
 };
+
 export default SectionComponent;

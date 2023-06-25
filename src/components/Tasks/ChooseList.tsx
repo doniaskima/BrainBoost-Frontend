@@ -11,37 +11,42 @@ const ChooseList: React.FC<any> = (props) => {
         <ul className="nav nav-pills">
           <li className="mr-4">
              <button
-                onClick={() => navigate(`/tasks/member-project/${projectId}`)} // Add an onClick handler to navigate to the tasks page
+             className="Chooslist-btn"
+                onClick={() => navigate(`/tasks/member-project/${projectId}`)}  
              >
-               Member
+             <span>  Member</span>
              </button>
           </li>
           <li className="mr-4">
           <button
-                onClick={() => navigate(`/tasks/task-project/${projectId}`)} // Add an onClick handler to navigate to the tasks page
+           className="Chooslist-btn"
+                onClick={() => navigate(`/tasks/task-project/${projectId}`)}  
              >
-               Task
+              <span> Task</span>
              </button>
           </li>
           <li className="mr-4">
           <button
-                onClick={() => navigate(`/tasks/postList/${projectId}`)} // Add an onClick handler to navigate to the tasks page
+           className="Chooslist-btn"
+                onClick={() => navigate(`/tasks/postList/${projectId}`)} 
              >
-              Group
+             <span> Group</span>
              </button>
           </li>
           <li className="mr-4">
           <button
-                onClick={() => navigate(`/tasks/analysis/${projectId}`)} // Add an onClick handler to navigate to the tasks page
+           className="Chooslist-btn"
+                onClick={() => navigate(`/tasks/chat/${projectId}`)}  
              >
-               Anylisis
+              <span> Chats</span>
           </button>
           </li>
           <li className="mr-4">
           <button
+           className="Chooslist-btn"
                 onClick={() => navigate(`/tasks/training/${projectId}`)} // Add an onClick handler to navigate to the tasks page
              >
-               Training
+              <span>Training</span>   
              </button>
           </li>
         </ul>

@@ -59,6 +59,8 @@
             }
             .dropdown-toggle {
               background-color: white;
+              margin-top:4px;
+              margin-bottom:4px;
               color: black;
               border: none;
               box-shadow: none;
@@ -92,7 +94,7 @@
   .task-details {
     bottom: 0px;
     width: 700px;
-    height: 80vh;
+    height: 70vh;
     right: 0px;
     box-shadow: 0 0 0 1px #edeae9;
     position: absolute;

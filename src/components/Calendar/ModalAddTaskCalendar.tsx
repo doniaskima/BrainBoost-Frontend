@@ -6,6 +6,7 @@ import { Button } from 'reactstrap';
 import { Label, Section, Task } from '../Tasks/InterfaceTask';
 import { taskService } from '../../services/task/api';
 import { CalenderModal } from '../Tasks/Help';
+
 interface Props {
   show: { status: boolean; setStatus: (value) => void };
   projectId: string;
@@ -19,6 +20,7 @@ interface Props {
     to: string;
   };
 }
+
 const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
   const [labelsTask, setLabelsTask] = useState([]);
   const [taskName, setTaskName] = useState('');
@@ -42,7 +44,7 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
 
   const addTask = () => {
     if (!taskName) {
-      toast.error('Hãy nhập tên task trước khi update');
+      toast.error('Please enter a task name before updating');
       return;
     }
     taskService
@@ -56,16 +58,17 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
         description: description,
       })
       .then((res) => {
-        toast.success('Thành công');
+        toast.success('Success');
         props.dataTasks.setData(res.data.data);
         props.show.setStatus(false);
       })
       .catch((err) => {
         toast.error(
-          err.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
+          err.response?.data?.error || 'An unexpected error occurred',
         );
       });
   };
+
   const renderColor = () => {
     return props.labels.data.map((label) => (
       <>
@@ -87,6 +90,7 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
       </>
     ));
   };
+
   const getSectionCurrent = () => {
     if (sectionId && props.dataTasks?.data) {
       for (let i = 0; i < props.dataTasks?.data?.length; i++) {
@@ -98,23 +102,24 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
       return null;
     }
   };
+
   return (
     <div className="calendar-task">
       <Modal
         size="sm"
-        show={props.show.status} // false: Không hiển thị, true: hiển thị
+        show={props.show.status} // false: Don't display, true: Display
         scrollable
         onHide={() => {
           props.show.setStatus(false);
         }}
         centered>
         <Modal.Header>
-          <h1>Tạo task mới</h1>
+          <h1>Create a new task</h1>
         </Modal.Header>
         <Modal.Body>
           <form className="new-event--form modalEditTaskCalendar">
             <div className="form-group">
-              <label className="form-control-label">Tên task</label>
+              <label className="form-control-label">Task Name</label>
               <div className="task-body-second">
                 <input
                   placeholder="Task name"
@@ -127,7 +132,7 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
               </div>
             </div>
             <div className="form-group">
-              <label className="form-control-label d-block mb-3">Section</label>
+              <label className="m-4 flex justify-start">Section</label>
               <div className="bd-highlight task-body-second">
                 <Dropdown
                   onClick={(event) => {
@@ -176,7 +181,6 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
                       onClick={(event) => {
                         event.stopPropagation();
                         setDependencies(null);
-                        // set Dependencies = null
                       }}>
                       _
                     </Dropdown.Item>
@@ -186,7 +190,6 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
                           onClick={(event) => {
                             event.stopPropagation();
                             setDependencies(task);
-                            // set Dependencies = task._id
                           }}>
                           {task.name}
                         </Dropdown.Item>
@@ -234,7 +237,7 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
               onClick={(e) => {
                 addTask();
               }}>
-              Tạo
+              Create
             </Button>
           </div>
           <button

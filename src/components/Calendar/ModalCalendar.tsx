@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 
 const ModalCalendar: React.FC<any> = (props: any) => {
-  // props: funcQuit(), show, date
+ 
 
   const formatDate = () => {
     let date = props.date.getDate().toString();
@@ -60,7 +60,7 @@ const ModalCalendar: React.FC<any> = (props: any) => {
   };
 
   function equalDate(date1, date2) {
-    // date1 > date2: 1; date1 === date2: 0; date1 < date2: -1
+  
     let d1 = date1.getDate(),
       m1 = date1.getMonth(),
       y1 = date1.getFullYear();

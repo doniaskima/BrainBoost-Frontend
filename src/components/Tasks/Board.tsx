@@ -11,7 +11,7 @@ import { userService } from '../../services/user/api';
 import { TaskDetails } from './TaskDetails';
 import AddSection from './AddSection';
 import SectionComponent from './SectionComponent';
-import Loader from './TaskLoader'; // Import Loader component
+import Loader from './TaskLoader';  
 
 const Board2: React.FC = () => {
   const { projectId } = useParams();
@@ -21,18 +21,18 @@ const Board2: React.FC = () => {
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [dataTasks, setDataTasks] = useState<Array<Section>>([]);
   const [labels, setLabels] = useState<Array<Label>>([]);
-  const [loading, setLoading] = useState(true); // State for loading status
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     taskService
       .getTasks(projectId)
       .then((res) => {
         setDataTasks(res.data.data);
-        setLoading(false); // Set loading to false when data is fetched
+        setLoading(false);  
       })
       .catch((err) => {
         toast.error('An unexpected error occurred');
-        setLoading(false); // Set loading to false on error
+        setLoading(false);  
       });
 
     projectService

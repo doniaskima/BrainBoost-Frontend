@@ -47,8 +47,10 @@ const RenameSection: React.FC<Props> = (props: Props) => {
     <div className="rename-section">
       <Modal
         show={props.showModal.status}
-        size={props.size}
-        className="modal-confirm"
+        size="sm"
+        centered
+        scrollable
+        dialogClassName="custom-modal-width"  
         onHide={() => {
           props.showModal.setStatus(false);
         }}
@@ -69,7 +71,7 @@ const RenameSection: React.FC<Props> = (props: Props) => {
               />
             </div>
             <div className="form-group">
-              <label className="form-control-label">Description</label>
+              <label className="flex justify-between">Description</label>
               <textarea
                 style={{ height: '100px' }}
                 placeholder="Description"

@@ -26,7 +26,7 @@ import StudyWithme from './pages/StudyWithme';
 import Tasks from './pages/Tasks';
 import Profile from './pages/Profile';
 import MemberProject from './pages/MemberProject';
-
+import Chats from "./components/Tasks/Chats"
 // Component imports
 import { ConfirmPage } from './components/Auth';
 import { AuthRoute } from './components/AuthRoute';
@@ -36,9 +36,7 @@ import Task from './components/Tasks/Task';
 import ChooseList from './components/Tasks/ChooseList';
 import { ToastContainer, toast } from 'react-toastify';
 import PostList from './pages/PostList';
-import Editor from './pages/Editor';
 import MyListBlog from './pages/MyListBlog';
-import ProjectAnalysis from "./components/anylysis/ProjectAnalysis"
 import TrainingList from './components/Training/TrainingList';
 import YoutubeView from './components/Training/YoutubeView';
 import EditorBlog from './components/Blog/EditorBlog';
@@ -133,7 +131,7 @@ function App() {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/tasks/postList/:projectId" element={<PostList />} />
         <Route path="tasks/task-project/:projectId" element={<Task/>} />
-        <Route path="tasks/analysis/:projectId" element={<ProjectAnalysis/>} />
+        <Route path="tasks/chat/:projectId" element={<Chats/>} />
         <Route path="tasks/training/:projectId" element={<TrainingList/>} />
         <Route path="tasks/training/:projectId/editor/:projectId" element={<EditorBlog/>} />
         <Route path="/youtube/:projectId/:videoId" element={<YoutubeView/>} />

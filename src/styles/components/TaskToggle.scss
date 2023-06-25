@@ -21,3 +21,58 @@
     opacity: 1;
   }
   
+.btn-group-colors {
+    .btn {
+      &.active {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      }
+  
+      &:focus {
+        outline: none;
+      }
+    }
+  
+    .event-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      transition: all 0.3s ease-in-out;
+  
+      &.tag-color-red {
+        background-color: #ff385c;
+      }
+  
+      &.tag-color-blue {
+        background-color: #007bff;
+      }
+  
+      &.tag-color-green {
+        background-color: #28a745;
+      }
+  
+      &.tag-color-yellow {
+        background-color: #ffc107;
+      }
+  
+      &.tag-color-purple {
+        background-color: #6f42c1;
+      }
+  
+      &:hover {
+        transform: scale(1.1);
+      }
+  
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+  

@@ -20,15 +20,15 @@ const ModalEditPost: React.FC<any> = (props: any) => {
         centered>
         <Modal.Header closeButton>
           <FontAwesomeIcon className="mr-3" icon={faEdit} />
-          Chỉnh sửa bài viết
+           Edit post
         </Modal.Header>
         <Modal.Body>
           <div className="row d-flex justify-content-center w-100 m-0">
             <div className="form-group w-100">
-              {/* <label className="form-control-label">Description</label> */}
+             
               <textarea
                 style={{ height: '150px' }}
-                placeholder="Chỉnh sửa bài viết tại đây"
+                placeholder=" Edit the post here"
                 value={valueEdit || isChange ? valueEdit : props.data.content}
                 onChange={(e) => {
                   if (!isChange) {
