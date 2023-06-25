@@ -1,34 +1,33 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Button } from 'reactstrap';
-import { BASE_URL } from '../../utils/utils';
+import { sectionService } from '../../services/section/api';
 import { Section } from './InterfaceTask';
- 
 
 interface Props {
-  showModal: { status: boolean; setStatus: (value) => void };
-  dataTasks: { data: Array<Section>; setData: (data) => void };
+  showModal: { status: boolean; setStatus: (value: boolean) => void };
+  dataTasks: { data: Section[]; setData: (data: Section[]) => void };
   projectId: string;
   size: any;
 }
-const AddSection: React.FC<Props> = (props: Props) => {
+
+const AddSection: React.FC<Props> = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [nameSection, setNameSection] = useState('');
   const [descriptionSection, setDescriptionSection] = useState('');
   const [err, setErr] = useState(null);
- 
 
   const addSection = () => {
     if (nameSection === '') {
-      toast.error('Please enter a section name');
-      // setErr('Please enter a section name');
+      toast.error('Please enter the section name');
+      setErr('Please enter the section name');
       return;
     }
-  
-    axios.post(`${BASE_URL}/api/section/addSection`, {
+
+    sectionService
+      .addSection({
         projectId: props.projectId,
         name: nameSection,
       })
@@ -36,36 +35,35 @@ const AddSection: React.FC<Props> = (props: Props) => {
         toast.success('Success');
         props.dataTasks.setData(res.data.data);
         setShowModal(false);
-       
-
       })
       .catch((err) => {
-        toast.error(err.response?.data?.error || 'An unexpected error occurred');
+        toast.error(err.response.data.error || 'An unexpected error has occurred');
       });
   };
-  
- 
+
   return (
     <div className="add-section">
-           <div className="column-tasks">
+      <div
+        style={{ height: '100%' }}
+        onClick={() => {
+          props.showModal.setStatus(false);
+        }}
+      >
+        <div className="column-tasks">
           <div className="column-task-sort">
             <div className="board-task">
               <Button
                 color="primary"
                 onClick={() => {
                   setShowModal(true);
-                }}>
+                }}
+              >
                 <i className="fa fa-list-alt" aria-hidden="true"></i>
-                <span> Add Section</span>
+                <span>Add Section</span>
               </Button>
             </div>
           </div>
         </div>
-      <div
-        style={{ height: '100%' }}
-        onClick={() => {
-          props.showModal.setStatus(false);
-        }}>
       </div>
       <Modal
         show={showModal}
@@ -73,7 +71,8 @@ const AddSection: React.FC<Props> = (props: Props) => {
         className="modal-confirm"
         onHide={() => {
           props.showModal.setStatus(false);
-        }}>
+        }}
+      >
         <Modal.Header className="pb-0">
           <h1>Create New Section</h1>
         </Modal.Header>
@@ -82,7 +81,7 @@ const AddSection: React.FC<Props> = (props: Props) => {
             <div className="form-group">
               <input
                 type="text"
-                placeholder="Enter a new section name"
+                placeholder="Enter the new section name"
                 className="form-control-alternative new-event--title form-control"
                 onChange={(e) => {
                   setNameSection(e.target.value);
@@ -93,11 +92,12 @@ const AddSection: React.FC<Props> = (props: Props) => {
               <label className="form-control-label">Description</label>
               <textarea
                 style={{ height: '100px' }}
-                placeholder="Desctiption"
+                placeholder="Description"
                 className="form-control-alternative edit-event--description textarea-autosize form-control mr-2"
                 onChange={(e) => {
                   setDescriptionSection(e.target.value);
-                }}></textarea>
+                }}
+              ></textarea>
               <i className="form-group--bar"></i>
             </div>
             <div className="d-flex justify-content-start align-items-center"></div>
@@ -109,18 +109,17 @@ const AddSection: React.FC<Props> = (props: Props) => {
             className="btn btn-secondary"
             onClick={() => {
               setShowModal(false);
-            }}>
+            }}
+          >
             Close
           </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={addSection}>
-             Create
+          <button type="button" className="btn btn-primary" onClick={addSection}>
+            Save
           </button>
         </Modal.Footer>
       </Modal>
     </div>
   );
 };
+
 export default AddSection;

@@ -4,9 +4,10 @@ import { Dropdown, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Button } from 'reactstrap';
 import { Assignment, Label, Section, Task } from '../Tasks/InterfaceTask';
-import axios from 'axios';
+import { taskService } from '../../services/task/api';
 import { CalenderModal, DropdownAssignee } from '../Tasks/Help';
-import ModalTrueFalse from '../../modals/ModalTrueFalse';
+import ModalTrueFalse from '../Tasks/ModalTrueFalse';
+
 
 
 interface Props {
@@ -48,74 +49,71 @@ const ModalEditTaskCalendar: React.FC<Props> = (props: Props) => {
       setLabelsTask([...labelsTask, item._id]);
     });
   }, [props.task]);
-
-
-const updateTask = () => {
-  if (!taskName) {
-    toast.error('Please enter the task name before updating.');
-    return;
-  }
-
-  axios
-    .post('http://localhost:8080/api/tasks/updateTask', {
-      taskId: props.task._id,
-      projectId: props.projectId,
-      assignment: getAssignmentId(),
-      dependencies: dependencies?._id || null,
-      description: description,
-      dueDate: dueDate,
-      name: taskName,
-      labels: labelsTask,
-    })
-    .then((res) => {
-      if (sectionId !== props.task?.sectionId) {
-        axios
-          .post('http://localhost:8080/api/tasks/changeSection', {
-            projectId: props.projectId,
-            taskId: props.task?._id,
-            sectionId1: props.task?.sectionId,
-            sectionId2: sectionId,
-          })
-          .then((res) => {
-            toast.success('Success');
-            props.dataTasks.setData(res.data.data.allTasks);
-            props.show.setStatus(false);
-          })
-          .catch((err) => {
-            toast.error(
-              err.response?.data?.error ||
-                'An unexpected error occurred.',
-            );
-          });
-      } else {
-        toast.success('Success');
-        props.dataTasks.setData(res.data.data.allTasks);
+  const updateTask = () => {
+    if (!taskName) {
+      toast.error('Hãy nhập tên task trước khi update');
+      return;
+    }
+    taskService
+      .updateTask({
+        taskId: props.task._id,
+        projectId: props.projectId,
+        assignment: getAssignmentId(),
+        dependencies: dependencies?._id || null,
+        description: description,
+        dueDate: dueDate,
+        name: taskName,
+        labels: labelsTask,
+      })
+      .then((res) => {
+        if (sectionId !== props.task?.sectionId) {
+          taskService
+            .changeSection({
+              projectId: props.projectId,
+              taskId: props.task?._id,
+              sectionId1: props.task?.sectionId as string,
+              sectionId2: sectionId,
+            })
+            .then((res) => {
+              toast.success('Thành công');
+              props.dataTasks.setData(res.data.data.allTasks);
+              props.show.setStatus(false);
+            })
+            .catch((err) => {
+              toast.error(
+                err.response?.data?.error ||
+                  'Một lỗi không mong muốn đã xảy ra',
+              );
+            });
+        } else {
+          toast.success('Thành công');
+          props.dataTasks.setData(res.data.data.allTasks);
+          props.show.setStatus(false);
+        }
+      })
+      .catch((err) => {
+        toast.error(
+          err.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
+        );
+      });
+  };
+  const deleteTask = () => {
+    taskService
+      .deleteTask({
+        projectId: props.projectId,
+        taskId: props.task._id,
+      })
+      .then((res) => {
+        toast.success('Thành công');
         props.show.setStatus(false);
-      }
-    })
-    .catch((err) => {
-      toast.error(
-        err.response?.data?.error || 'An unexpected error occurred.',
-      );
-    });
-};
-const deleteTask = () => {
-  axios
-    .post('http://localhost:8080/api/tasks/deleteTask', {
-      projectId: props.projectId,
-      taskId: props.task._id,
-    })
-    .then((res) => {
-      toast.success('Success');
-      props.show.setStatus(false);
-      props.dataTasks.setData(res.data.data);
-    })
-    .catch((err) => {
-      toast.error(
-        err.response?.data?.error || 'An unexpected error occurred.',
-      );
-    });
-};
+        props.dataTasks.setData(res.data.data);
+      })
+      .catch((err) => {
+        toast.error(
+          err.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
+        );
+      });
+  };
   const renderColor = () => {
     return props.labels.data.map((label) => (
       <>
@@ -160,7 +158,7 @@ const deleteTask = () => {
     <div className="calendar-task">
       <Modal
         size="sm"
-        show={props.show.status}  
+        show={props.show.status} // false: Không hiển thị, true: hiển thị
         scrollable
         onHide={() => {
           props.show.setStatus(false);
@@ -196,7 +194,7 @@ const deleteTask = () => {
                     {getSectionCurrent()?.name || ''}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    {/* {props.dataTasks?.data?.map((section) => (
+                    {props.dataTasks?.data?.map((section) => (
                       <Dropdown.Item
                         onClick={(event) => {
                           event.stopPropagation();
@@ -204,7 +202,7 @@ const deleteTask = () => {
                         }}>
                         {section.name}
                       </Dropdown.Item>
-                    ))} */}
+                    ))}
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
@@ -266,7 +264,7 @@ const deleteTask = () => {
                       }}>
                       _
                     </Dropdown.Item>
-                    {/* {props.dataTasks.data.map((section) =>
+                    {props.dataTasks.data.map((section) =>
                       section.tasks.map((task) => (
                         <Dropdown.Item
                           onClick={(event) => {
@@ -277,7 +275,7 @@ const deleteTask = () => {
                           {task.name}
                         </Dropdown.Item>
                       )),
-                    )} */}
+                    )}
                   </Dropdown.Menu>
                 </Dropdown>
               </div>

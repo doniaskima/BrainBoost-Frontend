@@ -1,0 +1,37 @@
+
+.chat {
+    display: flex;
+    position: relative;
+}
+
+.chat__body {
+    min-width: 300px;
+    flex: 40%;
+    border-right: 1px solid #DADADA;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+.chat__bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    opacity: 0.05;
+    z-index: 1;
+    background: url("../../assets//bg-chat-dark.png") #E4DCD4;
+}
+
+.chat__header, .chat__footer, .chat__date-wrapper, .chat__msg-group, .chat__encryption-msg {
+    z-index: 10;
+}
+
+.chat__header {
+ 
+    z-index: 20;
+}
+
+

@@ -1,80 +1,78 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { Label, Section, Task } from './InterfaceTask';
+import { Section, Task } from './InterfaceTask';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router';
-import SectionComponent from './SectionComponent';
-import axios from 'axios';
-import { BASE_URL } from '../../utils/utils';
+import { Label } from './InterfaceTask';
+import { useParams } from 'react-router-dom';
+import { taskService } from '../../services/task/api';
+import { projectService } from '../../services/projects/api';
+import { userService } from '../../services/user/api';
 import { TaskDetails } from './TaskDetails';
 import AddSection from './AddSection';
-
-
+import SectionComponent from './SectionComponent';
 
 const Board2: React.FC = () => {
   const { projectId } = useParams();
+
   const [userId, setUserId] = useState('');
   const [taskDetails, setTaskDetails] = useState<Task>(null);
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [dataTasks, setDataTasks] = useState<Array<Section>>([]);
   const [labels, setLabels] = useState<Array<Label>>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true); // Set loading state to true
-
-      try {
-        const tasksResponse = await axios.get(`${BASE_URL}/api/tasks/getTasks?projectId=${projectId}`);
-        setDataTasks(tasksResponse.data.data);
-
-        const labelsResponse = await axios.get(`${BASE_URL}/api/project/getLabels?projectId=${projectId}`);
-        setLabels(labelsResponse.data.data);
-
-        setIsLoading(false); // Set loading state to false
-      } catch (error) {
-        setIsLoading(false); // Set loading state to false
+    taskService
+      .getTasks(projectId)
+      .then((res) => {
+        setDataTasks(res.data.data);
+      })
+      .catch((err) => {
         toast.error('An unexpected error occurred');
-      }
-    };
+      });
 
-    const fetchUserId = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/users/getUserId`);
-        const userId = response.data?.id;
-        console.log(userId);
-        if (userId) {
-          setUserId(userId);
-        } else {
-          toast.error('User ID is missing in the response');
-        }
-      } catch (error) {
-        toast.error('Login session ended');
-      }
-    };
+    projectService
+      .getLabels(projectId)
+      .then((res) => {
+        setLabels(res.data.data);
+      })
+      .catch((err) => {
+        toast.error(
+          err.response.data.error || 'An unexpected error occurred',
+        );
+      });
+  }, []);
 
-    fetchData();
-    fetchUserId();
-  }, [projectId]);
+  useEffect(() => {
+    userService
+      .getUserId()
+      .then((res) => {
+        setUserId(res.data.data.id);
+      })
+      .catch((err) => {
+        toast.error('Session expired');
+      });
+  }, []);
 
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
-    
-    const taskId = result.draggableId;
-    const sectionFromId = result.source.droppableId;
-    const indexFrom = result.source.index;
-    const sectionToId = result.destination.droppableId;
-    const indexTo = result.destination.index;
-    
+
+    let taskId = result.draggableId;
+    let sectionFromId = result.source.droppableId;
+    let indexFrom = result.source.index;
+    let sectionToId = result.destination.droppableId;
+    let indexTo = result.destination.index;
+
     if (sectionToId === sectionFromId) {
-      const section = dataTasks.filter((section) => section._id === sectionFromId)[0];
-      const task = section.tasks[indexFrom];
+      let section = dataTasks.filter(
+        (section) => section._id === sectionFromId,
+      )[0];
+      let task = section.tasks[indexFrom];
       section.tasks.splice(indexFrom, 1);
-      const listTask1 = [...section.tasks];
-      const listTask2 = [...section.tasks];
+      let listTask1 = [...section.tasks];
+      let listTask2 = [...section.tasks];
       section.tasks = [
         ...listTask1.splice(0, indexTo),
         task,
@@ -82,47 +80,48 @@ const Board2: React.FC = () => {
       ];
       setDataTasks(dataTasks);
     } else {
-      const sectionFrom = dataTasks.filter((section) => section._id === sectionFromId)[0];
-      const sectionTo = dataTasks.filter((section) => section._id === sectionToId)[0];
-      const taskFrom = sectionFrom.tasks[indexFrom];
+      let sectionFrom = dataTasks.filter(
+        (section) => section._id === sectionFromId,
+      )[0];
+      let sectionTo = dataTasks.filter(
+        (section) => section._id === sectionToId,
+      )[0];
+      let taskFrom = sectionFrom.tasks[indexFrom];
       sectionFrom.tasks.splice(indexFrom, 1);
-      const listTask1 = [...sectionTo.tasks];
-      const listTask2 = [...sectionTo.tasks];
+      let listTask1 = [...sectionTo.tasks];
+      let listTask2 = [...sectionTo.tasks];
       sectionTo.tasks = [
         ...listTask1.splice(0, indexTo),
         taskFrom,
         ...listTask2.splice(indexTo),
       ];
     }
-    
-    const changeSectionData = {
-      projectId: projectId,
-      taskId: taskId,
-      sectionId1: sectionFromId,
-      sectionId2: sectionToId,
-      index: indexTo,
-    };
-    
-    axios
-      .post(`${BASE_URL}/api/tasks/changeSection`, changeSectionData)
+
+    taskService
+      .changeSection({
+        projectId: projectId,
+        taskId: taskId,
+        sectionId1: sectionFromId,
+        sectionId2: sectionToId,
+        index: indexTo,
+      })
       .then((res) => {
         setDataTasks(res.data.data.allTasks);
       })
       .catch((err) => {
         toast.error(
-          err.response?.data?.error || 'An unexpected error has occurred'
+          err.response.data.error || 'An unexpected error occurred',
         );
       });
   };
-  
-
 
   return (
     <div
       className="tasks"
       onClick={() => {
         setShowTaskDetails(false);
-      }}>
+      }}
+    >
       <DragDropContext onDragEnd={onDragEnd}>
         {dataTasks.map((section, index) => {
           return (
@@ -147,6 +146,7 @@ const Board2: React.FC = () => {
                   setLabels(_labels);
                 },
               }}
+              key={index}
             />
           );
         })}
@@ -187,4 +187,5 @@ const Board2: React.FC = () => {
     </div>
   );
 };
+
 export default Board2;

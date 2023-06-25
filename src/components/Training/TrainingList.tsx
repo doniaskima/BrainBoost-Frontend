@@ -2,20 +2,21 @@
 /* eslint-disable react-hooks/exhaustive-deps*/
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
- 
+import SVG from 'react-inlinesvg';
 import { Container } from 'reactstrap';
+
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import { projectService } from '../../services/projects/api';
 import WrapperProject from '../Tasks/WrapperProject';
-import { useNavigate, useParams } from 'react-router';
 import ModalCreateVideo from './ModalCreateVideo';
-import axios from 'axios';
 interface Blog {
   _id: string;
   security: string;
   comments: Array<any>;
   authorId: {
-    name: string;
+    username: string;
     _id: string;
     email: string;
     avatar: string;
@@ -25,6 +26,7 @@ interface Blog {
   describe: string;
   content: string;
   thumbnail: string;
+  money: string;
   projectId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -33,7 +35,7 @@ interface Video {
   _id: string;
   security: string;
   authorId: {
-    name: string;
+    username: string;
     _id: string;
     email: string;
     avatar: string;
@@ -42,7 +44,7 @@ interface Video {
   title: string;
   describe: string;
   thumbnail: string;
- 
+  money: string;
   projectId: string;
   videoId: string;
   createdAt: Date;
@@ -53,6 +55,8 @@ const TrainingList: React.FC = () => {
   const { projectId } = useParams();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -81,20 +85,10 @@ const TrainingList: React.FC = () => {
   const [listVideos, setListVideos] = useState<Array<Video>>([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8080/api/project/getAllTraining', {
-        params: {
-          projectId: projectId,
-        },
-      })
-      .then((res) => {
-        setListBlogs(res.data.data.blogArray);
-        setListVideos(res.data.data.videoArray);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error(error);
-      });
+    projectService.getAllTraining(projectId).then((res) => {
+      setListBlogs(res.data.data.blogArray);
+      setListVideos(res.data.data.videoArray);
+    });
   }, []);
 
   return (
@@ -108,13 +102,13 @@ const TrainingList: React.FC = () => {
                   className="title mb-4"
                   style={{ cursor: 'pointer' }}
                   onClick={() => handleCreateBlog()}>
-                  {/* <SVG
+                  <SVG
                     src={'/svg/icon.svg'}
                     height={27}
                     width={27}
                     className="mr-3"
-                  /> */}
-                  <span>Featured Posts</span>
+                  />
+                  <span> Featured article</span>
                 </div>
                 <div className="list-templete">
                   <Carousel
@@ -135,6 +129,7 @@ const TrainingList: React.FC = () => {
                       />
                     ))}
                   </Carousel>
+                 
                 </div>
               </div>
             </div>
@@ -143,12 +138,12 @@ const TrainingList: React.FC = () => {
                 className="title mb-4"
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleCreateVideo()}>
-                {/* <SVG
+                <SVG
                   src={'/svg/icon.svg'}
                   height={27}
                   width={27}
                   className="mr-3"
-                /> */}
+                />
                 <span> Featured video</span>
               </div>
               <div className="list-templete">
@@ -170,17 +165,18 @@ const TrainingList: React.FC = () => {
                     />
                   ))}
                 </Carousel>
+                 
               </div>
             </div>
             <div className="course mt-4">
               <div className="title mb-4">
-                {/* <SVG
+                <SVG
                   src={'/svg/icon.svg'}
                   height={27}
                   width={27}
                   className="mr-3"
-                /> */}
-                <span>Featured course</span>
+                />
+                <span> Featured course</span>
               </div>
               <div className="list-templete">
                 <Templete
@@ -238,8 +234,8 @@ const Templete: React.FC<{
   createdAt?: Date;
   blogId?: string;
   authorId?: {
-   name: string;
-  avatar: string;
+    username: string;
+    avatar: string;
   };
   minWidth?: string;
 }> = ({
@@ -287,16 +283,14 @@ const Templete: React.FC<{
         <h3>{title}</h3>
         {type === 'blog' && (
           <BlogTemplete
-            user={authorId?.name}
-            avatar={authorId?.avatar}
+            user={authorId.username}
+            avatar={authorId.avatar}
             time={moment(createdAt).fromNow()}></BlogTemplete>
         )}
         {type === 'video' && (
           <></>
-          // <VideoTemplete
-          //   view="161.935"
-          //   like="4.435"
-          //   comment="214"></VideoTemplete>
+      
+ 
         )}
       </div>
     </div>

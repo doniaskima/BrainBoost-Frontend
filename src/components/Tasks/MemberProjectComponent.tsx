@@ -35,12 +35,17 @@ import {
   Table,
   UncontrolledDropdown,
 } from 'reactstrap';
-import ModalInvite from '../../modals/ModalInvite';
+
 import ModalTrueFalse from '../../modals/ModalTrueFalse';
 import ChooseList from './ChooseList';
 import BasePageContainer from './BasePageContainer';
 import { Link } from 'react-router-dom';
 import Loader from '../loader/index'; 
+import socket from '../../socketioClient';
+import { projectService } from '../../services/projects/api';
+import { userService } from '../../services/user/api';
+import ModalInvite from '../../modals/ModalInvite';
+
 enum Role {
   Admin = 'Admin',
   Member = 'Member',
@@ -76,57 +81,43 @@ const MemberProject: React.FC = () => {
   const [page, setPage] = useState(1);
   const memberOnePage = 5;
 
+ 
+
+  useEffect(() => {
+    socket.emit('loadOnline');
+    socket.on('reloadUserOnline', (data) => {
+      setListOnline(data);
+    });
+  }, []);
   useEffect(() => {
     getData();
   }, [page, projectId]);
-
-  function getUsers(projectId) {
-    return axios.get(`${BASE_URL}/api/project/getUsers?projectId=${projectId}`);
-  }
-
-const getData = () => {
-  axios
-    .get(`${BASE_URL}/users/getUserId`)
-    .then((response) => {
-      const userId = response.data?.id;
-      if (userId) {
-        setUserId(userId);
-        getUsers(projectId)
-          .then((res) => {
-            console.log(res);
-            setListUser(res.data.users.map((user) => ({
-              ...user,
-              isAdmin: res.data.userAdmin.some((userAdmin) => userAdmin._id === user._id),
-            })));
-            console.log(listUser);
-            console.log("res.data.userAdmin", res.data.userAdmin);
-            
-            const isAdmin = res.data.userAdmin.some((userAdmin) => userAdmin._id === userId);
-            console.log("isAdmin", isAdmin);
-          })
-          .catch((err) => {
-            console.log(err);
-            toast.error('Member has already joined the project');
-          });
-      } else {
-        toast.error('User ID is missing in the response');
-      }
-    })
-    .catch((error) => {
-      console.error('Error fetching data:', error);
-      toast.error('Unable to authenticate user!');
-    });
-};
-
-  
-  
-
-  const setAdmin = async (memberId) => {
-    axios
-      .post(`${BASE_URL}/project/setAdmin`, {
-        projectId: projectId,
-        memberId: memberId,
+  const getData = () => {
+    userService
+      .getUserId()
+      .then((res) => {
+        setUserId(res.data.data.id);
       })
+      .catch((err) => {
+        toast.error('Failed to authenticate user!!');
+      });
+    projectService
+      .getUsers(projectId)
+      .then((res) => {
+        setListUser(res.data.data.users);
+        let _userAdmin = [];
+        res.data.data.userAdmin.forEach((userAdminId) => {
+          _userAdmin.push(userAdminId._id);
+        });
+        setUserIdAdmin(_userAdmin);
+      })
+      .catch((err) => {
+        toast.error('An unexpected error occurred');
+      });
+  };
+  const setAdmin = async (memberId) => {
+    projectService
+      .setAdmin({ projectId: projectId, memberId: memberId })
       .then((res) => {
         toast.success('Successfully added admin privileges');
         setListUser(res.data.data.users);
@@ -138,18 +129,34 @@ const getData = () => {
         setUserIdAdmin([..._userAdmin]);
       })
       .catch((err) => {
-        toast.error(err.response?.data?.err || 'An unexpected error occurred');
+        toast.error(err.response.data.err || 'An unexpected error occurred');
       });
   };
-
-  const deleteMember = async (memberId) => {
-    axios
-      .post(`${BASE_URL}/deleteMember`, {
-        projectId: projectId,
-        memberId: memberId,
-      })
+  const dropAdmin = async (memberId) => {
+    projectService
+      .dropAdmin({ projectId: projectId, memberId: memberId })
       .then((res) => {
-        toast.success('Member successfully deleted!');
+        toast.success('Successfully removed admin privileges.');
+        setListUser(res.data.data.users);
+        setUserIdAdmin([]);
+        let _userAdmin = [];
+        console.log(res.data.data);
+        res.data.data.userAdmin.forEach((userAdminId) => {
+          _userAdmin.push(userAdminId);
+        });
+        setUserIdAdmin([..._userAdmin]);
+      })
+      .catch((err) => {
+        toast.error(
+          err.response?.data?.error || 'An unexpected error occurred.',
+        );
+      });
+  };
+  const deleteMember = async (memberId) => {
+    projectService
+      .deleteMember({ projectId: projectId, memberId: memberId })
+      .then((res) => {
+        toast.success('Successfully deleted member!');
         setListUser(res.data.data.users);
         setUserIdAdmin([]);
         let _userAdmin = [];
@@ -166,7 +173,7 @@ const getData = () => {
     emptyText: 'No Data',
     searchPlaceholder: 'Search',
     resetText: 'Reset',
-    columnSetting: 'Column Settings', // Change the default value here
+    columnSetting: 'Column Settings', 
   };
 
   const handleShowInvite = (value) => {

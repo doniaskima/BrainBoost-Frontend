@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Assignment, Label, Section, Task } from './InterfaceTask';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheckCircle,
@@ -7,11 +8,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'react-bootstrap';
 import { CalenderModal, DropdownAssignee } from './Help';
+ 
 import { toast } from 'react-toastify';
+
 import moment from 'moment';
 import { Button, UncontrolledTooltip } from 'reactstrap';
-import ModalTrueFalse from '../../modals/ModalTrueFalse';
-
+import { taskService } from '../../services/task/api';
+import ModalAddLabel from './ModalAddLabel';
+import ModalTrueFalse from './ModalTrueFalse';
+ 
 
 interface Props {
   dataTasks: { data: Array<Section>; setData: (data) => void };
@@ -71,7 +76,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
       })
       .catch((err) => {
         toast.error(
-          err.response.data.error || 'Một lỗi không mong muốn đã xảy ra',
+          err.response.data.error || 'An unexpected error occurred.',
         );
       });
   };
@@ -107,19 +112,6 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
             />
             {props.task.task.isDone ? ` Completed` : ` Mark complete`}
           </div>
-          {/* <div
-            className="bd-highlight p-2 task-header-link"
-            onClick={() => {
-              // copy link task
-            }}>
-            <span
-              className="d-inline-block"
-              tabIndex={0}
-              data-toggle={'tooltip'}
-              title="Copy link">
-              <FontAwesomeIcon icon={faLink} />
-            </span>
-          </div> */}
           <div className="bd-highlight p-2 task-header-menu">
             <Dropdown
               onClick={(event) => {
@@ -127,16 +119,6 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
               }}>
               <Dropdown.Toggle>...</Dropdown.Toggle>
               <Dropdown.Menu>
-                {/* <Dropdown.Item>
-                  <div className="d-flex bd-highlight">
-                    <div className="p-2 bd-highlight">
-                      <FontAwesomeIcon icon={faPencilAlt} />
-                    </div>
-                    <div className="mr-auto p-2 bd-highlight">
-                      Rename section
-                    </div>
-                  </div>
-                </Dropdown.Item> */}
                 <Dropdown.Item
                   onClick={() => {
                     setShowModalTrueFalse(true);
@@ -167,7 +149,6 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                   placeholder="Add more details to this task..."
                   value={taskName}
                   onChange={(event) => {
-                    // change description
                     setShowBtnName(true);
                     setTaskName(event.target.value);
                   }}
@@ -223,7 +204,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                       .catch((err) => {
                         toast.error(
                           err.response.data?.error ||
-                            'Một lỗi không mong muốn đã xảy ra',
+                            'An unexpected error has occurred.',
                         );
                       });
                   }}
@@ -241,7 +222,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                       .catch((err) => {
                         toast.error(
                           err.response.data?.error ||
-                            'Một lỗi không mong muốn đã xảy ra',
+                            'An unexpected error has occurred.',
                         );
                       });
                   }}
@@ -307,7 +288,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                                 .catch((err) => {
                                   toast.error(
                                     err.response.data.error ||
-                                      'Một lỗi không mong muốn đã xảy ra',
+                                      'An unforeseen error has occurred',
                                   );
                                 });
                             }}>
@@ -406,7 +387,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                               .catch((err) => {
                                 toast.error(
                                   err.response.data.error ||
-                                    'Một lỗi không mong muốn đã xảy ra',
+                                    'An unforeseen error has occurred',
                                 );
                               });
                           }}>
@@ -415,7 +396,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                       </div>
                     );
                   })}
-                  {/* <div className="d-flex justify-content-start"> */}
+ 
                   <Dropdown
                     onClick={(event) => {
                       event.stopPropagation();
@@ -433,7 +414,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                                 labels.push(item._id);
                               });
                               if (labels.includes(label._id)) {
-                                toast.error('Task đã được gán label');
+                                toast.error('The task has been labeled');
                               } else {
                                 labels.push(label._id);
                                 taskService
@@ -454,7 +435,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                                   .catch((err) => {
                                     toast.error(
                                       err.response.data.error ||
-                                        'Một lỗi không mong muốn đã xảy ra',
+                                        'An unexpected error has occurred.',
                                     );
                                   });
                               }
@@ -521,7 +502,7 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                         setDescription(props.task.task.description);
                         setShowBtnDes(false);
                       }}>
-                      Hủy
+                     Cancel
                     </div>
                   </div>
                 ) : (
@@ -593,14 +574,14 @@ export const TaskDetails: React.FC<Props> = (props: Props) => {
                 taskId: props.task.task._id,
               })
               .then((res) => {
-                toast.success('Xóa task thành công');
+                toast.success('Task deleted successfully');
                 props.dataTasks.setData(res.data.data);
                 props.setShow(false);
               })
               .catch((err) => {
                 toast.error(
                   err.response.data?.error ||
-                    'Một lỗi không mong muốn đã xảy ra',
+                    ' An unexpected error occurred.',
                 );
               });
           }}

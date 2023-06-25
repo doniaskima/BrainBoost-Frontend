@@ -2,7 +2,7 @@ import CryptoJS from 'crypto-js';
 import axios from "axios";
 import crypto from "crypto-js";
 
-export const BASE_URL = "http://localhost:8080";
+export const BASE_URL = "http://localhost:3002";
 
 export const decryptMessage = (
   key: string,

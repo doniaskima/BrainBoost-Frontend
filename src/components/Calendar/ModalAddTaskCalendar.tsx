@@ -4,9 +4,8 @@ import { Dropdown, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Button } from 'reactstrap';
 import { Label, Section, Task } from '../Tasks/InterfaceTask';
-import axios from 'axios';
+import { taskService } from '../../services/task/api';
 import { CalenderModal } from '../Tasks/Help';
-
 interface Props {
   show: { status: boolean; setStatus: (value) => void };
   projectId: string;
@@ -32,43 +31,41 @@ const ModalAddTaskCalendar: React.FC<Props> = (props: Props) => {
   const [sectionId, setSectionId] = useState<string>(
     props.dataTasks?.data[0]?._id,
   );
- 
-useEffect(() => {
-  setSectionId(props.dataTasks?.data[0]?._id || null);
-  setDueDate({
-    from: new Date(props.dueDate.from),
-    to: new Date(props.dueDate.to),
-  });
-}, [props.dataTasks, props.dueDate]);
 
-const addTask = () => {
-  if (!taskName) {
-    toast.error('Please enter the task name before updating.');
-    return;
-  }
-  axios
-    .post('http://localhost:8080/api/tasks/addTask', {
-      projectId: props.projectId,
-      name: taskName,
-      sectionId: sectionId,
-      dependencies: dependencies?._id || null,
-      dueDate: dueDate,
-      labels: labelsTask,
-      description: description,
-    })
-    .then((res) => {
-      toast.success('Success');
-      props.dataTasks.setData(res.data.data);
-      props.show.setStatus(false);
-    })
-    .catch((err) => {
-      toast.error(
-        err.response?.data?.error || 'An unexpected error occurred.',
-      );
+  useEffect(() => {
+    setSectionId(props.dataTasks?.data[0]?._id || null);
+    setDueDate({
+      from: new Date(props.dueDate.from),
+      to: new Date(props.dueDate.to),
     });
+  }, [props.dataTasks, props.dueDate]);
 
-  }
-
+  const addTask = () => {
+    if (!taskName) {
+      toast.error('Hãy nhập tên task trước khi update');
+      return;
+    }
+    taskService
+      .addTask({
+        projectId: props.projectId,
+        name: taskName,
+        sectionId: sectionId,
+        dependencies: dependencies?._id || null,
+        dueDate: dueDate,
+        labels: labelsTask,
+        description: description,
+      })
+      .then((res) => {
+        toast.success('Thành công');
+        props.dataTasks.setData(res.data.data);
+        props.show.setStatus(false);
+      })
+      .catch((err) => {
+        toast.error(
+          err.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
+        );
+      });
+  };
   const renderColor = () => {
     return props.labels.data.map((label) => (
       <>
@@ -105,7 +102,7 @@ const addTask = () => {
     <div className="calendar-task">
       <Modal
         size="sm"
-        show={props.show.status} 
+        show={props.show.status} // false: Không hiển thị, true: hiển thị
         scrollable
         onHide={() => {
           props.show.setStatus(false);

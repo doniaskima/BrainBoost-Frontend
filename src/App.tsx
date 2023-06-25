@@ -1,5 +1,5 @@
-import React, { Suspense, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { Suspense, useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import styled, { keyframes, ThemeProvider } from 'styled-components';
 
 // CSS imports
@@ -34,7 +34,7 @@ import RightSection from './components/Chat/RightSection';
 import { AuthProvider } from './context/authProvider';
 import Task from './components/Tasks/Task';
 import ChooseList from './components/Tasks/ChooseList';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import PostList from './pages/PostList';
 import Editor from './pages/Editor';
 import MyListBlog from './pages/MyListBlog';
@@ -42,9 +42,67 @@ import ProjectAnalysis from "./components/anylysis/ProjectAnalysis"
 import TrainingList from './components/Training/TrainingList';
 import YoutubeView from './components/Training/YoutubeView';
 import EditorBlog from './components/Blog/EditorBlog';
+import { Assignment } from './components/Tasks/InterfaceTask';
+import { userService } from './services/user/api';
+import socket from './socketioClient';
 
 function App() {
   const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<Assignment | null>(null);
+    const navigate = useNavigate();
+
+  useEffect(() => {
+    userService
+      .getUserInfo()
+      .then((res) => {
+        if (res.data.data.isActive) {
+          setUser({
+            _id: res.data.data.userId,
+            avatar: res.data.data.avatar,
+            email: res.data.data.email,
+            role: res.data.data.role,
+            username: res.data.data.username,
+          });
+          if (res.data.data.projects.length > 0) {
+            res.data.data.projects.map((projectId) => {
+              socket.emit('online', {
+                roomId: projectId,
+                userId: res.data.data.userId,
+              });
+              return 0;
+            });
+          } else {
+            socket.emit('online', {
+              roomId: undefined,
+              userId: res.data.data.userId,
+            });
+          }
+        } else {
+          toast.error('Tài khoản của bạn đã bị khóa');
+          userService
+            .logOut()
+            .then((res) => {
+              navigate('/auth/login');
+            })
+            .catch((err) => {
+              console.log(err.response?.data?.error);
+            });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      socket.on('newNotification-client', (data) => {
+        if (data.authorId !== user._id && user._id === data.userId) {
+          toast('Bạn có thông báo mới!');
+        }
+      });
+    }
+  }, [user]);
 
   return (
     <div className="App">

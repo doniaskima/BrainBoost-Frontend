@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import {
   DropdownItem,
@@ -9,13 +8,16 @@ import {
   FormGroup,
   Input,
   InputGroup,
+ 
   InputGroupText,
   UncontrolledDropdown,
 } from 'reactstrap';
 import ModalEditPost from './ModalEditPost';
-import ModalTrueFalse from '../../modals/ModalTrueFalse';
-import { BASE_URL } from '../../utils/utils';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { postService } from '../../services/posts/api';
+import socket from '../../socketioClient';
+import { commentService } from '../../services/comments/api';
+import ModalTrueFalse from '../Tasks/ModalTrueFalse';
 
 function PostHeader({
   userId,
@@ -26,6 +28,7 @@ function PostHeader({
   setShowEdit,
   setDataUser,
   setDataDelete,
+  setDataEdit,
 }) {
   return (
     <>
@@ -41,16 +44,14 @@ function PostHeader({
         </div>
         <div className="ml-auto bd-highlight">
           <UncontrolledDropdown
-            disabled={userId === author?._id ? false : true}
-          >
+            disabled={userId === author?._id ? false : true}>
             <DropdownToggle
               className="btn-icon-only text-light"
               role="button"
               size="sm"
               color=""
               onClick={(e) => e.preventDefault()}
-              disabled={userId === author?._id ? false : true}
-            >
+              disabled={userId === author?._id ? false : true}>
               <i
                 className={
                   userId === author?.authorId
@@ -61,21 +62,20 @@ function PostHeader({
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
               <DropdownItem
-                onClick={() => {
+                onClick={(e) => {
+                  // e.preventDefault()
                   setShowEdit(true);
                   setDataUser(author);
-                }}
-              >
+                }}>
                 <span style={{ fontWeight: 'bold' }} className="text-primary">
                   Edit post
                 </span>
               </DropdownItem>
               <DropdownItem
-                onClick={() => {
+                onClick={(e) => {
                   setDataDelete(postId);
                   setShowDelete(true);
-                }}
-              >
+                }}>
                 <span style={{ fontWeight: 'bold' }} className="text-danger">
                   Delete post
                 </span>
@@ -106,48 +106,53 @@ function PostComments({ comments }) {
 
 function PostItem({ authorId, date, content, comments, _id, userId }) {
   const { projectId } = useParams();
-  const [showDelete, setShowDelete] = useState(false);
+  const [showDelete, setShowDetele] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [dataDelete, setDataDelete] = useState(null);
-  const [dataUser, setDataUser] = useState(null);
-
-  const deletePost = async (postId: string) => {
-    try {
-      await axios.post(`${BASE_URL}/api/posts/deletePost`, { postId });
-      console.log("postId",postId)
-      toast.success("Post deleted successfully");
-    } catch (error) {
-      toast.error("Failed to delete the post");
-    }
+  const [dataDelete, setDataDelte] = useState();
+  const [dataEdit, setDataEdit] = useState();
+  const [dataUser, setDataUser] = useState({});
+  const deletePost = async (postId) => {
+    postService.deletePost({ postId: postId }).then((res) => {
+      toast.success('Delete post successfully!');
+      socket.emit('createdPost', {
+        postList: res.data.data,
+        roomId: projectId,
+      });
+    });
   };
-
-  const editPost = async (postId: string, content: string) => {
-    try {
-      await axios.post(`${BASE_URL}/api/posts/updatePost`, { postId, content });
-      toast.success("Post edited successfully");
-    } catch (error) {
-      toast.error("Failed to edit the post");
-    }
+  const editPost = async (postId, content) => {
+    postService
+      .updatePost({ postId: postId, content: content })
+      .then((res) => {
+        toast.success('Edit post successfully!');
+        socket.emit('createdPost', {
+          postList: res.data.data,
+          roomId: projectId,
+        });
+      })
+      .catch((err) => {
+        toast.error('Error! Unable to edit post.');
+      });
   };
-  
-
-  const addComment = async (postId, comment) => {
-    try {
-      // Perform the add comment request to your backend API
-      // Example:
-      // await axios.post(`/api/posts/${postId}/comments`, { comment });
-      toast.success('Comment added successfully');
-    } catch (error) {
-      toast.error('Failed to add the comment');
-    }
+  const AddComment = async (postId, comment) => {
+    commentService
+      .addComment({ postId: postId, content: comment })
+      .then((res) => {
+        socket.emit('createdPost', {
+          postList: res.data.data,
+          roomId: projectId,
+        });
+      })
+      .catch((err) => {
+        toast.error('Error! Unable to comment.');
+      });
   };
-
   return (
     <>
       <ModalTrueFalse
         show={showDelete}
         data={{
-          title: 'Delete the post',
+          title: 'delete the post ',
           button_1: {
             title: 'Cancel',
           },
@@ -156,14 +161,14 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
           },
         }}
         setClose={() => {
-          setShowDelete(false);
+          setShowDetele(false);
         }}
         funcButton_1={() => {}}
         funcButton_2={() => {
           deletePost(dataDelete);
         }}
-        funcOnHide={() => {}}
-      />
+        funcOnHide={() => {}}></ModalTrueFalse>
+
       <ModalEditPost
         data={{ content: content, postId: _id, author: { ...dataUser } }}
         show={showEdit}
@@ -172,8 +177,7 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
         }}
         funcEdit={(postId, content) => {
           editPost(postId, content);
-      }}></ModalEditPost>
-
+        }}></ModalEditPost>
 
       <div className="post">
         <PostHeader
@@ -181,10 +185,11 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
           author={authorId}
           date={date}
           postId={_id}
-          setShowDelete={setShowDelete}
+          setShowDelete={setShowDetele}
           setShowEdit={setShowEdit}
           setDataUser={setDataUser}
-          setDataDelete={setDataDelete}
+          setDataDelete={setDataDelte}
+          setDataEdit={setDataEdit}
         />
         <div className="post-content row justify-content-center">
           <div className="col-11">
@@ -209,10 +214,10 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
                   src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254609/react%20fb%20icon/care_1_y1dxgw.png"
                   alt="action"
                 />
-                <span>You and 3 others</span>
+                <span>You and 3 other people</span>
               </div>
               <div className="action-detail-action-comment">
-                <span>{comments.length} comments</span>
+                <span>{comments.length} Comment</span>
               </div>
             </div>
             <div className="action-btn">
@@ -226,7 +231,7 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
               <div className="action-btn-comment">
                 <img
                   src="https://res.cloudinary.com/vnu-uet/image/upload/v1606254779/react%20fb%20icon/btn-comment_kc8zvu.png"
-                  alt="action comment"
+                  alt="action comment "
                 />
                 <span className="ml-3">Comment</span>
               </div>
@@ -235,9 +240,9 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
         </div>
 
         <PostComments comments={comments} />
-
-        <FormGroup className="mb-3">
-          <InputGroup className="input-group-alternative">
+        <FormGroup className="mb-3 ">
+          <InputGroup className="input-group-alternative ">
+            
             <Input
               id={_id}
               style={{ backgroundColor: '#f0f2f5' }}
@@ -248,10 +253,10 @@ function PostItem({ authorId, date, content, comments, _id, userId }) {
               onChange={(event) => {
                 event.target.onkeyup = (key) => {
                   let comment = document.getElementById(
-                    _id
+                    _id,
                   ) as HTMLInputElement;
                   if (key.keyCode === 13) {
-                    addComment(_id, comment.value);
+                    AddComment(_id, comment.value);
                     comment.value = '';
                   }
                 };

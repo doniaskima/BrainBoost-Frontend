@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container } from 'reactstrap';
-import Spinner from "../Spinner"
+import Spinner from "../Spinner";
 import axios from "axios";
-import { BASE_URL } from "../../utils/utils"
+import { BASE_URL } from "../../utils/utils";
 import ModalCreate from "../../modals/ModalCreate";
 import ProjectCard from "./ProjectCard";
 import { useNavigate } from "react-router";
+import { projectService } from "../../services/projects/api";
+import { toast } from "react-toastify";
+import socketioClient from "../../socketioClient";
+import { userService } from "../../services/user/api";
+import socket from "../../socketioClient";
 
 interface Project {
-
   name: string;
   description: string;
-
 }
 
 const HomeBoard = () => {
@@ -21,51 +24,62 @@ const HomeBoard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [newProject, setNewProject] = useState("");
   const [loading, setLoading] = useState(false);
+  const [listJoin, setListJoin] = useState([]);
+
   const [fetchingProjects, setFetchingProjects] = useState(false); // New state for fetching projects
+  const [data, setData] = useState([]);
+  const [collapseOpen, setCollapseOpen] = useState<boolean>();
+  // eslint-disable-next-line
+  const [myProjects, setMyProjects] = useState<any>([]);
+  console.log(myProjects);
+
+  const [user, setUser] = useState<{
+    _id: string;
+    username: string;
+    avatar: string;
+    role: Role;
+  }>();
 
   useEffect(() => {
-    const getProjects = async () => {
-      setLoading(true);
-      setFetchingProjects(true); // Set fetchingProjects to true before initiating the API call
-      try {
-        const { data } = await axios.get(`${BASE_URL}/api/project/getProject`);
-        setProjects(data);
-      } catch (error) {
-        setError("Failed to fetch members.");
-      } finally {
-        setLoading(false);
-        setFetchingProjects(false); // Set fetchingProjects to false after fetching projects
-      }
-    };
-    getProjects();
+    userService
+      .getUserInfo()
+      .then((res) => {
+        setUser({ ...res.data.data });
+      })
+      .catch((error) => {
+        console.log(error.response?.data?.error);
+      });
   }, []);
 
-  const createProject = async (name: string, description: string) => {
-    try {
-      const { data } = await axios.post(`${BASE_URL}/api/project/addProject`, {
-        name: name,
-        description: description,
+  const createProject = (name: string, description: string) => {
+    projectService
+      .addProject({ name: name, description: description })
+      .then((res) => {
+        let project = res.data.data.project;
+        console.log("project", project);
+        setMyProjects([...myProjects, project]);
+        socket.emit('joinRoom', { roomId: project._id });
+        toast.success('Project created successfully!');
+        setShowCreate(false);
+      })
+      .catch((err) => {
+        toast.error('Failed to create project');
       });
-
-      if (!data.status) {
-        setError(data.message);
-        return;
-      }
-
-      setFetchingProjects(true); // Set fetchingProjects to true before initiating the API call
-      // Fetch projects again to update the project list after adding a new project
-      const { data: updatedProjects } = await axios.get(`${BASE_URL}/api/project/getProject`);
-      setProjects(updatedProjects);
-      setFetchingProjects(false); // Set fetchingProjects to false after fetching projects
-
-      console.log("Project added:", name);
-      console.log("Description:", description);
-    } catch (error) {
-      setError("Failed to add project.");
-    }
   };
+
   useEffect(() => {
-    console.log("Updated projects length:", projects?.projects?.length);
+    projectService
+      .getProject()
+      .then((res) => {
+        setData(res.data.data);
+      })
+      .catch((err) => {
+        toast.error('Error: Could not get data!');
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log("Updated projects length:", projects?.length);
   }, [projects]);
 
   return (
@@ -117,7 +131,7 @@ const HomeBoard = () => {
               <div className='ml-0 md:ml-16'>
                 <div className='relative group inline-block'>
                   <h2 className='text-3xl font-bold animate-up bg-gradient-to-r from-sh-blue to-sh-blue mb-5 tracking-widest inline-block cursor-pointer select-none'>
-                    Heyy Hello<span className='italic'>!</span>
+                    Hey Hello<span className='italic'>!</span>
                   </h2>
                 </div>
                 <div className='relative group inline-block'>
@@ -147,7 +161,7 @@ const HomeBoard = () => {
                   Create Project
                 </Button>
                 <section>
-                  <h1 className="mt-5 mb-5 text-3xl  tracking-wider text-sh-blue inline-block  font-bold underline-offset-[15px]">
+                  <h1 className="mt-5 mb-5 text-3xl tracking-wider text-sh-blue inline-block font-bold underline-offset-[15px]">
                     All projects
                   </h1>
                 </section>
@@ -168,13 +182,12 @@ const HomeBoard = () => {
           <div className='flex justify-center'>
             <Spinner />
           </div>
-        ) : projects?.projects?.length > 0 ? (
+        ) : myProjects?.length > 0 ? (
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-            {projects?.projects.map((project) => (
+            {myProjects?.map((project) => (
               <ProjectCard
                 key={project._id}
                 name={project.name}
-                description={project.description}
                 projectId={project._id} // Pass the projectId to the ProjectCard component
                 onClick={() => navigate(`/tasks/member-project/${project._id}`)} // Add an onClick handler to navigate to the tasks page
               />

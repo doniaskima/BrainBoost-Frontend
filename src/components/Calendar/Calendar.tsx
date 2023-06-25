@@ -12,13 +12,14 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import ModalEditTaskCalendar from './ModalEditTaskCalendar';
 import ModalAddTaskCalendar from './ModalAddTaskCalendar';
-import { useParams } from 'react-router';
-import axios from 'axios';
-import { Section, Task } from '../Tasks/InterfaceTask';
-
+import { useParams } from 'react-router-dom';
+import { Label, Section, Task } from '../Tasks/InterfaceTask';
+import { projectService } from '../../services/projects/api';
+import { taskService } from '../../services/task/api';
 
 const Calendar: React.FC<any> = (props) => {
   const { projectId } = useParams();
+
   const [isShow, setIsShow] = useState<boolean>(false);
   const [isShowAdd, setIsShowAdd] = useState<boolean>(false);
   const [labels, setLabels] = useState<Array<Label>>([]);
@@ -33,31 +34,27 @@ const Calendar: React.FC<any> = (props) => {
     to: new Date().toJSON(),
   });
   useEffect(() => {
-    const fetchLabels = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/api/project/getLabels?projectId=${projectId}`);
-        setLabels(response.data.data);
-      } catch (error) {
-        toast.error(error.response?.data?.error || 'Failed to fetch labels');
-      }
-    };
-  
-    fetchLabels();
+    projectService
+      .getLabels(projectId)
+      .then((res) => {
+        setLabels(res.data.data);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.error || 'Lỗi lấy dữ liệu');
+      });
   }, []);
-  
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/api/tasks/getTasks?projectId=${projectId}`);
-        setDataTasks(response.data.data);
-      } catch (error) {
+    taskService
+      .getTasks(projectId)
+      .then((res) => {
+        // res.data.data: all sections
+        setDataTasks(res.data.data);
+      })
+      .catch((err) => {
         toast.error(
-          error.response?.data?.error || 'An unexpected error has occurred while fetching tasks'
+          err?.response?.data?.error || 'Một lỗi không mong muốn đã xảy ra',
         );
-      }
-    };
-  
-    fetchTasks();
+      });
   }, []);
   useEffect(() => {
     let _events = [];
@@ -74,7 +71,6 @@ const Calendar: React.FC<any> = (props) => {
     });
     setEvents(_events);
   }, [dataTasks]);
-
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     // add Task
     let from = new Date(selectInfo.start);
@@ -109,8 +105,7 @@ const Calendar: React.FC<any> = (props) => {
     );
   };
   return (
-
-
+  
       <div className="calendar">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -169,8 +164,7 @@ const Calendar: React.FC<any> = (props) => {
           dueDate={dateSelect}
         />
       </div>
-
-
+    
   );
 };
 export default Calendar;

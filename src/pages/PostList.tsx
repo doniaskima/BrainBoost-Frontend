@@ -1,104 +1,104 @@
-import React, { useEffect, useState } from 'react';
-import WrapperProject from '../components/Tasks/WrapperProject';
-import CreatePost from '../components/Post/CreatePost';
-import { useParams } from 'react-router';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { BASE_URL } from '../utils/utils';
+/* eslint-disable react-hooks/exhaustive-deps */
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+
+import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import socket from '../socketioClient';
+import { postService } from '../services/posts/api';
+import { userService } from '../services/user/api';
+import WrapperProject from '../components/Tasks/WrapperProject';
 import PostItem from '../components/Post/PostItem';
+import Friend from '../components/member/Friend';
+import CreatePost from '../components/Post/CreatePost';
 
-export default function PostList() {
-  const [userId, setUserId] = useState('');
+const PostList: React.FC = () => {
   const { projectId } = useParams();
+ 
   const [listOnline, setListOnline] = useState([]);
+  useEffect(() => {
+    socket.emit('joinRoom', { roomId: projectId });
+    socket.emit('loadUserOnline');
+    socket.on('reloadUserOnline', (data) => {
+      setListOnline(data.data);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [postList, setPostList] = useState([]);
-  const [user, setUser] = useState('');
-
-  const fetchUserId = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/users/getUserId`);
-      console.log('User ID Response:', response);
-      const userId = response.data.id;
-      console.log('User ID:', userId);
-      if (userId) {
-        setUserId(userId);
-      } else {
-        toast.error('User ID is missing in the response');
-      }
-    } catch (error) {
-      toast.error('Login session ended');
-    }
-  };
+  const [user, setUser] = useState({
+    userId: '',
+    role: '',
+    avatar: '',
+    language: '',
+    email: '',
+    username: '',
+    birthday: '',
+  });
 
   const addPost = (content) => {
-    axios
-      .post(`${BASE_URL}/api/posts/addPost`, {
+    postService
+      .addPost({
         projectId: projectId,
         content: content,
       })
       .then(async (res) => {
-        toast.success('Successfully created a new post');
-        setPostList(res.data);
-        console.log(res.data);
+        toast.success('Đã tạo post mới thành công');
+        socket.emit('createdPost', {
+          postList: res.data.data,
+          roomId: projectId,
+        });
       })
       .catch((err) => {
-        toast.error('Failed to create the post!');
+        toast.error('Lỗi không đăng được bài!');
       });
   };
-
   const getListPost = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/users/getUserInfo`, {
-        params: {
-          userId: userId,
-        },
+    postService
+      .getPosts(projectId)
+      .then((response) => {
+        setPostList(response.data.data);
+      })
+      .catch((err) => {});
+    userService
+      .getUserInfo()
+      .then((response) => {
+        setUser(response.data.data);
+      })
+      .catch((err) => {
+        toast.error('Không xác định được user!');
       });
-      setUser(response.data.data);
-      console.log(response.data);
-    } catch (error) {
-      toast.error('Failed to retrieve user information!');
-    }
-    try {
-      const response = await axios.post(`${BASE_URL}/api/posts/getPost`, {
-        projectId: projectId,
-      });
-      setPostList(response.data || []);
-      console.log("setListPosts",response.data)
-    } catch (error) {
-      toast.error('Failed to retrieve posts!');
-    }
-
   };
-
   useEffect(() => {
-    fetchUserId();
     getListPost();
-    console.log(postList)
+    socket.on('loadPost', (data) => {
+      console.log(data);
+      setPostList(data.data.postList);
+    });
   }, []);
-
   return (
     <div className="post-list">
       <WrapperProject>
         <div className="d-flex flex-row justify-content-start">
           <div className="col-8 mx-2">
             <CreatePost
-              author={user ? { name: user.name, avatar: user.avatar } : null}
+              author={{ name: user.username, avatar: user.avatar }}
               funcCreatePost={(content) => {
                 addPost(content);
               }}
             />
-            {postList.map((post) => (
+            {postList.map((post, index) => (
               <PostItem
-                key={post._id}
+                key={index}
                 {...post}
-                userId={userId}
+                userId={user.userId}
                 date={moment(post.createdAt).format('YYYY-MM-DD')}
               />
             ))}
           </div>
+          <Friend projectId={projectId} listOnline={listOnline} />
         </div>
       </WrapperProject>
     </div>
   );
-}
+};
+export default PostList;

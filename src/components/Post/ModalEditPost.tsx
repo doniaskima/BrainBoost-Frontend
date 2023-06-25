@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 const ModalEditPost: React.FC<any> = (props: any) => {
-  //props: funcQuit(), show, data:{content, postId}
+
   const [valueEdit, setValueEdit] = useState<string>(null);
   const [isChange, setIsChange] = useState(false);
   return (
@@ -12,6 +12,7 @@ const ModalEditPost: React.FC<any> = (props: any) => {
       <Modal
         size="lg"
         show={props.show} 
+        
         onHide={() => {
           props.funcQuit();
         }}
@@ -19,7 +20,7 @@ const ModalEditPost: React.FC<any> = (props: any) => {
         centered>
         <Modal.Header closeButton>
           <FontAwesomeIcon className="mr-3" icon={faEdit} />
-          Edit post
+          Chỉnh sửa bài viết
         </Modal.Header>
         <Modal.Body>
           <div className="row d-flex justify-content-center w-100 m-0">
@@ -27,7 +28,7 @@ const ModalEditPost: React.FC<any> = (props: any) => {
               {/* <label className="form-control-label">Description</label> */}
               <textarea
                 style={{ height: '150px' }}
-                placeholder="Edit post here"
+                placeholder="Chỉnh sửa bài viết tại đây"
                 value={valueEdit || isChange ? valueEdit : props.data.content}
                 onChange={(e) => {
                   if (!isChange) {

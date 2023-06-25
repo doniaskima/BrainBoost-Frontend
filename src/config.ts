@@ -1,5 +1,4 @@
 
-
 enum LayoutType {
   MIX = 'mix',
   TOP = 'top',

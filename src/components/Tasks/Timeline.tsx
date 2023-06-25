@@ -6,10 +6,11 @@ import 'gantt-task-react/dist/index.css';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+
+ 
 import { Section } from './InterfaceTask';
-import { useParams } from 'react-router';
-import axios from 'axios';
-import { BASE_URL } from '../../utils/utils';
+import { useParams } from 'react-router-dom';
+import { taskService } from '../../services/task/api';
 
 export const Timeline: React.FC = () => {
   const { projectId } = useParams();
@@ -17,18 +18,17 @@ export const Timeline: React.FC = () => {
   const [dataTasks, setDataTasks] = useState<Array<Section>>([]);
   const [allTask, setAllTask] = useState<Array<Task>>([]);
   const [showListTask, setShowListTask] = useState(true);
+
   useEffect(() => {
-    const projectId = 'your-project-id'; 
-    axios
-      .get(`${BASE_URL}/api/tasks/getTasks?projectId=${projectId}`)
+    taskService
+      .getTasks(projectId)
       .then((res) => {
         setDataTasks(res.data.data);
       })
       .catch((err) => {
-        toast.error('An unexpected error occurred');
+        toast.error('An unexpected error has occurred.');
       });
   }, []);
-
   useEffect(() => {
     allTask.splice(0);
     dataTasks.forEach((section: Section, i) => {
@@ -63,7 +63,6 @@ export const Timeline: React.FC = () => {
     });
     setAllTask([...allTask]);
   }, [dataTasks]);
-
   const getColumnWidth = () => {
     switch (viewMode) {
       case ViewMode.Month:
@@ -75,39 +74,8 @@ export const Timeline: React.FC = () => {
     }
   };
 
-  const handleDateChange = (task, children) => {
-    const from = new Date(task.start);
-    const to = new Date(task.end);
-    from.setHours(0);
-    from.setMinutes(0);
-    to.setDate(to.getDate() - 1);
-    to.setHours(0);
-    to.setMinutes(0);
-
-    const updateTaskEndpoint = `${BASE_URL}/api/tasks/updateTask`;
-
-    axios
-      .post(updateTaskEndpoint, {
-        taskId: task.id,
-        projectId: projectId,
-        dueDate: {
-          from: from,
-          to: to,
-        },
-      })
-      .then((res) => {
-        setDataTasks(res.data.data.allTasks);
-      })
-      .catch((err) => {
-        toast.error(
-          err.response?.data?.error || 'An unexpected error occurred',
-        );
-      });
-  };
-
-
   return (
- 
+     
       <div className="timeline-view p-2" style={{ backgroundColor: 'white' }}>
         <div className="d-flex bd-highlight mb-1">
           <div className="mr-auto p-2 bd-highlight">
@@ -165,17 +133,43 @@ export const Timeline: React.FC = () => {
           </div>
         </div>
         {allTask.length > 0 && (
-        <Gantt
-          tasks={allTask}
-          viewMode={viewMode}
-          onDateChange={handleDateChange}
-          columnWidth={getColumnWidth()}
-          listCellWidth={showListTask ? '155px' : ''}
-          ganttHeight={allTask.length > 6 ? 400 : -1}
-        />
-      )}
+          <Gantt
+            tasks={allTask}
+            viewMode={viewMode}
+            onDateChange={(task: Task, children: Task[]) => {
+              let from = task.start;
+              let to = task.end;
+              from.setHours(0);
+              from.setMinutes(0);
+              to.setDate(to.getDate() - 1);
+              to.setHours(0);
+              to.setMinutes(0);
+              taskService
+                .updateTask({
+                  taskId: task.id,
+                  projectId: projectId,
+                  dueDate: {
+                    from: from,
+                    to: to,
+                  },
+                })
+                .then((res) => {
+                  setDataTasks(res.data.data.allTasks);
+                })
+                .catch((err) => {
+                  toast.error(
+                    err.response?.data?.error ||
+                      ' An unexpected error has occurred.',
+                  );
+                });
+            }}
+            columnWidth={getColumnWidth()}
+            listCellWidth={showListTask ? '155px' : ''}
+            ganttHeight={allTask.length > 6 ? 400 : -1}
+          />
+        )}
       </div>
- 
+   
   );
 };
 

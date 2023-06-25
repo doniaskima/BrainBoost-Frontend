@@ -2,31 +2,31 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { sectionService } from '../../services/section/api';
 import { Section } from './InterfaceTask';
-import { BASE_URL } from '../../utils/utils';
-import axios from 'axios';
 
 interface Props {
-  showModal: { status: boolean; setStatus: (value) => void };
-  dataTasks: { data: Array<Section>; setData: (data) => void };
+  showModal: { status: boolean; setStatus: (value: boolean) => void };
+  dataTasks: { data: Section[]; setData: (data: Section[]) => void };
   projectId: string;
   section: Section;
-  size;
+  size: any;
 }
 
 const RenameSection: React.FC<Props> = (props: Props) => {
   const [nameSection, setNameSection] = useState('');
   const [descriptionSection, setDescriptionSection] = useState('');
-  const [err, setErr] = useState(null);
+  const [err, setErr] = useState<any>(null);
+
   const renameSection = () => {
     if (nameSection === '') {
-      toast.error('Please enter the section name');
-      setErr('Please enter the section name');
+      toast.error('Please enter a section name');
+      setErr('Please enter a section name');
       return;
     }
-    
-    axios
-      .post(`${BASE_URL}/api/tasks/updateTask`, {
+
+    sectionService
+      .updateSection({
         projectId: props.projectId,
         sectionId: props.section._id,
         name: nameSection,
@@ -38,10 +38,11 @@ const RenameSection: React.FC<Props> = (props: Props) => {
       })
       .catch((err) => {
         toast.error(
-          err.response.data.error || 'An unexpected error occurred',
+          err.response?.data?.error || 'An unexpected error occurred'
         );
       });
   };
+
   return (
     <div className="rename-section">
       <Modal
@@ -50,9 +51,10 @@ const RenameSection: React.FC<Props> = (props: Props) => {
         className="modal-confirm"
         onHide={() => {
           props.showModal.setStatus(false);
-        }}>
+        }}
+      >
         <Modal.Header className="pb-0">
-          <h1> Rename section</h1>
+          <h1>Rename Section</h1>
         </Modal.Header>
         <Modal.Body>
           <form className="new-event--form">
@@ -70,12 +72,13 @@ const RenameSection: React.FC<Props> = (props: Props) => {
               <label className="form-control-label">Description</label>
               <textarea
                 style={{ height: '100px' }}
-                placeholder="Desctiption"
+                placeholder="Description"
                 defaultValue={descriptionSection}
                 className="form-control-alternative edit-event--description textarea-autosize form-control mr-2"
                 onChange={(e) => {
                   setDescriptionSection(e.target.value);
-                }}></textarea>
+                }}
+              ></textarea>
               <i className="form-group--bar"></i>
             </div>
             <div className="d-flex justify-content-start align-items-center"></div>
@@ -87,19 +90,21 @@ const RenameSection: React.FC<Props> = (props: Props) => {
             className="btn btn-secondary"
             onClick={() => {
               props.showModal.setStatus(false);
-            }}>
+            }}
+          >
             Close
           </button>
           <button
             type="button"
             className="btn btn-primary"
-            onClick={renameSection}>
+            onClick={renameSection}
+          >
             Save
-
           </button>
         </Modal.Footer>
       </Modal>
     </div>
   );
 };
+
 export default RenameSection;
