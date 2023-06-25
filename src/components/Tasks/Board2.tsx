@@ -11,6 +11,7 @@ import { userService } from '../../services/user/api';
 import { TaskDetails } from './TaskDetails';
 import AddSection from './AddSection';
 import SectionComponent from './SectionComponent';
+import Loader from './TaskLoader'; // Import Loader component
 
 const Board2: React.FC = () => {
   const { projectId } = useParams();
@@ -20,15 +21,18 @@ const Board2: React.FC = () => {
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [dataTasks, setDataTasks] = useState<Array<Section>>([]);
   const [labels, setLabels] = useState<Array<Label>>([]);
+  const [loading, setLoading] = useState(true); // State for loading status
 
   useEffect(() => {
     taskService
       .getTasks(projectId)
       .then((res) => {
         setDataTasks(res.data.data);
+        setLoading(false); // Set loading to false when data is fetched
       })
       .catch((err) => {
         toast.error('An unexpected error occurred');
+        setLoading(false); // Set loading to false on error
       });
 
     projectService
@@ -122,35 +126,41 @@ const Board2: React.FC = () => {
         setShowTaskDetails(false);
       }}
     >
-      <DragDropContext onDragEnd={onDragEnd}>
-        {dataTasks.map((section, index) => {
-          return (
-            <SectionComponent
-              userId={userId}
-              dataTasks={{
-                data: dataTasks,
-                setData: setDataTasks,
-              }}
-              section={section}
-              showTaskDetails={{
-                status: showTaskDetails,
-                setStatus: setShowTaskDetails,
-              }}
-              taskDetails={{
-                task: taskDetails,
-                setTask: setTaskDetails,
-              }}
-              labels={{
-                data: labels,
-                setData: (_labels) => {
-                  setLabels(_labels);
-                },
-              }}
-              key={index}
-            />
-          );
-        })}
-      </DragDropContext>
+      {loading ? (
+       <div className="loader-container">
+          <Loader /> 
+        </div> 
+      ) : (
+        <DragDropContext onDragEnd={onDragEnd}>
+          {dataTasks.map((section, index) => {
+            return (
+              <SectionComponent
+                userId={userId}
+                dataTasks={{
+                  data: dataTasks,
+                  setData: setDataTasks,
+                }}
+                section={section}
+                showTaskDetails={{
+                  status: showTaskDetails,
+                  setStatus: setShowTaskDetails,
+                }}
+                taskDetails={{
+                  task: taskDetails,
+                  setTask: setTaskDetails,
+                }}
+                labels={{
+                  data: labels,
+                  setData: (_labels) => {
+                    setLabels(_labels);
+                  },
+                }}
+                key={index}
+              />
+            );
+          })}
+        </DragDropContext>
+      )}
       <AddSection
         dataTasks={{
           data: dataTasks,

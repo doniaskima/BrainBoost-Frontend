@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Button } from 'reactstrap';
 import { sectionService } from '../../services/section/api';
 import { Section } from './InterfaceTask';
-
+import {MdOutlineDashboardCustomize} from "react-icons/md";
 interface Props {
   showModal: { status: boolean; setStatus: (value: boolean) => void };
   dataTasks: { data: Section[]; setData: (data: Section[]) => void };
@@ -44,7 +44,7 @@ const AddSection: React.FC<Props> = (props) => {
   return (
     <div className="add-section">
       <div
-        style={{ height: '100%' }}
+        style={{ height: '100%'  }}
         onClick={() => {
           props.showModal.setStatus(false);
         }}
@@ -52,15 +52,21 @@ const AddSection: React.FC<Props> = (props) => {
         <div className="column-tasks">
           <div className="column-task-sort">
             <div className="board-task">
-              <Button
-                color="primary"
-                onClick={() => {
-                  setShowModal(true);
-                }}
-              >
-                <i className="fa fa-list-alt" aria-hidden="true"></i>
-                <span>Add Section</span>
-              </Button>
+            <button className="continue-application" onClick={() => setShowModal(true)}>
+  <div>
+    <div className="pencil"></div>
+    <div className="folder">
+      <div className="top">
+        <svg viewBox="0 0 24 27">
+          <path d="M1,0 L23,0 C23.5522847,-1.01453063e-16 24,0.44771525 24,1 L24,8.17157288 C24,8.70200585 23.7892863,9.21071368 23.4142136,9.58578644 L20.5857864,12.4142136 C20.2107137,12.7892863 20,13.2979941 20,13.8284271 L20,26 C20,26.5522847 19.5522847,27 19,27 L1,27 C0.44771525,27 6.76353751e-17,26.5522847 0,26 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z"></path>
+        </svg>
+      </div>
+      <div className="paper"></div>
+    </div>
+  </div>
+  Add Section
+</button>
+
             </div>
           </div>
         </div>

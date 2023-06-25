@@ -3,8 +3,9 @@
     scrollbar-width: thin;
     display: flex;
     flex-direction: row;
-    height: 80vh;
-    color: black;
+    position: relative;
+    width: 100%;
+    height: 90vh;
     .column-tasks {
       height: 100%;
       width: 100%;
@@ -80,30 +81,9 @@
                 font-size: 13px;
                 border-radius: 10px;
               }
-              // .user-avatar-block {
-              // .user-avatar {
-              //   width: 40px;
-              //   height: 40px;
-              //   border-radius: 50%;
-              // }
-              // .dropdown-toggle {
-              //   width: 40px;
-              //   height: 40px;
-              //   border-radius: 50%;
-              //   padding: 0px;
-              //   color: black;
-              //   border: none;
-              //   box-shadow: none;
-              // }
-              // .dropdown-toggle::after {
-              //   display: none !important;
-              // }
-              // }
+       
             }
-            // .task-item-done {
-            // border: 1px solid #ababab;
-            // background-color: #f0f0f0;
-            // }
+         
           }
         }
       }
@@ -322,3 +302,10 @@
     padding-left: 0.75rem;
   }
   
+
+  .tasks .loader-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }

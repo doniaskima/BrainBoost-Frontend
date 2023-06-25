@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { toast } from 'react-toastify';
 import { Container } from 'reactstrap';
 import Calendar from '../Calendar/Calendar';
 import Board2 from './Board2';
 import Timeline from './Timeline';
-import axios from 'axios';
-import { BASE_URL } from '../../utils/utils';
+import {CiViewBoard} from "react-icons/ci"
 import WrapperProject from './WrapperProject';
 
 export enum TypeView {
@@ -44,10 +42,10 @@ export const Task: React.FC = () => {
   ];
   const renderSelect = (typeview: TypeView, icon, name) => {
     return (
-      <div
+      <button
         key={typeview}  
         className={
-          'item-head-task ' + (view === typeview ? 'item-head-task-active' : '')
+          'item-head-task-btn ' + (view === typeview ? 'item-head-task-active' : '')
         }
         onClick={() => {
           navigate(`/tasks/task-project/${projectId}?view=${typeview}`);
@@ -56,7 +54,7 @@ export const Task: React.FC = () => {
       >
         {name}
         <i className={`ml-2 ${icon}`}></i>
-      </div>
+      </button>
     );
   };
   const renderView = () => {
@@ -88,13 +86,13 @@ export const Task: React.FC = () => {
   }, [userId]);
 
   return (
-    <div className="task-project container-fluid w-100">
+ <div className="container-fluid w-full">
       <WrapperProject>
         <Container fluid>
-          <div className="d-flex justify-content-start w-100 head-task flex-row-reverse">
-            {listSelectView.map((element) => {
-              return renderSelect(element.typeView, element.icon, element.name);
-            })}
+          <div className="d-flex justify-content-start w-100 head-task flex-row-reverse listSelectView">
+            {listSelectView.map((element) =>
+              renderSelect(element.typeView, element.icon, element.name)
+            )}
           </div>
           <div className="w-100">{renderView()}</div>
         </Container>
