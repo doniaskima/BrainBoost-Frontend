@@ -87,6 +87,7 @@ const TrainingList: React.FC = () => {
   useEffect(() => {
     projectService.getAllTraining(projectId).then((res) => {
       setListBlogs(res.data.data.blogArray);
+      console.log("listBlogs",listBlogs)
       setListVideos(res.data.data.videoArray);
     });
   }, []);

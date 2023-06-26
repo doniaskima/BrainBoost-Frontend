@@ -2,9 +2,11 @@ import { faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
-import { useNavigate } from 'react-router';
-import { toast } from 'react-toastify';
 
+import { toast } from 'react-toastify';
+import { blogService } from '../../services/blog/api';
+import { MoneyBlog, SecurityBlog } from '../blog/MyListBlog';
+import { useNavigate } from 'react-router';
 interface Props {
   size?: 'sm' | 'lg' | 'xl';
   showModal: boolean;
@@ -12,14 +14,14 @@ interface Props {
   projectId: string;
   content: string;
 }
-
 const ModalCreateBlog: React.FC<Props> = (props: Props) => {
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const [isFree, setIsFree] = useState(true);
   const [isPublic, setIsPublic] = useState(true);
   const [nameBlog, setNameBlog] = useState('');
   const [thumbnailBlog, setThumbnailBlog] = useState(null);
   const [descriptionBlog, setDescriptionBlog] = useState('');
+ 
 
   return (
     <div className="modal-create-blog">
@@ -31,13 +33,13 @@ const ModalCreateBlog: React.FC<Props> = (props: Props) => {
           props.setShowModal(false);
         }}>
         <Modal.Header className="pb-0">
-          <h1>Create Blog</h1>
+          <h1>Tạo Blog</h1>
         </Modal.Header>
         <Modal.Body>
           <form className="new-event--form">
             <div className="form-group">
               <input
-                placeholder="Blog Name"
+                placeholder="Tên Blog"
                 type="text"
                 className="form-control-alternative new-event--title form-control"
                 onChange={(e) => {
@@ -47,7 +49,7 @@ const ModalCreateBlog: React.FC<Props> = (props: Props) => {
             </div>
             <div className="form-group">
               <input
-                placeholder="Enter Thumbnail"
+                placeholder="Nhập thumbnail"
                 type="text"
                 className="form-control-alternative new-event--title form-control"
                 onChange={(e) => {
@@ -59,7 +61,7 @@ const ModalCreateBlog: React.FC<Props> = (props: Props) => {
               <label className="form-control-label">Description</label>
               <textarea
                 style={{ height: '100px' }}
-                placeholder="Description"
+                placeholder="Desctiption"
                 className="form-control-alternative edit-event--description textarea-autosize form-control mr-2"
                 onChange={(e) => {
                   setDescriptionBlog(e.target.value);
@@ -90,7 +92,7 @@ const ModalCreateBlog: React.FC<Props> = (props: Props) => {
                     />
                   </>
                 )}
-                <span className="ml-2">Free</span>
+                <span className="ml-2">Miễn phí</span>
               </div>
               <div className="p-2 bd-highlight">
                 {isPublic ? (
@@ -134,12 +136,29 @@ const ModalCreateBlog: React.FC<Props> = (props: Props) => {
             className="btn btn-primary"
             onClick={() => {
               if (nameBlog === '') {
-                toast.error('Please enter Blog name');
+                toast.error('Vui lòng nhập tên Blog');
                 return;
               }
-            
+              blogService
+                .addBlog({
+                  content: props.content,
+                  title: nameBlog,
+                  describe: descriptionBlog,
+                  security:
+                    !isPublic || props.projectId
+                      ? SecurityBlog.Private
+                      : SecurityBlog.Public,
+                  thumbnail: thumbnailBlog,
+                  projectId: props.projectId,
+                })
+                .then((res) => {
+                  let blogId = res.data.data._id;
+                  toast.success('Thành công');
+                  navigate(`/tasks/blog/${blogId}`);
+                })
+                .catch(() => {});
             }}>
-            Create Blog
+            Tạo blog
           </button>
         </Modal.Footer>
       </Modal>

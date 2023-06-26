@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import { Button, Modal } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+ 
 import { toast } from 'react-toastify';
-import { BASE_URL } from '../../utils/utils';
+ 
+import { blogService } from '../../services/blog/api';
 
 
 const EditorBlog: React.FC = () => {
   const [content, setContent] = useState('');
   const { projectId } = useParams();
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const modules = {
     toolbar: [
@@ -53,21 +55,18 @@ const EditorBlog: React.FC = () => {
   };
 
   const handleSaveModal = () => {
-    // Perform save functionality here
-    // Example axios request:
-    axios.post(`${BASE_URL}/save-content`, { content })
-      .then((response) => {
-        console.log('Save response:', response.data);
-        // Handle success
-        toast.success('Content saved successfully!');
-      })
-      .catch((error) => {
-        console.error('Save error:', error);
-        // Handle error
-        toast.error('Failed to save content.');
-      });
-
-    setShowModal(false);
+    blogService
+    .addBlog({
+      content: content,
+    })
+    .then((res) => {
+      let blogId = res.data.data._id;
+      console.log("blogId",blogId)
+      toast.success('Success');
+      console.log("blogId",blogId)
+      navigate(-1);
+    }).catch(() => {});
+   
   };
 
   return (
@@ -98,9 +97,13 @@ const EditorBlog: React.FC = () => {
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleSaveModal}>
-            Save
-          </Button>
+      
+          <button className="bookmarkBtn" onClick={handleSaveModal}     >
+  <span className="IconContainer"> 
+    <svg viewBox="0 0 384 512" height="0.9em" className="icon"><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"></path></svg>
+  </span>
+  <p className="text">Save</p>
+</button>
         </Modal.Footer>
       </Modal>
     </div>
