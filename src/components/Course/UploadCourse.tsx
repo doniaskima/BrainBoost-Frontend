@@ -64,8 +64,10 @@ const UploadCours = () => {
             return (
                 <form onSubmit={handleSubmit}>
                     {pageVisible && (
-                        <div style={{ overflowX: "hidden", width: "100vw", height: "100vh" }}>
-                            <div className="boxxx" style={{ width: '1400px' }}>
+                    
+ 
+<div style={{ overflowX: "hidden", width: "100vw", height: "100vh", display: "flex", alignItems: "center" }}>
+    <div className="box" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
                                 <Link to="/formateur/listecourformateur">
                                     <button type="button" className="btn-close" aria-label="Close" >
                                         <span aria-hidden="true" className="text-base ml-30" style={{ margin: "0PX 1375PX ", fontSize: "2rem" }}>
@@ -73,8 +75,8 @@ const UploadCours = () => {
                                         </span>
                                     </button>
                                 </Link>
-                                <h2 style={{ fontSize: "2rem", margin: "11PX" }} className="text-center">Ajouter un nouveau Cours</h2>
-                                <div style={{ padding: "29px", backgroundColor: "#F8F8F9", margin: "13PX 39PX 11px" }}>
+                            
+                                <div style={{ padding: "29px", backgroundColor: "#F8F8F9",  justifyContent: 'space-between' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <div className="media align-items-center " style={{ display: "flex" }}>
 
@@ -83,6 +85,7 @@ const UploadCours = () => {
                                                 height: "370px",
                                                 border: "3px dashed silver",
                                                 backgroundColor: "white",
+                                                marginRight:'20px',
                                                 cursor: "pointer",
                                                 marginTop: "40px",
                                                 borderRadius: '10px',
@@ -113,14 +116,14 @@ const UploadCours = () => {
                                                 </label></> }
                                             </div>
 
-                                            <div className="shadow-box ms-7 mt-12">
-                                                <div className="form-group mb-3">
-                                                    <label for="Titre">Titre Cours</label>
+                                            <div className="shadow-box mr-16 ms-7 mt-12">
+                                                <div className="form-group mr-16 mb-3">
+                                                    <label for="title">Title </label>
                                                     <input className="form-control " style={{ width: '400px' }}
                                                         name="title"
-                                                        id="idTitre"
+                                                        id="idtitle"
                                                         autoFocus
-                                                        placeholder="Entrez votre title"
+                                                        placeholder="Enter your title."
                                                         onBlur={handleBlur}
                                                         onChange={handleChange}
                                                         value={values.title}
@@ -130,7 +133,7 @@ const UploadCours = () => {
 
                                                 </div>
                                                 <div className="form-group">
-                                                    <label for="Nom">Catégorie</label>
+                                                    <label for="Nom">Category</label>
 
                                                     <select className="  form-control mb-3" aria-label=".form-select-lg example"
                                                         onBlur={handleBlur}
@@ -139,7 +142,7 @@ const UploadCours = () => {
                                                         value={values.categorie}
                                                         error={!!touched.categorie && !!errors.categorie}
                                                         helperText={touched.categorie && errors.categorie} >
-                                                        <option hidden>Cliquez ici pour choisir une catégorie</option>
+                                                        <option hidden>Click here to choose a category.</option>
                                                         
                                                         <option value="Développement web">Développement web</option>
                                                         <option value="Développement mobile">Développement mobile</option>
@@ -150,12 +153,12 @@ const UploadCours = () => {
 
                                                 </div>
                                                 <div className="form-group mb-3">
-                                                    <label for="description">Description cours</label>
+                                                    <label for="description">Course Description</label>
                                                     <textarea className="form-control mb-3"
                                                         style={{ width: '400px', marginTop: '3px' }}
                                                         id="desc" rows="4"
                                                         name="description"
-                                                        placeholder="Entrez votre description"
+                                                        placeholder="Enter your description."
                                                         autoComplete="new-text"
                                                         onBlur={handleBlur}
                                                         onChange={handleChange}
@@ -170,20 +173,20 @@ const UploadCours = () => {
                                                     <FormControlLabel
                                                         control={<Checkbox />}
                                                         name='free'
-                                                        value="Gratuit"
-                                                        label="Gratuit"
-                                                        checked={selectedOption === "Gratuit"}
+                                                        value="Free"
+                                                        label="Free"
+                                                        checked={selectedOption === "Free"}
                                                         onChange={handleOptionChange}
                                                     />
                                                     <FormControlLabel
                                                         control={<Checkbox />}
-                                                        label="Prix"
-                                                        name='Prix'
-                                                        value="Prix"
-                                                        checked={selectedOption === "Prix"}
+                                                        label="Price"
+                                                        name='Price'
+                                                        value="Price"
+                                                        checked={selectedOption === "Price"}
                                                         onChange={handleOptionChange}
                                                     />
-                                                    {selectedOption == "Prix" && (
+                                                    {selectedOption == "Price" && (
                                                         <div style={{ display: 'flex' ,alignItems: 'center' }}>
                                                              <input type='text'
                                                              className="form-control mb-3 "
@@ -195,11 +198,11 @@ const UploadCours = () => {
                                                              value= "false"
                                                              />
                                                             <input type="text" className="form-control mb-3 "
-                                                                style={{ width: '190px' }} id="idTitre"
+                                                                style={{ width: '190px' }} id="idtitle"
                                                                 aria-describedby="emailHelp"
                                                                 name='actual_Price'
                                                                 type="number"
-                                                                placeholder="Entrez votre prix"
+                                                                placeholder="Enter your price."
                                                                 onBlur={handleBlur}
                                                                 onChange={handleChange}
                                                                 value={values.actual_Price}
@@ -211,7 +214,7 @@ const UploadCours = () => {
                                                                 aria-describedby="emailHelp"
                                                                 name="discount_Price"
                                                                 type="number"
-                                                                placeholder="Entrez le prix discounté"
+                                                                placeholder="Enter the discounted price."
                                                                 onBlur={handleBlur}
                                                                 onChange={handleChange}
                                                                 value={values.discount_Price}
@@ -220,7 +223,7 @@ const UploadCours = () => {
                                                             />
                                                         </div>
                                                     )}
-                                                    {selectedOption == "Gratuit" && (
+                                                    {selectedOption == "Free" && (
                                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                                              <input type='text'
                                                              className="form-control mb-3 "
@@ -265,9 +268,9 @@ const UploadCours = () => {
                                         </div>
                                         <div className='shadow-box ms-5 mt-12'>
                                             <div className="form-group mb-3">
-                                                <label for="connaissance">Ce que vous-aves apprenez</label>
+                                                <label for="connaissance">What you have learned.</label>
                                                 <textarea className="form-control" style={{ width: '400px', marginTop: '3px' }}
-                                                    id="desc" rows="7" placeholder="entrez ici les pré-connaissance de l'étudiant"
+                                                    id="desc" rows="7" placeholder="Enter the student's prior knowledge here."
                                                     autoComplete="new-text"
                                                     onBlur={handleBlur}
                                                     name='DetailedDescription'
@@ -280,7 +283,7 @@ const UploadCours = () => {
                                                 <label for="bio">Bio for coach</label>
                                                 <textarea className="form-control"
                                                     style={{ width: '400px', marginTop: '3px' }}
-                                                    id="desc" rows="4" placeholder="Entrez votre Bio"
+                                                    id="desc" rows="4" placeholder="Enter your Biography"
                                                     autoComplete="new-text"
                                                     name='bio'
                                                     onBlur={handleBlur}
@@ -304,7 +307,30 @@ const UploadCours = () => {
                         </div>
                     )
                     }
+                    <style>
+    {`
+        @media (max-width: 768px) {
+            .boxxx {
+                width: 100%;
+            }
+
+            .media {
+                flex-direction: column;
+            }
+
+            .play-video {
+                width: 100%;
+                margin-top: 20px;
+                align-items: center;
+            }
+
+          
+        }
+    `}
+</style>
+
                 </form>
+                
             )
         }}
     </Formik >
