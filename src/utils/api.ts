@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 
 const requestHandler = (request: any) => {
 
-  request.headers['x-access-token'] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0OTcyMWRkZjViYTM2MDlmNGYxNDQyOCIsImlhdCI6MTY4NzYyNjI3MCwiZXhwIjoxNjg3ODg1NDcwfQ.yzbqhz0hI9o6JF58YpsOf9F0UnXmkhZE9Mlabqx5Vh8";
+  request.headers['x-access-token'] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YTAxNGM2NjFlYWFhOTNlNDQ3NmZlYSIsImlhdCI6MTY4ODMyMDI4NCwiZXhwIjoxNjg4NTc5NDg0fQ.RyEwG7JUXLvHRvltHvykVlE3yA_al5CA7k_RJz-Qetc";
   return request;
 };
 

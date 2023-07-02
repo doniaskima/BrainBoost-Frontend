@@ -3,13 +3,11 @@ import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import { Button, Modal } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
- 
 import { toast } from 'react-toastify';
- 
 import { blogService } from '../../services/blog/api';
 
-
 const EditorBlog: React.FC = () => {
+
   const [content, setContent] = useState('');
   const { projectId } = useParams();
   const [showModal, setShowModal] = useState(false);
