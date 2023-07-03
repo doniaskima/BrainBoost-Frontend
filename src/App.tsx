@@ -46,6 +46,8 @@ import socket from './socketioClient';
 import UploadCours from './components/Course/UploadCourse';
 import ListeOfVideos from './components/Course/ListeOfVideos';
 import ListPdf from './components/Course/ListPdf';
+import UpdateCourse from './components/Course/updateCourse';
+import UploadPdf from './components/Course/UploadPdf';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -142,6 +144,8 @@ function App() {
         <Route path="/uploadCourse" element={<UploadCours/>} />
         <Route path="/allVideos" element={<ListeOfVideos/>} />
         <Route path="/listpdf" element={<ListPdf/>} />
+        <Route path="/updateCourse/:id" element={<UpdateCourse/>} />
+        <Route path="/uploadPdf/:id" element={<UploadPdf/>} />
         {/* <Route path="/editor" element={<Editor/>} /> */}
         <Route path="/profile" element={<Profile />} />
       </Routes>

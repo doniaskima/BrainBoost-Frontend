@@ -110,7 +110,7 @@ const ListCourses = () => {
       getActions: (params) => {
         console.log("11111111111", params);
         return [
-          <Link to={"/formateur/updatecour/" + params.row._id}>
+          <Link to={"/updateCourse/" + params.row._id}>
             <GridActionsCellItem
               icon={<EditIcon />}
               label="Edit"
@@ -179,7 +179,7 @@ const ListCourses = () => {
       width: 200,
       cellClassName: 'actions',
       getActions: (params) => [
-        <Button variant="outlined" startIcon={<PictureAsPdfIcon />} onClick={() => { navigate(`/formateur/uploadpdf/${params.row._id}`) }}>
+        <Button variant="outlined" startIcon={<PictureAsPdfIcon />} onClick={() => { navigate(`/uploadPdf/${params.row._id}`) }}>
           ADD PDF
         </Button>,
       ],
@@ -226,7 +226,7 @@ const ListCourses = () => {
             <div className="boxxx" style={{ padding: "20px", width: "100%" }} >
               <div className="card-header" style={{ display: "flex", justifyContent: "space-between" }}>
                 <h2 style={{ fontSize: "2rem" }}>List of Courses</h2>
-                <Link to="/formateur/UploadCours">
+                <Link to="/UploadCours">
                   <Button variant="outlined" startIcon={<AddIcon />}>Add a new course</Button>
                 </Link>
               </div>

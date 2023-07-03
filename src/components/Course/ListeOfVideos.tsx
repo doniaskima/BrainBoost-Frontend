@@ -1,20 +1,32 @@
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReplayIcon from '@mui/icons-material/Replay';
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import CircularProgress from '@mui/material/CircularProgress';
+import axios from 'axios';
 
 const ListAllVideosTrainer: React.FC = () => {
-
   const navigate = useNavigate();
+  const [videos, setVideos] = useState([]);
+ 
 
   useEffect(() => {
-    dispatch(getallVideobycreateur());
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3002/api/video/getAllVideoByCreator/64a014c661eaaa93e4476fea');
+        console.log(response.data);
+        console.log("this response.data.data",response.data.videos)
+        setVideos(response.data.videos)
+      } catch (error) {
+        // Handle any errors that occurred during the request
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  console.log(videoDataCreator);
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -33,7 +45,7 @@ const ListAllVideosTrainer: React.FC = () => {
             <CircularProgress />
           </div>
         ) : (
-          videoDataCreator?.videos?.map(item => (
+          videos?.map(item => (
             <div
               style={{
                 padding: "29px",
