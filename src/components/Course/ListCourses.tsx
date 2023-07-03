@@ -16,28 +16,30 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 
-const ListeCourFormateur = () => {
+const ListCourses = () => {
   const theme = useTheme();
   let navigate = useNavigate();
   const [courses, setCourses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchCourses = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/courses/getAllCourses`);
       console.log(response.data);
       setCourses(response.data);
+      setIsLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.log(error);
+      setIsLoading(false); // Set loading to false in case of an error as well
     }
   };
 
-  // Use useEffect to fetch the courses data when the component mounts
   useEffect(() => {
     fetchCourses();
   }, []);
-  // console.log(courses?.slice()?.sort(function (a, b) {
-  //   return new Date(b?.createdAt) - new Date(a?.createdAt);
-  // }));
+  console.log(courses?.slice()?.sort(function (a, b) {
+    return new Date(b?.createdAt) - new Date(a?.createdAt);
+  }));
   const handleDeleteCourse = (courseId) => {
     axios.delete(`http://localhost:3002/api/courses/deleteCourse/${courseId}`)
       .then((response) => {
@@ -211,23 +213,26 @@ const ListeCourFormateur = () => {
 
   return (
     <>
-      <Box m="20px" className="hoverwhite">
-        <Box className="hoverwhite">
-          <div className="boxxx" style={{ padding: "20px", width: "100%" }} >
-            <div className="card-header" style={{ display: "flex", justifyContent: "space-between" }}>
-              <h2 style={{ fontSize: "2rem" }}>List of Courses</h2>
-              <Link to="/formateur/UploadCours">
-                <Button variant="outlined" startIcon={<AddIcon />}>Add a new course</Button>
-              </Link>
-            </div>
-          
-              <Box
-                m="8px 0 0 0"
-                width="100%"
-                height="80vh"
-                className="hoverwhite"
-              >
-                <DataGrid className="hoverwhite"
+      {isLoading ? (
+        // Show the loader while data is being fetched
+        <Box display="flex" alignItems="center" justifyContent="center" height="80vh">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box m="20px" className="hoverwhite">
+          {/* Rest of your JSX code with courses data */}
+          <Box className="hoverwhite">
+            {/* Rest of your JSX code */}
+            <div className="boxxx" style={{ padding: "20px", width: "100%" }} >
+              <div className="card-header" style={{ display: "flex", justifyContent: "space-between" }}>
+                <h2 style={{ fontSize: "2rem" }}>List of Courses</h2>
+                <Link to="/formateur/UploadCours">
+                  <Button variant="outlined" startIcon={<AddIcon />}>Add a new course</Button>
+                </Link>
+              </div>
+              <Box m="8px 0 0 0" width="100%" height="80vh" className="hoverwhite">
+                <DataGrid
+                  className="hoverwhite"
                   getRowId={(row) => row?._id}
                   rows={(courses?.slice()?.sort(function (a, b) {
                     return new Date(b?.createdAt) - new Date(a?.createdAt);
@@ -243,12 +248,13 @@ const ListeCourFormateur = () => {
                   }}
                   pageSizeOptions={[8]}
                 />
-              </Box> 
-          </div>
+              </Box>
+            </div>
+          </Box>
         </Box>
-      </Box>
+      )}
     </>
   );
 };
 
-export default ListeCourFormateur;
+export default ListCourses;
