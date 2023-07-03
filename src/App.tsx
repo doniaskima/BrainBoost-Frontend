@@ -44,6 +44,8 @@ import { Assignment } from './components/Tasks/InterfaceTask';
 import { userService } from './services/user/api';
 import socket from './socketioClient';
 import UploadCours from './components/Course/UploadCourse';
+import ListeOfVideos from './components/Course/ListeOfVideos';
+import ListPdf from './components/Course/ListPdf';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -138,6 +140,8 @@ function App() {
         <Route path="/youtube/:projectId/:videoId" element={<YoutubeView/>} />
         <Route path="/my-blog" element={<MyListBlog/>} />
         <Route path="/uploadCourse" element={<UploadCours/>} />
+        <Route path="/allVideos" element={<ListeOfVideos/>} />
+        <Route path="/listpdf" element={<ListPdf/>} />
         {/* <Route path="/editor" element={<Editor/>} /> */}
         <Route path="/profile" element={<Profile />} />
       </Routes>

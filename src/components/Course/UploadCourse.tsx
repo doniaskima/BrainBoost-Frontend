@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from "formik";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Fab from '@mui/material/Fab';
+import { BASE_URL } from '../../utils/utils';
 import Button from '@mui/material/Button';
-
+import axios from 'axios';
 import * as yup from 'yup';
 import { useNavigate } from "react-router";
 import { Link } from 'react-router-dom';
@@ -13,16 +14,41 @@ import { Link } from 'react-router-dom';
 const UploadCours = () => {
     const [selectedOption, setSelectedOption] = useState('');
     const [pageVisible, setPageVisible] = useState(true);
+    const [courses, setCourses] = useState([]);
+    console.log("all courses bro", courses);
 
     const [image, setImage] = useState(null)
  
     const navigate = useNavigate();
 
-    const handleFormSubmit = async (values, { resetForm }) => {
-        console.log("submitCours", values)
-        // Your form submission logic here
-    };
+    const handleFormSubmit = async () => {
+        try {
+          const response = await axios.post(`${BASE_URL}/api/createCourse`);
+          console.log(response.data);
+          if (response.data) {
+            navigate("/courses");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
+      const fetchCourses = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/api/courses/getAllCourses`);
+          console.log(response.data);
+          setCourses(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      // Use useEffect to fetch the courses data when the component mounts
+      useEffect(() => {
+        fetchCourses();
+      }, []);
+    
+ 
     const checkoutSchema = yup.object().shape({
         image: yup.mixed().required("Required"),
         title: yup.string().required("Required"),
@@ -68,7 +94,7 @@ const UploadCours = () => {
  
 <div style={{ overflowX: "hidden", width: "100vw", height: "100vh", display: "flex", alignItems: "center" }}>
     <div className="box" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
-                                <Link to="/formateur/listecourformateur">
+                                <Link to="/courses">
                                     <button type="button" className="btn-close" aria-label="Close" >
                                         <span aria-hidden="true" className="text-base ml-30" style={{ margin: "0PX 1375PX ", fontSize: "2rem" }}>
                                             &times;
@@ -116,7 +142,7 @@ const UploadCours = () => {
                                                 </label></> }
                                             </div>
 
-                                            <div className="shadow-box mr-16 ms-7 mt-12">
+                                            <div className="shadow-box  ms-7 mt-12">
                                                 <div className="form-group mr-16 mb-3">
                                                     <label for="title">Title </label>
                                                     <input className="form-control " style={{ width: '400px' }}

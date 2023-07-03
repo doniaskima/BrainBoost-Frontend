@@ -10,6 +10,8 @@ import {
 import routes from "../routes";
 import { useMaterialTailwindController } from "../context/index";
 import { useState } from "react";
+import UploadCours from "../components/Course/UploadCourse";
+import ListCourses from "../components/Course/ListCourses";
  
 
 export function Courses() {
@@ -28,6 +30,7 @@ export function Courses() {
       <div className="p-4 xl:ml-80">
         <DashboardNavbar />
         <Configurator />
+        <ListCourses/>
         <IconButton
           size="lg"
           color="white"
