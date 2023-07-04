@@ -33,6 +33,7 @@ const CreateQuiz = () => {
       .getUserId()
       .then((res) => {
         setUserId(res.data.data.id);
+        console.log(userId)
       })
       .catch((err) => {
         toast.error('Session expired');
@@ -112,11 +113,11 @@ const CreateQuiz = () => {
 
   return (
     <>
-      <div className="boxxx" style={{ marginBottom: "50px" }}>
+      <div className="boxxx p-8" style={{ marginBottom: "50px" }}>
         <Formik
           initialValues={initialValues}
           validationSchema={checkoutSchema}
-          onSubmit={handleFormSubmit}
+        
         >
           {({  values, errors, touched, setFieldValue, handleBlur, handleChange, handleSubmit, }) => (
             <form onSubmit={handleFormSubmit}>

@@ -45,8 +45,10 @@ import ListPdf from './components/Course/ListPdf';
 import UpdateCourse from './components/Course/updateCourse';
 import UploadPdf from './components/Course/UploadPdf';
 import SingleQuestion from './components/quiz/SingleQuestion';
-import CreateQuiz from './components/quiz/CreateQuiz';
 import CreataQuizPage from './pages/CreataQuizPage';
+import QuizInformation from './components/quiz/QuizInformation';
+import ListeQuizz from './components/quiz/ListQuiz';
+import { ListQuizPage } from './pages/ListQuizPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -142,6 +144,8 @@ function App() {
         <Route path="/my-blog" element={<MyListBlog/>} />
         <Route path="/uploadCourse" element={<UploadCours/>} />
         <Route path="/allVideos" element={<ListeOfVideos/>} />
+        <Route path="quizinformation/:id" element={<QuizInformation />} />
+        <Route path="listequizz" element={<ListQuizPage />} />
         <Route path="/listpdf" element={<ListPdf/>} />
         <Route path="/updateCourse/:id" element={<UpdateCourse/>} />
         <Route path="/uploadPdf/:id" element={<UploadPdf/>} />
@@ -149,6 +153,8 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/quiz/:id" element={<SingleQuestion />} />
         <Route path="createquiz/:id" element={<CreataQuizPage />} />
+  
+
       </Routes>
       <ToastContainer />
     </div>
