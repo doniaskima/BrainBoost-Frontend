@@ -191,7 +191,7 @@ const ListCourses = () => {
       width: 200,
       cellClassName: 'actions',
       getActions: (params) => [
-        <Button variant="outlined" startIcon={<QuizIcon />} onClick={() => { navigate(`/quiz/${params.row._id}`) }}>
+        <Button variant="outlined" startIcon={<QuizIcon />} onClick={() => { navigate(`/createquiz/${params.row._id}`) }}>
           ADD Quiz
         </Button>,
       ],

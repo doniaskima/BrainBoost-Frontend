@@ -45,6 +45,8 @@ import ListPdf from './components/Course/ListPdf';
 import UpdateCourse from './components/Course/updateCourse';
 import UploadPdf from './components/Course/UploadPdf';
 import SingleQuestion from './components/quiz/SingleQuestion';
+import CreateQuiz from './components/quiz/CreateQuiz';
+import CreataQuizPage from './pages/CreataQuizPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -146,6 +148,7 @@ function App() {
         {/* <Route path="/editor" element={<Editor/>} /> */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/quiz/:id" element={<SingleQuestion />} />
+        <Route path="createquiz/:id" element={<CreataQuizPage />} />
       </Routes>
       <ToastContainer />
     </div>
