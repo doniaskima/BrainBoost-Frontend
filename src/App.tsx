@@ -28,10 +28,6 @@ import Profile from './pages/Profile';
 import MemberProject from './pages/MemberProject';
 import Chats from "./components/Tasks/Chats"
 // Component imports
-import { ConfirmPage } from './components/Auth';
-import { AuthRoute } from './components/AuthRoute';
-import RightSection from './components/Chat/RightSection';
-import { AuthProvider } from './context/authProvider';
 import Task from './components/Tasks/Task';
 import ChooseList from './components/Tasks/ChooseList';
 import { ToastContainer, toast } from 'react-toastify';
@@ -48,6 +44,7 @@ import ListeOfVideos from './components/Course/ListeOfVideos';
 import ListPdf from './components/Course/ListPdf';
 import UpdateCourse from './components/Course/updateCourse';
 import UploadPdf from './components/Course/UploadPdf';
+import SingleQuestion from './components/quiz/SingleQuestion';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -148,6 +145,7 @@ function App() {
         <Route path="/uploadPdf/:id" element={<UploadPdf/>} />
         {/* <Route path="/editor" element={<Editor/>} /> */}
         <Route path="/profile" element={<Profile />} />
+        <Route path="/quiz/:id" element={<SingleQuestion />} />
       </Routes>
       <ToastContainer />
     </div>
